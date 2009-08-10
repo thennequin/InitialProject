@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibITX", "Tools\LibITX\LibITX.vcproj", "{77E9A95A-1831-44BE-9759-47F59B52710F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITX Paint.Net Plugin", "Tools\Paint.Net ITX Plugin\ITX Paint.Net Plugin.csproj", "{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Debug|Win32.Build.0 = Debug|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Release|Any CPU.ActiveCfg = Release|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Release|Win32.ActiveCfg = Release|Win32
+		{77E9A95A-1831-44BE-9759-47F59B52710F}.Release|Win32.Build.0 = Release|Win32
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7CF0D7F9-2462-4AC2-9619-3A02A16BB34C}.Release|Win32.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
