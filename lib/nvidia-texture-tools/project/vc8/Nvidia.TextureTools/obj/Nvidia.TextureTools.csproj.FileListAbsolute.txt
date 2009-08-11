@@ -1,0 +1,5 @@
+D:\Coding\Projects\Texture Initialisator\lib\nvidia-texture-tools\project\vc8\Nvidia.TextureTools\bin\Release\Nvidia.TextureTools.dll
+D:\Coding\Projects\Texture Initialisator\lib\nvidia-texture-tools\project\vc8\Nvidia.TextureTools\bin\Release\Nvidia.TextureTools.pdb
+D:\Coding\Projects\Texture Initialisator\lib\nvidia-texture-tools\project\vc8\Nvidia.TextureTools\obj\Release\ResolveAssemblyReference.cache
+D:\Coding\Projects\Texture Initialisator\lib\nvidia-texture-tools\project\vc8\Nvidia.TextureTools\obj\Release\Nvidia.TextureTools.dll
+D:\Coding\Projects\Texture Initialisator\lib\nvidia-texture-tools\project\vc8\Nvidia.TextureTools\obj\Release\Nvidia.TextureTools.pdb
