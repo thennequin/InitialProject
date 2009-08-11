@@ -1,0 +1,1 @@
+ --import %laneid,%ctaid,%nctaid,%smid,A7,%pm3,%pm2,%pm1,__CC-temp__0__,%pm0,%tid,%clock,%warpid,%ntid,%gridid --export _Z12compressDXT1PKjS0_P5uint2,_Z20compressWeightedDXT1PKjS0_P5uint2,_Z18compressLevel4DXT1PKjS0_P5uint2
