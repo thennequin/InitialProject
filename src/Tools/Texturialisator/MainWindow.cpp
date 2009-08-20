@@ -19,9 +19,6 @@
 
 #include "RessourcePanel.h"
 #include "FlowLib/FlowGraph.h"
-#include "MaterialGraph.h"
-
-#include "Initial/Video/IMaterialExpression.h"
 
 //#include "ITXFormat.h"
 
@@ -130,17 +127,13 @@ MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& 
 		m_pB_Rebuild = new wxButton(m_pPanelFolder,MW_REBUILD,"Rebuild",wxPoint(5+185,5+22+5+20+5+60+5),wxSize(180,40));
 
 		m_pNoteBookGraph = new wxNotebook(m_pPageMulti,wxID_ANY,wxDefaultPosition,wxSize(400,200),wxNB_LEFT);
-		m_pGraph = new GraphWidget(m_pNoteBookGraph,wxID_ANY);
+		m_pGraph = new BuildGraph(m_pNoteBookGraph,wxID_ANY);
 		m_pTCDetail = new wxTextCtrl(m_pNoteBookGraph,wxID_ANY,wxEmptyString,wxDefaultPosition,wxDefaultSize,wxTE_READONLY|wxTE_MULTILINE);
 		m_pNoteBookGraph->AddPage(m_pGraph,"Graph");
 		m_pNoteBookGraph->AddPage(m_pTCDetail,"Detail");
 
 		RessourcePanel *ressources = new RessourcePanel(m_pNoteBookGraph);
 		m_pNoteBookGraph->AddPage(ressources,"Ressources");
-
-		MaterialGraph *graph = new MaterialGraph(m_pNoteBookGraph);
-		//FlowGraph *graph = new FlowGraph(m_pNoteBookGraph);
-		m_pNoteBookGraph->AddPage(graph,"Graph");
 
 	wxBoxSizer *sizerMulti = new wxBoxSizer(wxVERTICAL);
 	sizerMulti->Add(m_pPanelFolder);
@@ -302,7 +295,7 @@ void MainWindow::OnConvert(wxCommandEvent& event)
 		wxLogMessage("File converted");
 	}else
 		wxLogMessage("Error");
-	/*if (ConvertToITX(m_pTC_InputFile->GetValue(),outputFile,(ImageType)(IT_COLOR+m_pRB_ImageType->GetSelection()),(BorderType)(BT_MIRROR+m_pRB_BorderType->GetSelection()),(DXTFormat)m_pRB_OutputType->GetSelection(),!m_pCB_Mipmaps->GetValue(),m_pCB_CUDA->GetValue(),false,m_pRB_OutputQuality->GetSelection()))
+	/*if (ConvertToITX(m_pTC_InputFile->GetValue(),outputFile,(ImageType)(IT_COLOR+m_pRB_ImageType->GetSelection()),(BorderType)(BT_MIRROR+m_pRB_BorderType->GetSelection()),(ITXFormat)m_pRB_OutputType->GetSelection(),!m_pCB_Mipmaps->GetValue(),m_pCB_CUDA->GetValue(),false,m_pRB_OutputQuality->GetSelection()))
 		wxLogMessage("File converted");
 	else
 		wxLogMessage("Error");*/

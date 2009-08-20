@@ -14,10 +14,38 @@
 
 using namespace Initial::Core;
 
+/*
+======================
+Q_rsqrt from id Tech 3
+   of John Carmack
+======================
+*/
+float Q_rsqrt( float number)
+{
+	long i;
+	float x2, y;
+	const float threehalfs = 1.5F;
+
+	x2 = number * 0.5F;
+	y  = number;
+	i  = * ( long * ) &y;  // evil floating point bit level hacking
+	i  = 0x5f3759df - ( i >> 1 ); // what the fuck?
+	y  = * ( float * ) &i;
+	y  = y * ( threehalfs - ( x2 * y * y ) ); // 1st iteration
+	// y  = y * ( threehalfs - ( x2 * y * y ) ); // 2nd iteration, this can be removed
+
+	return y;
+}
+
 namespace Initial
 {
 	namespace Math
 	{
+		IVector3D Lerp(IVector3D a, IVector3D b, float val)
+		{
+			return (a*val+b*(1.0-val));
+		}
+
 		IMatrix TranslationToMatrix(float x, float y, float z)
 		{
 			IMatrix trans(4);
@@ -482,6 +510,18 @@ namespace Initial
 
 
 			return PerspectiveMat;
+		}
+
+		void MakeRayFromMouseOnScreen(IVector2D point, IMatrix projection_4x4, IVector2D viewport, IVector3D& start, IVector3D& dir)
+		{
+			/*IVector3D res;
+			IMatrix modelviewIdent(4,4);
+			modelviewIdent.MakeIdentity(4);
+			UnProject(projection_4x4,modelviewIdent,viewport,Vector3D(point.GetU(),point.GetV(),0.0),res);
+			linestart=res;
+			UnProject(projection_4x4,modelviewIdent,viewport,Vector3D(point.GetU(),point.GetV(),0.01),res);
+			dir=res-linestart;
+			dir.Normalize();*/
 		}
 	}
 }

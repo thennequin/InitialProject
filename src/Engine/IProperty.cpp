@@ -48,7 +48,8 @@ namespace Initial
 			case IPT_COLOR:
 				m_pVar = new IColor;
 				break;
-			case IPT_STRING:	
+			case IPT_STRING:
+			case IPT_LONG_STRING:
 				m_pVar = new IString("");
 				break;
 			case IPT_CHOICE:	
@@ -124,10 +125,11 @@ namespace Initial
 				}
 				break;
 			case IPT_STRING:
+			case IPT_LONG_STRING:
 				return *((IString*)m_pVar);
 				break;
 			case IPT_CHOICE:
-				return m_aChoices[*((int*)m_pVar)];
+					return *((int*)m_pVar);
 				//return IString(*((int*)m_pVar));
 				break;
 			case IPT_RESSOURCE_ITX: // Texture
@@ -245,25 +247,11 @@ namespace Initial
 				*((IColor*)m_pVar)=ColorFromString(value);
 				break;
 			case IPT_STRING:
+			case IPT_LONG_STRING:
 				*((IString*)m_pVar)=value;
 				break;
-			case IPT_CHOICE:
-				{
-					UINT i=0;
-					bool Found=false;
-					for (IList<IString>::Iterator ite=m_aChoices.Ite();ite;ite++)
-					{
-						if (ite.GetData()==value)
-						{		
-							Found=true;
-							break;
-						}
-						i++;
-					}
-					if (Found==false)
-						i=Iatof(value);
-					*((int*)m_pVar)=i;
-				}
+			case IPT_CHOICE:			
+				*((int*)m_pVar)=Iatof(value);
 				break;
 			case IPT_RESSOURCE_ITX: // Texture
 				//if (m_pMaterial)

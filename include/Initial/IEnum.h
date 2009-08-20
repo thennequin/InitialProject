@@ -161,6 +161,7 @@ namespace Initial
 		IPT_VEC3,
 		IPT_COLOR,
 		IPT_STRING,
+		IPT_LONG_STRING,
 		IPT_CHOICE,
 		//IPT_TEXTURE,
 		IPT_RESSOURCE_ITX, // Texture

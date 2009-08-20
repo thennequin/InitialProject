@@ -12,6 +12,7 @@
 #include "Initial/Core/IArray.h"
 #include "Initial/Core/IString.h"
 #include "Initial/IObject.h"
+#include "Initial/IO/IFileStream.h"
 #include "ISmartPtr.h"
 
 namespace Initial
@@ -55,6 +56,16 @@ namespace Initial
 	{
 	public:
 		virtual void Output(LogType type, Core::IString output);
+	};
+
+	class ILoggerFile : public ILogger
+	{
+	public:
+		ILoggerFile();
+		virtual void Output(LogType type, Core::IString output);
+	protected:
+		IO::IFileStream m_fStdOut;
+		IO::IFileStream m_fStdErr;
 	};
 };
 

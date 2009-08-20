@@ -1,6 +1,6 @@
 
-#ifndef _MAINWINDOW_HEADER_
-#define _MAINWINDOW_HEADER_
+#ifndef _MAINWINDOWPUPPETEER_HEADER_
+#define _MAINWINDOWPUPPETEER_HEADER_
 
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
@@ -8,7 +8,9 @@
 
 #include "InitialPanel.h"
 
-class MainWindow : public wxFrame
+#include "ObjectProperty.h"
+
+class MainWindowPuppeteer : public wxFrame
 {
 	DECLARE_EVENT_TABLE()
 
@@ -32,8 +34,8 @@ class MainWindow : public wxFrame
 		MW_SET_SKELETON,
 	};
 public:
-	MainWindow(const wxString& title, const wxPoint& Pos=wxDefaultPosition, const wxSize& size=wxSize(800,600));
-	~MainWindow();	
+	MainWindowPuppeteer(const wxString& title, const wxPoint& Pos=wxDefaultPosition, const wxSize& size=wxSize(800,600));
+	~MainWindowPuppeteer();	
 
 	void OnOpenFile(wxCommandEvent& event);
 
@@ -50,6 +52,7 @@ protected:
 	wxTreeCtrl* m_pTree;
 
 	InitialPanel *m_pInitial;
+	ObjectProperty *m_pProp;
 
 	wxStatusBar *m_pStatusBar;
 };

@@ -10,7 +10,7 @@
 #define _IPOLYGON_HEADER_
 
 #include "stdio.h"
-#include "Initial/Core/IArray.h"
+#include "Initial/Core/IList.h"
 #include "Initial/Core/IVector3D.h"
 
 namespace Initial
@@ -29,7 +29,7 @@ namespace Initial
 
 		void AddPoint(const Core::IVector3D& vert)
 		{
-			m_pVertex.Add(vert);
+			m_pVertex.PushBack(vert);
 		}
 
 		UINT Count()
@@ -48,7 +48,7 @@ namespace Initial
 		}
 
 	protected:
-		Core::IArray<Core::IVector3D>	m_pVertex;
+		Core::IList<Core::IVector3D>	m_pVertex;
 	};
 
 }

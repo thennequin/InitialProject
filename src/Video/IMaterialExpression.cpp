@@ -25,8 +25,11 @@ namespace Initial
 		IMPLEMENT_OBJECT(IMaterialExpressionFinal,IMaterialExpression)
 		IMPLEMENT_ABSTRACT_OBJECT(IMaterialExpressionBase,IMaterialExpression)
 			IMPLEMENT_OBJECT(IMaterialExpressionTextureSampler,IMaterialExpressionBase)
+			IMPLEMENT_OBJECT(IMaterialExpressionScreenBuffer,IMaterialExpressionBase)			
 			IMPLEMENT_OBJECT(IMaterialExpressionTextureCoord,IMaterialExpressionBase)
-			IMPLEMENT_OBJECT(IMaterialExpressionIf,IMaterialExpressionBase)
+			IMPLEMENT_OBJECT(IMaterialExpressionScreenCoord,IMaterialExpressionBase)			
+			IMPLEMENT_OBJECT(IMaterialExpressionVertexColor,IMaterialExpressionBase)
+			IMPLEMENT_OBJECT(IMaterialExpressionIf,IMaterialExpressionBase)			
 
 			//Var
 			IMPLEMENT_OBJECT(IMaterialExpressionTime,IMaterialExpressionBase)
@@ -46,6 +49,7 @@ namespace Initial
 			IMPLEMENT_OBJECT(IMaterialExpressionASin,IMaterialExpressionBase)
 			IMPLEMENT_OBJECT(IMaterialExpressionLength,IMaterialExpressionBase)
 			IMPLEMENT_OBJECT(IMaterialExpressionAbs,IMaterialExpressionBase)
+			IMPLEMENT_OBJECT(IMaterialExpressionLerp,IMaterialExpressionBase)
 
 			//Coordinator
 			IMPLEMENT_OBJECT(IMaterialExpressionRotator,IMaterialExpressionBase)
@@ -227,7 +231,10 @@ uniform sampler2D Texture4;\n\
 uniform sampler2D Texture5;\n\
 uniform sampler2D Texture6;\n\
 uniform sampler2D Texture7;\n\n\
+uniform sampler2D ScreenDepth;\n\n\
+uniform sampler2D ScreenColor;\n\n\
 uniform float Time;\n\
+uniform vec2 ViewportSize;\n\
 \
 varying vec3 v_ViewDir;\n\
 varying vec3 m_Tangent, m_BiNormal, m_Normal;\n";
@@ -273,25 +280,42 @@ vec4 "+func+"()\n\
 				}
 			}
 
-			ISEVec4 diffuse = GetOutput(0);
+			
 			IString FBO;
 			bool withFBO=true;
 			if (withFBO)
 			{
+				ISEVec4 diffuse = GetOutput(0);
 				ISEVec4 emissive = GetOutput(1);
-				ISEVec4 alpha = GetOutput(2);
-				ISEVec4 normal = (GetOutput(3)+1.0)*0.5;
+				ISEFloat alpha = GetOutput(2).x();
 				ISEVec4 specular = GetOutput(4);
-				IString AlphaTest=	
-	"if ("+alpha.GetGLSLString()+"<=0.5)\n\
-					discard;\n";
-				AlphaTest="";
-				FBO="\
+				IString AlphaTest;
+				float  LightMode=0;
+				if (m_pMaterial)
+				{
+					int mode = m_pMaterial->GetProperty("Blend mode")->GetFloat();
+					float clip = m_pMaterial->GetProperty("Mask clip")->GetFloat();
+					LightMode = m_pMaterial->GetProperty("Light mode")->GetFloat()+1;
+					if (mode==0)
+					{
+						//Nothing
+					}else if (mode==1)
+					{
+						AlphaTest=
+	"if ("+alpha.GetGLSLString()+"<="+IString(clip)+")\n\
+		discard;\n";
+					}else{
+					}
+				}
+				ISEVec4 normal = ISEVec4((GetOutput(3).xyz()+1.0)*0.5,1.0/LightMode);
+
+				FBO=AlphaTest+"\
 	gl_FragData[0]="+diffuse.GetGLSLString()+";\n\
 	gl_FragData[1]="+emissive.GetGLSLString()+";\n\
 	gl_FragData[2]="+normal.GetGLSLString()+";\n\
 	gl_FragData[3]="+specular.GetGLSLString()+";\n";
 			}else{
+				ISEVec4 diffuse = ISEVec4(GetOutput(0).xyz(),GetOutput(2).x());
 				FBO="\
 	gl_FragColor="+diffuse.GetGLSLString()+";\n";
 			}
@@ -305,6 +329,8 @@ vec4 "+func+"()\n\
 			vertex = "varying vec3 m_Normal;\
 void main( void )\
 {\
+	gl_BackColor = gl_Color;\
+	gl_FrontColor = gl_Color;\
 	gl_TexCoord[0]=gl_MultiTexCoord0;\
 	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\
 	gl_Position = ftransform();\
@@ -384,18 +410,10 @@ void main( void )\
 
 		ISEVec4 IMaterialExpressionFinal::GetOutput(int OutId)
 		{
-			ISEFloat alpha;
-			if (GetPropertyValue("Blend mode").x==0)
-				alpha=1.0;
-			else if (GetPropertyValue("Blend mode").x==1)
-				alpha = If(GetInputExpr(2).x(), GetPropertyValue("Mask clip").x, ">=", 1.0, 0.0);
-			else 
-				alpha = GetInputExpr(2).x();
-
 			if (OutId==0) // Color
 			{
 				if (InputIsConnect(0))
-					return ISEVec4(GetInputExpr(0).xyz(),alpha); 
+					return GetInputExpr(0); 
 				else{ // Damier
 					ISEVec4 grey(0.7,0.7,0.7,1.0);
 					ISEVec4 white(0.3,0.3,0.3,1.0);
@@ -409,22 +427,23 @@ void main( void )\
 				
 			}else if (OutId==1)// Emissive
 			{
-				return ISEVec4(GetInputExpr(1).xyz(),alpha); 
+				return GetInputExpr(1); 
 			}
 			else if (OutId==2) // Alpha
 			{
-				return ISEVec4(alpha,0,0,0); 
+				return GetInputExpr(2); 
 			}else if (OutId==3) // Normal
 			{
-				//return SE::SEVec4(GetInputExpr(3).xyz(),alpha); 
-				return ISEVec4(/*GetInputExpr(3).xyz()+*/ISEVec3("m_Normal"),alpha); // Normal
+				return ISEVec4(/*GetInputExpr(3).xyz()+*/ISEVec3("m_Normal"),0.0); // Normal
 			}else if (OutId==4) // Specular
 			{
-				return ISEVec4(GetInputExpr(4).xyz(),GetInputExpr(5).x()); 
-			}/*else if (OutId==5) // Specular power
-			{
-				return ISEVec4(GetInputExpr(5).xyz(),alpha); 
-			}*/
+				ISEFloat pow;
+				if (InputIsConnect(5))
+					pow = GetInputExpr(5).x();
+				else
+					pow = 50;
+				return ISEVec4(GetInputExpr(4).xyz(),ISEFloat(1.0)/pow); 
+			}
 		}
 
 		void IMaterialExpressionFinal::OnPropertyChange(IString name)
@@ -548,6 +567,28 @@ void main( void )\
 		}
 
 		//-------------------------------------------------------------------------
+		// Screen buffer
+		//-------------------------------------------------------------------------
+		IMaterialExpressionScreenBuffer::IMaterialExpressionScreenBuffer()
+		{
+			Name="Screen buffer";
+
+			AddInput("uv");
+			AddOutput("RGB");
+			AddOutput("Depth");
+		}
+
+		ISEVec4 IMaterialExpressionScreenBuffer::GetOutput(int OutId)
+		{
+			ISEVec2 coord = InputIsConnect(0) ? GetInputExpr(0).xy() : ScreenCoord().xy()/ISEVec2("ViewportSize");
+			if (OutId==0)
+				return TextureSample("ScreenColor",coord);
+			else
+				return TextureSample("ScreenDepth",coord);
+		}
+		
+
+		//-------------------------------------------------------------------------
 		// Texture coord
 		//-------------------------------------------------------------------------
 		IMaterialExpressionTextureCoord::IMaterialExpressionTextureCoord()
@@ -560,6 +601,37 @@ void main( void )\
 		ISEVec4 IMaterialExpressionTextureCoord::GetOutput(int OutId)
 		{
 			return TextureCoord();
+		}
+
+		//-------------------------------------------------------------------------
+		// Screen coord
+		//-------------------------------------------------------------------------
+		IMaterialExpressionScreenCoord::IMaterialExpressionScreenCoord()
+		{
+			Name="Screen coord";
+
+			AddOutput("");
+		}
+
+		ISEVec4 IMaterialExpressionScreenCoord::GetOutput(int OutId)
+		{
+			return ScreenCoord().xy()/ISEVec2("ViewportSize");
+		}
+		
+
+		//-------------------------------------------------------------------------
+		// Vertex color
+		//-------------------------------------------------------------------------
+		IMaterialExpressionVertexColor::IMaterialExpressionVertexColor()
+		{
+			Name="Vertex color";
+
+			AddOutput("");
+		}
+
+		ISEVec4 IMaterialExpressionVertexColor::GetOutput(int OutId)
+		{
+			return ISEVec4("gl_Color");
 		}
 
 		//-------------------------------------------------------------------------
@@ -584,6 +656,23 @@ void main( void )\
 				If(GetInputExpr(0),GetInputExpr(1),"<",GetInputExpr(2),GetInputExpr(4)));
 		}
 		
+
+		//-------------------------------------------------------------------------
+		// Time
+		//-------------------------------------------------------------------------
+		IMaterialExpressionTime::IMaterialExpressionTime()
+		{
+			Name="Time";
+			Categorie="Var";
+
+			AddOutput("");
+		}
+
+		ISEVec4 IMaterialExpressionTime::GetOutput(int OutId)
+		{
+			ISEFloat time("Time");
+			return ISEVec4(time,time,time,time);
+		}
 
 		//-------------------------------------------------------------------------
 		// Constant float
@@ -842,20 +931,22 @@ void main( void )\
 		}
 
 		//-------------------------------------------------------------------------
-		// Time
+		// Lerp
 		//-------------------------------------------------------------------------
-		IMaterialExpressionTime::IMaterialExpressionTime()
+		IMaterialExpressionLerp::IMaterialExpressionLerp()
 		{
-			Name="Time";
-			Categorie="Var";
+			Name="Lerp";
+			Categorie="Math";
 
+			AddInput("a");
+			AddInput("b");
+			AddInput("Alpha");
 			AddOutput("");
 		}
 
-		ISEVec4 IMaterialExpressionTime::GetOutput(int OutId)
+		ISEVec4 IMaterialExpressionLerp::GetOutput(int OutId)
 		{
-			ISEFloat time("Time");
-			return ISEVec4(time,time,time,time);
+			return Lerp(GetInputExpr(0),GetInputExpr(1),GetInputExpr(2).x());
 		}
 
 		//-------------------------------------------------------------------------
@@ -971,7 +1062,7 @@ void main( void )\
 
 			AddOutput("");
 			AddInput("uv");
-			AddInput("Acceleration");	
+			AddInput("Acceleration");
 		}
 
 		ISEVec4 IMaterialExpressionPanner::GetOutput(int OutId)

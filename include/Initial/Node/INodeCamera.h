@@ -19,6 +19,8 @@ namespace Initial
 	public:
 		INodeCamera(IDevice *device=NULL);
 
+		virtual Core::IString GetBitmapName() { return "NodeCamera.bmp"; }
+
 		void SetFov(float fov);
 		float GetFov();
 

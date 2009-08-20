@@ -247,11 +247,17 @@ void IRenderDriverOpenGL::BeginRender(IFrameBuffer *dest, bool renderDirectly, b
 	if (renderDirectly)
 	{
 		_UseFrameBuffer(0); //Screen
+		m_vCurrentBufferWidth=m_iWidth;
+		m_vCurrentBufferHeight=m_iWidth;
 	}else if (dest)
 	{
 		_UseFrameBuffer(dest);
+		m_vCurrentBufferWidth=dest->GetTexture(0)->GetWidth();
+		m_vCurrentBufferHeight=dest->GetTexture(0)->GetHeight();
 	}else{
 		_UseFrameBuffer(m_pFrameBuffer); //FrameBuffer
+		m_vCurrentBufferWidth=m_pFrameBuffer->GetTexture(0)->GetWidth();
+		m_vCurrentBufferHeight=m_pFrameBuffer->GetTexture(0)->GetHeight();
 	}
 
 	if (clearbuffer)
@@ -462,7 +468,7 @@ void IRenderDriverOpenGL::_StartTriangleDraw(bool Wireframe)
 	glBegin(Wireframe ? GL_LINE_LOOP : GL_TRIANGLES );
 }
 
-void IRenderDriverOpenGL::_EndPolyDraw()
+void IRenderDriverOpenGL::_EndTriangleDraw()
 {
 	glEnd();
 }

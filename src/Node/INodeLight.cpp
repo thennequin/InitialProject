@@ -9,6 +9,7 @@
 #include "Initial/Node/INodeLight.h"
 #include "Initial/Math/IMath.h"
 #include "Initial/3D/IFrustum.h"
+#include "Initial/IDevice.h"
 
 using namespace Initial::Core;
 using namespace Initial::Math;
@@ -26,6 +27,17 @@ namespace Initial
 
 		m_fFov=90.0;
 		m_fExponent=128;
+
+		AddProperty("Radius",IPT_FLOAT,&m_fRadius);
+		AddProperty("Color",IPT_COLOR,&m_cColor);
+	}
+
+	void INodeLight::_InitNode()
+	{
+		if (m_pDevice && m_pDevice->GetRessourceManager())
+		{
+			m_pEmissiveVertex = m_pDevice->GetRessourceManager()->LoadMaterial("materials/engine/emissive-vertex.ima");
+		}
 	}
 
 	Video::ITexture* INodeLight::GetProjectedTexture()
@@ -91,9 +103,13 @@ namespace Initial
 
 	void INodeLight::Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags)
 	{
+		if (!m_bShow)
+			return;
+
 		float cubeSize=0.1;
-		//cubeSize=m_fRadius;
 		//Draw Cube
+		driver->UseMaterial(m_pEmissiveVertex);
+		driver->_SetColor(IColor(1.0,1.0,1.0,1.0));
 		driver->_DrawLine(GetPosition()+IVector3D(-cubeSize,cubeSize,cubeSize),GetPosition()+IVector3D(cubeSize,cubeSize,cubeSize));
 		driver->_DrawLine(GetPosition()+IVector3D(-cubeSize,-cubeSize,cubeSize),GetPosition()+IVector3D(cubeSize,-cubeSize,cubeSize));
 		driver->_DrawLine(GetPosition()+IVector3D(-cubeSize,cubeSize,-cubeSize),GetPosition()+IVector3D(cubeSize,cubeSize,-cubeSize));
@@ -129,6 +145,7 @@ namespace Initial
 			frustum2.CalcVertice();
 			frustum2.DrawFrustum(driver);
 		}*/
+		BaseClass::Render(driver,frustum,flags);
 	}
 
 	IMatrix INodeLight::GetProjectionMatrix(int i)

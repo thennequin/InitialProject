@@ -10,6 +10,7 @@
 #include <math.h>
 #include "Initial/Core/IVector3D.h"
 #include "Initial/Math/IMatrix.h"
+#include "Initial/Math/IMath.h"
 
 namespace Initial
 {
@@ -17,75 +18,78 @@ namespace Initial
 	{
 		float IVector3D::_temp;
 
-		IVector3D::IVector3D(float x, float y, float z) 
+		IVector3D::IVector3D(float X, float Y, float Z) 
 		{ 
-			val[0]=x;
-			val[1]=y;
-			val[2]=z;
+			x=X;
+			y=Y;
+			z=Z;
 		}
 
 		IVector3D::IVector3D(const IVector3D& src)
 		{
-			val[0]=src.val[0];
-			val[1]=src.val[1];
-			val[2]=src.val[2];
+			x=src.x;
+			y=src.y;
+			z=src.z;
 		}
 
 		float IVector3D::GetX() 
 		{ 
-			return val[0]; 
+			return x; 
 		}
 
 		float IVector3D::GetY() 
 		{ 
-			return val[1]; 
+			return y; 
 		}
 
 		float IVector3D::GetZ() 
 		{ 
-			return val[2]; 
+			return z; 
 		}
 
-		void IVector3D::SetX(float x) 
+		void IVector3D::SetX(float X) 
 		{ 
-			val[0]=x; 
+			x=X; 
 		}
 
-		void IVector3D::SetY(float y) 
+		void IVector3D::SetY(float Y) 
 		{ 
-			val[1]=y; 
+			y=Y;
 		}
 
-		void IVector3D::SetZ(float z) 
+		void IVector3D::SetZ(float Z) 
 		{ 
-			val[2]=z; 
+			z=Z;
 		}
 
-		void IVector3D::Set(float x, float y, float z)
+		void IVector3D::Set(float X, float Y, float Z)
 		{
-			val[0]=x;
-			val[1]=y;
-			val[2]=z;
+			x=X;
+			y=Y;
+			z=Z;
 		}
 
 		void IVector3D::Set(IVector3D& vert)
 		{
-			val[0]=vert[0];
-			val[1]=vert[1];
-			val[2]=vert[2];
+			x=vert.x;
+			y=vert.y;
+			z=vert.z;
 		}
 
 		void IVector3D::Normalize()
 		{
 			float norm = Length();
-			val[0]/=norm;
-			val[1]/=norm;
-			val[2]/=norm;
+			if (norm)
+			{
+				x/=norm;
+				y/=norm;
+				z/=norm;
+			}
 		}
 
 		float IVector3D::Length()
 		{
-			return sqrt( val[0]*val[0] + val[1]*val[1] + val[2]*val[2] );
+			return 1.0/Q_rsqrt( x*x+y*y+z*z );
 		}
 
 		IVector3D IVector3D::Dot(IVector3D a, IVector3D b)
@@ -114,9 +118,9 @@ namespace Initial
 
 		void IVector3D::operator= (const IVector3D &vertex)
 		{
-			val[0]=vertex.val[0];
-			val[1]=vertex.val[1];
-			val[2]=vertex.val[2];
+			x=vertex.x;
+			y=vertex.y;
+			z=vertex.z;
 		}
 
 		//const IVector3D IVector3D::operator+ (IVector3D vertex)
@@ -131,27 +135,27 @@ namespace Initial
 		const IVector3D IVector3D::operator+ (const IVector3D vertex) const
 		{
 			IVector3D res;
-			res.val[0]=val[0]+vertex.val[0];
-			res.val[1]=val[1]+vertex.val[1];
-			res.val[2]=val[2]+vertex.val[2];
+			res.x=x+vertex.x;
+			res.y=y+vertex.y;
+			res.z=z+vertex.z;
 			return res;
 		}
 
 		const IVector3D IVector3D::operator- (const IVector3D vertex) const
 		{
 			IVector3D res;
-			res.val[0]=val[0]-vertex.val[0];
-			res.val[1]=val[1]-vertex.val[1];
-			res.val[2]=val[2]-vertex.val[2];
+			res.x=x-vertex.x;
+			res.y=y-vertex.y;
+			res.z=z-vertex.z;
 			return res;
 		}
 
 		const IVector3D IVector3D::operator* (const IVector3D vertex) const
 		{
 			IVector3D res;
-			res.val[0]=val[0]*vertex.val[0];
-			res.val[1]=val[1]*vertex.val[1];
-			res.val[2]=val[2]*vertex.val[2];
+			res.x=x*vertex.x;
+			res.y=y*vertex.y;
+			res.z=z*vertex.z;
 			return res;
 		}
 
@@ -167,9 +171,9 @@ namespace Initial
 		const IVector3D IVector3D::operator* (const float scale) const
 		{
 			IVector3D res;
-			res.val[0]=val[0]*scale;
-			res.val[1]=val[1]*scale;
-			res.val[2]=val[2]*scale;
+			res.x=x*scale;
+			res.y=y*scale;
+			res.z=z*scale;
 			return res;
 		}
 
@@ -177,18 +181,18 @@ namespace Initial
 		{
 			ASSERT(scale);
 			IVector3D res;
-			res.val[0]=val[0]/scale;
-			res.val[1]=val[1]/scale;
-			res.val[2]=val[2]/scale;
+			res.x=x/scale;
+			res.y=y/scale;
+			res.z=z/scale;
 			return res;
 		}
 
 		const IVector3D IVector3D::operator+ (const float scale) const
 		{
 			IVector3D res;
-			res.val[0]=val[0]+scale;
-			res.val[1]=val[1]+scale;
-			res.val[2]=val[2]+scale;
+			res.x=x+scale;
+			res.y=y+scale;
+			res.z=z+scale;
 			return res;
 		}
 

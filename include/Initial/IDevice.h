@@ -12,6 +12,7 @@
 #include "Initial/IEnum.h"
 #include "Initial/IRessourceManager.h"
 #include "Initial/ISceneManager.h"
+#include "Initial/gui/IFontManager.h"
 #include "Initial/Core/IString.h"
 
 namespace Initial
@@ -69,6 +70,7 @@ namespace Initial
 		Video::IRenderDriver *GetRenderDriver();
 		IRessourceManager *GetRessourceManager();
 		ISceneManager *GetSceneManager();
+		GUI::IFontManager *GetFontManager();
 
 		virtual bool CreateRender(VideoDriverType type)=0;
 	protected:
@@ -78,6 +80,7 @@ namespace Initial
 		Video::IRenderDriver*	m_pRenderDriver;
 		IRessourceManager*		m_pRessourceManager;
 		ISceneManager*			m_pSceneManager;
+		GUI::IFontManager*		m_pFontManager;
 
 		int m_iWidth;
 		int m_iHeight;

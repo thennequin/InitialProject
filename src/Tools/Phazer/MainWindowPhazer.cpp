@@ -20,7 +20,8 @@ BEGIN_EVENT_TABLE(MainWindowPhazer, wxFrame)
 	EVT_BUTTON(MW_START,MainWindowPhazer::OnStart)
 	EVT_BUTTON(MW_REBUILD,MainWindowPhazer::OnStart)*/
 
-	EVT_MENU(wxID_ANY,OnMenu)
+	EVT_MENU(wxID_ANY,MainWindowPhazer::OnMenu)
+	EVT_CLOSE(MainWindowPhazer::OnClose)
 END_EVENT_TABLE()
 
 MainWindowPhazer::MainWindowPhazer(const wxString& title, const wxPoint& pos, const wxSize& size)
@@ -28,13 +29,34 @@ MainWindowPhazer::MainWindowPhazer(const wxString& title, const wxPoint& pos, co
 {
 	m_pMaterial=NULL;
 
+	// Accelerators
+    wxAcceleratorEntry entries[4];
+
+	entries[0].Set(wxACCEL_CTRL,   'N',            MW_MENU_NEW_FILE);
+	entries[1].Set(wxACCEL_CTRL,   'O',            MW_MENU_OPEN_FILE);
+    entries[2].Set(wxACCEL_CTRL,   'S',            MW_MENU_SAVE_FILE);
+    entries[3].Set(wxACCEL_NORMAL,  WXK_F12,       MW_MENU_SAVE_AS_FILE);
+
+	wxAcceleratorTable accel(4, entries);
+    SetAcceleratorTable(accel);
+
 	m_mgr.SetManagedWindow(this);
 	m_mgr.SetEvtHandlerEnabled(true);
 
 	m_pMenuBar = new wxMenuBar;
 	m_pFileMenu = new wxMenu;
-	m_pFileMenu->Append(MW_MENU_OPEN_FILE,"Open IMA");
-	m_pFileMenu->Append(MW_MENU_SAVE_FILE,"Save IMA");
+	wxMenuItem *item;
+	item = m_pFileMenu->Append(MW_MENU_NEW_FILE,"New");
+	item->SetBitmap(wxBitmap("res/new.bmp",wxBITMAP_TYPE_BMP));
+	item->SetAccelString("Ctrl+N");
+	item = m_pFileMenu->Append(MW_MENU_OPEN_FILE,"Open");
+	item->SetBitmap(wxBitmap("res/open.bmp",wxBITMAP_TYPE_BMP));
+	item->SetAccelString("Ctrl+O");
+	item = m_pFileMenu->Append(MW_MENU_SAVE_FILE,"Save");
+	item->SetBitmap(wxBitmap("res/save.bmp",wxBITMAP_TYPE_BMP));	
+	item->SetAccelString("Ctrl+S");
+	item = m_pFileMenu->Append(MW_MENU_SAVE_AS_FILE,"Save as");
+	item->SetAccelString("F12");
 	m_pMenuBar->Append(m_pFileMenu,"File");
 	m_pRenderMenu = new wxMenu;
 	m_pRenderMenu->AppendRadioItem(MW_MENU_RENDER_DEFAULT,"Default");
@@ -114,9 +136,9 @@ MainWindowPhazer::MainWindowPhazer(const wxString& title, const wxPoint& pos, co
 		printf("Light %d\n",light);
 
 		Initial::IMesh *_3ds;
-		_3ds = I3DLoad3DS::Load3DS("marcus.3ds",m_pDevice->GetRenderDriver());
-		//_3ds = I3DLoad3DS::Load3DS("car.3ds",m_pDevice->GetRenderDriver());
-		//_3ds = I3DLoad3DS::Load3DS("teapot.3ds",m_pDevice->GetRenderDriver());
+		_3ds = I3DLoad::Load("marcus.3ds",m_pDevice->GetRenderDriver());
+		//_3ds = I3DLoad::Load("car.3ds",m_pDevice->GetRenderDriver());
+		//_3ds = I3DLoad::Load("teapot.3ds",m_pDevice->GetRenderDriver());
 
 		m_pMaterial = m_pDevice->GetRessourceManager()->CreateNewMaterial("Phazer");
 		//m_pMaterial = m_pDevice->GetRessourceManager()->LoadMaterial("materials/testV2.ima");
@@ -173,29 +195,45 @@ void MainWindowPhazer::OnMenu(wxCommandEvent& event)
 			wxFileDialog dialog(this, wxT("Select material file to open"), wxT(""), wxT(""), "Initial material (*.IMA)|*.ima", wxOPEN);
 			if (dialog.ShowModal() == wxID_OK )	
 			{
-				m_pGraph->LinkMaterial(NULL);
-				if (!m_pMaterial->LoadV2(dialog.GetPath().c_str()))
-				{
-					wxLogError("Error on material loading");					
-				}
-				m_pGraph->LinkMaterial(m_pMaterial);
+				LoadMaterial(dialog.GetPath().c_str());
 			}
 			m_pInitial->Start();
 		}
 	}
 
-	if (event.GetId()==MW_MENU_SAVE_FILE)
+	if (event.GetId()==MW_MENU_SAVE_FILE || event.GetId()==MW_MENU_SAVE_AS_FILE)
 	{
 		if (m_pMaterial)
 		{
 			m_pInitial->Stop();
-			wxFileDialog dialog(this, wxT("Select material file to save"), wxT(""), wxT(""), "Initial material (*.IMA)|*.ima", wxSAVE);
-			if (dialog.ShowModal() == wxID_OK )		
+			if (event.GetId()==MW_MENU_SAVE_AS_FILE || m_sUsedFile=="")
 			{
-				if (!m_pMaterial->SaveV2(dialog.GetPath().c_str()))
+				wxFileDialog dialog(this, wxT("Select material file to save"), wxT(""), wxT(""), "Initial material (*.IMA)|*.ima", wxSAVE);
+				if (dialog.ShowModal() == wxID_OK )		
+				{
+					if (!m_pMaterial->SaveV2(dialog.GetPath().c_str()))
+						wxLogError("Error on material saving");
+					else{
+						m_sUsedFile=dialog.GetPath().c_str();
+						SetStatusText("File saved as "+m_sUsedFile);
+					}
+				}				
+			}else{
+				if (!m_pMaterial->SaveV2(m_sUsedFile.c_str()))
+				{
 					wxLogError("Error on material saving");
+				}else{
+					SetStatusText("File saved");
+				}
 			}
 			m_pInitial->Start();
+
+			if (m_sUsedFile!="")
+			{
+				wxFileName file(m_sUsedFile);
+				SetTitle("Phaser - "+file.GetName());
+			}
+
 		}
 	}
 
@@ -203,4 +241,26 @@ void MainWindowPhazer::OnMenu(wxCommandEvent& event)
 	{
 		m_pInitial->GetDevice()->GetRenderDriver()->SetOutputTexture(event.GetId()-MW_MENU_RENDER_DEFAULT);
 	}
+}
+
+void MainWindowPhazer::OnClose(wxCloseEvent& event)
+{
+	if (m_pInitial)
+		m_pInitial->Stop();
+	exit(0);
+}
+
+bool MainWindowPhazer::LoadMaterial(wxString file)
+{
+	m_pGraph->LinkMaterial(NULL);
+	if (!m_pMaterial->LoadV2(file.c_str()))
+	{
+		wxLogError("Error on material loading");					
+	}else{
+		m_sUsedFile=file;
+		wxFileName file(m_sUsedFile);
+		SetTitle("Phaser - "+file.GetName());
+	}
+	m_pGraph->LinkMaterial(m_pMaterial);
+	return true;
 }

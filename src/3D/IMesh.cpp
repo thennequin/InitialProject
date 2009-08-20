@@ -127,7 +127,7 @@ void IMesh::Render(IRenderDriver *Device, unsigned int Flags)
 						{
 							dev->_StartTriangleDraw(false);
 								dev->_DrawTriangle(&m_aPolygons[i]);
-							dev->_EndPolyDraw();
+							dev->_EndTriangleDraw();
 						}
 					dev->_EndList();
 				}
@@ -158,7 +158,7 @@ void IMesh::Render(IRenderDriver *Device, unsigned int Flags)
 						{							
 							dev->_StartTriangleDraw(true);
 								dev->_DrawTriangle(&m_aPolygons[i]);
-							dev->_EndPolyDraw();
+							dev->_EndTriangleDraw();
 						}
 					dev->_EndList();
 				}

@@ -388,12 +388,19 @@ namespace Initial
 			else if (m_iType==ET_TEXTURESAMPLE)
 			{
 				IString temp;
-				temp.Printf("texture2D(%s,%s)",m_eExpr[0]->GetGLSLString().c_str(),m_eExpr[1]->GetGLSLString().c_str());
+				temp.Printf("texture2D(%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str());
 				return temp;
 			}else if (m_iType==ET_TEXTURECOORD)
 			{
 				IString temp;
 				temp.Printf("gl_TexCoord[%s]",m_eExpr[0]->GetGLSLString().c_str());
+				return temp;
+			}else if (m_iType==ET_SCREENCOORD)
+			{
+				IString temp;
+				temp.Printf("gl_FragCoord");
 				return temp;
 			}
 			//--------------------------------
@@ -402,7 +409,8 @@ namespace Initial
 			else if (m_iType==ET_IF)
 			{
 				IString temp;
-				temp.Printf("(%s%s%s ? %s : %s)",m_eExpr[0]->GetGLSLString().c_str(),
+				temp.Printf("(%s%s%s ? %s : %s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
 					m_sParameter.c_str(),
 					m_eExpr[1]->GetGLSLString().c_str(),
 					m_eExpr[2]->GetGLSLString().c_str(),
@@ -435,32 +443,46 @@ namespace Initial
 			}else if (m_iType==ET_MOD)
 			{
 				IString temp;
-				temp.Printf("mod(%s,%s)",m_eExpr[0]->GetGLSLString().c_str(),m_eExpr[1]->GetGLSLString().c_str());
+				temp.Printf("mod(%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str());
 				return temp;
 			}else if (m_iType==ET_MIN)
 			{
 				IString temp;
-				temp.Printf("min(%s,%s)",m_eExpr[0]->GetGLSLString().c_str(),m_eExpr[1]->GetGLSLString().c_str());
+				temp.Printf("min(%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str());
 				return temp;
 			}else if (m_iType==ET_MAX)
 			{
 				IString temp;
-				temp.Printf("max(%s,%s)",m_eExpr[0]->GetGLSLString().c_str(),m_eExpr[1]->GetGLSLString().c_str());
+				temp.Printf("max(%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str());
 				return temp;
 			}else if (m_iType==ET_CLAMP)
 			{
 				IString temp;
-				temp.Printf("clamp(%s,%s,%s)",m_eExpr[0]->GetGLSLString().c_str(),m_eExpr[1]->GetGLSLString().c_str(),m_eExpr[2]->GetGLSLString().c_str());
+				temp.Printf("clamp(%s,%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str(),
+					m_eExpr[2]->GetGLSLString().c_str());
 				return temp;
 			}else if (m_iType==ET_MIX)
 			{
 				IString temp;
-				temp.Printf("mix(%s,%s,%s)",m_eExpr[0]->GetGLSLString().c_str(),m_eExpr[1]->GetGLSLString().c_str(),m_eExpr[2]->GetGLSLString().c_str());
+				temp.Printf("mix(%s,%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str(),
+					m_eExpr[2]->GetGLSLString().c_str());
 				return temp;
 			}else if (m_iType==ET_POW)
 			{
 				IString temp;
-				temp.Printf("pow(%s,%s)",m_eExpr[0]->GetGLSLString().c_str(),m_eExpr[1]->GetGLSLString().c_str());
+				temp.Printf("pow(%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str());
 				return temp;
 			}else if (m_iType==ET_SQRT)
 			{
@@ -496,6 +518,14 @@ namespace Initial
 			{
 				IString temp;
 				temp.Printf("length(%s)",m_eExpr[0]->GetGLSLString().c_str());
+				return temp;
+			}else if (m_iType==ET_LERP)
+			{
+				IString temp;
+				temp.Printf("mix(%s,%s,%s)",
+					m_eExpr[0]->GetGLSLString().c_str(),
+					m_eExpr[1]->GetGLSLString().c_str(),
+					m_eExpr[2]->GetGLSLString().c_str());
 				return temp;
 			}
 
@@ -573,6 +603,14 @@ namespace Initial
 			{
 				result->m_eExpr.Add(new IShaderExpression(expr));
 				result->m_iType=ET_TEXTURECOORD;
+			}
+		}
+
+		void IShaderExpression::_ScreenCoord(ISEVec4* result)
+		{
+			if (result)
+			{
+				result->m_iType=ET_SCREENCOORD;
 			}
 		}
 
@@ -747,6 +785,17 @@ namespace Initial
 			{
 				result->m_eExpr.Add(new IShaderExpression(*val));
 				result->m_iType=ET_LEN;
+			}
+		}
+
+		void IShaderExpression::_Lerp(IShaderExpression* a, IShaderExpression* b, IShaderExpression* Alpha, IShaderExpression* result)
+		{
+			if (result)
+			{
+				result->m_eExpr.Add(new IShaderExpression(*a));
+				result->m_eExpr.Add(new IShaderExpression(*b));
+				result->m_eExpr.Add(new IShaderExpression(*Alpha));
+				result->m_iType=ET_LERP;
 			}
 		}
 
@@ -1115,6 +1164,13 @@ namespace Initial
 		{
 			ISEVec4 temp;
 			IShaderExpression::_TextureCoord(id,&temp);
+			return temp;
+		}
+
+		ISEVec4 ScreenCoord()
+		{
+			ISEVec4 temp;
+			IShaderExpression::_ScreenCoord(&temp);
 			return temp;
 		}
 

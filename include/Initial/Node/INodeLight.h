@@ -28,6 +28,10 @@ namespace Initial
 		INodeLight(IDevice *Device=NULL);
 	public:
 
+		virtual void _InitNode();
+
+		virtual Core::IString GetBitmapName() { return "NodeLight.bmp"; }
+
 		virtual void Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags);
 
 		Video::ITexture* GetProjectedTexture();
@@ -58,6 +62,7 @@ namespace Initial
 		float m_fFov;
 		float m_fExponent; // For border
 		ISmartPtr<Video::ITexture> m_pProjected;
+		ISmartPtr<Video::IMaterial> m_pEmissiveVertex;
 	};
 }
 

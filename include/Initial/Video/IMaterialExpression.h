@@ -12,7 +12,7 @@
 #include "Initial/IObject.h"
 #include "Initial/Video/IShaderExpression.h"
 #include "FlowLib/GraphShapeSky.h"
-#include "Initial/io/IXMLReader.h"
+#include "Initial/io/IXMLParser.h"
 
 class MaterialGraph;
 
@@ -25,7 +25,7 @@ namespace Initial
 		class IShader;
 		class IMaterial;
 
-		class IMaterialExpression : public IObject, public GraphShapeSky
+		class IMaterialExpression : public IObject, public GraphShape
 		{
 			friend class IMaterial;
 			friend class MaterialGraph;
@@ -107,6 +107,8 @@ namespace Initial
 			IMaterialExpressionBase();
 		};
 
+
+
 		//-------------------------------------------------------------------------
 		// Texture sampler
 		//-------------------------------------------------------------------------
@@ -117,6 +119,17 @@ namespace Initial
 			IMaterialExpressionTextureSampler();
 			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
 			virtual void OnPropertyChange(Core::IString name);
+		};
+
+		//-------------------------------------------------------------------------
+		// Texture sampler
+		//-------------------------------------------------------------------------
+		class IMaterialExpressionScreenBuffer : public IMaterialExpressionBase
+		{
+			DECLARE_OBJECT(IMaterialExpressionScreenBuffer,IMaterialExpression)
+		public:
+			IMaterialExpressionScreenBuffer();
+			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
 		};
 
 		//-------------------------------------------------------------------------
@@ -131,6 +144,29 @@ namespace Initial
 		};
 
 		//-------------------------------------------------------------------------
+		// Screen coord
+		//-------------------------------------------------------------------------
+		class IMaterialExpressionScreenCoord : public IMaterialExpressionBase
+		{
+			DECLARE_OBJECT(IMaterialExpressionScreenCoord,IMaterialExpression)
+		public:
+			IMaterialExpressionScreenCoord();
+			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
+		};
+
+
+		//-------------------------------------------------------------------------
+		// Texture coord
+		//-------------------------------------------------------------------------
+		class IMaterialExpressionVertexColor : public IMaterialExpressionBase
+		{
+			DECLARE_OBJECT(IMaterialExpressionVertexColor,IMaterialExpression)
+		public:
+			IMaterialExpressionVertexColor();
+			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
+		};
+
+		//-------------------------------------------------------------------------
 		// If
 		//-------------------------------------------------------------------------
 		class IMaterialExpressionIf : public IMaterialExpressionBase
@@ -138,6 +174,18 @@ namespace Initial
 			DECLARE_OBJECT(IMaterialExpressionIf,IMaterialExpression)
 		public:
 			IMaterialExpressionIf();
+			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
+		};
+
+		//-------------------------------------------------------------------------
+		// Time
+		//-------------------------------------------------------------------------
+		class IMaterialExpressionTime : public IMaterialExpressionBase
+		{
+			DECLARE_OBJECT(IMaterialExpressionTime,IMaterialExpression)
+		public:
+			IMaterialExpressionTime();
+
 			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
 		};
 
@@ -262,18 +310,6 @@ namespace Initial
 		};
 
 		//-------------------------------------------------------------------------
-		// Time
-		//-------------------------------------------------------------------------
-		class IMaterialExpressionTime : public IMaterialExpressionBase
-		{
-			DECLARE_OBJECT(IMaterialExpressionTime,IMaterialExpression)
-		public:
-			IMaterialExpressionTime();
-
-			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
-		};
-
-		//-------------------------------------------------------------------------
 		// Addition
 		//-------------------------------------------------------------------------
 		class IMaterialExpressionAdd : public IMaterialExpressionBase
@@ -317,6 +353,18 @@ namespace Initial
 			DECLARE_OBJECT(IMaterialExpressionDiv,IMaterialExpression)
 		public:
 			IMaterialExpressionDiv();
+
+			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
+		};
+
+		//-------------------------------------------------------------------------
+		// Lerp
+		//-------------------------------------------------------------------------
+		class IMaterialExpressionLerp : public IMaterialExpressionBase
+		{
+			DECLARE_OBJECT(IMaterialExpressionLerp,IMaterialExpression)
+		public:
+			IMaterialExpressionLerp();
 
 			virtual ShaderExpression::ISEVec4 GetOutput(int OutId);
 		};

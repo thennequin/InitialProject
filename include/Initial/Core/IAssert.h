@@ -12,10 +12,10 @@ namespace Initial
 	namespace Core
 	{
 		void myassert(int line,IString file, IString message, IString message2);
-
-		#define ASSERT_MSG(condition, message) if (!(condition)) myassert(__LINE__,__FILE__,#condition,message);
-		#define ASSERT(condition) if (!(condition)) myassert(__LINE__,__FILE__,#condition,"");
 	}
 }
+
+#define ASSERT_MSG(condition, message) if (!(condition)) Initial::Core::myassert(__LINE__,__FILE__,#condition,message);
+#define ASSERT(condition) if (!(condition)) Initial::Core::myassert(__LINE__,__FILE__,#condition,"");
 
 #endif

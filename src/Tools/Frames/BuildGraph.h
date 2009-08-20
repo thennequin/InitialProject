@@ -1,6 +1,6 @@
 
-#ifndef _GRAPHWIDGET_HEADER_
-#define _GRAPHWIDGET_HEADER_
+#ifndef _BuildGraph_HEADER_
+#define _BuildGraph_HEADER_
 
 #include <wx/wx.h>
 
@@ -25,11 +25,11 @@ struct Agent
 WX_DEFINE_ARRAY(BuildEvent*,wxBuildEventArray);
 WX_DEFINE_ARRAY(Agent*,wxAgentArray);
 
-class GraphWidget : public wxScrolledWindow
+class BuildGraph : public wxScrolledWindow
 {
 	DECLARE_EVENT_TABLE()
 public:
-	GraphWidget(wxWindow *parent,
+	BuildGraph(wxWindow *parent,
                      wxWindowID winid = wxID_ANY,
                      const wxPoint& pos = wxDefaultPosition,
                      const wxSize& size = wxDefaultSize,

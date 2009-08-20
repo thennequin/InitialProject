@@ -6,9 +6,11 @@
 //              December 23th  2008
 //---------------------------------------------
 
+#include "Initial/Core/IAssert.h"
 #include "Initial/ILogger.h"
 #include "Initial/Math/IMath.h"
 #include "Initial/GUI/IFontManager.h"
+#include "Initial/IDevice.h"
 
 const int StartChar=32;
 
@@ -17,19 +19,20 @@ using namespace Initial::Core;
 using namespace Initial::Video;
 using namespace Initial::GUI;
 
-IFontManager::IFontManager()
+IFontManager::IFontManager(IDevice *device)
 {
 	FT_Error error;
 	FT_Init_FreeType( &m_Library );
+	m_pDevice=device;
 }
 
 IFontManager::~IFontManager()
 {
 	ILogger::LogDebug("~IFontManager\n");
+	FT_Done_FreeType( m_Library );
 }
 
-
-void IFontManager::SetRenderDevice(IRenderDriver *device)
+void IFontManager::SetDevice(IDevice *device)
 {
 	m_pDevice=device;
 }
@@ -45,16 +48,15 @@ IFont* IFontManager::LoadFont(IString filename, int quality)
 	{
 		ILogger::LogError("Erreur de chargement de la font\n");
 		return NULL;
-	}/*else
-		printf("Font Ok\n");*/
+	}
 
 	float fontsize=64*50;
 	FT_Outline_Funcs handlers;
 	DecomposeState state;
 
-	FT_Select_Charmap(m_Face, FT_ENCODING_NONE);
+	FT_Select_Charmap(m_Face, FT_ENCODING_UNICODE);
 	FT_Set_Char_Size( m_Face, fontsize, fontsize, 64, 64 ); 
-	//printf("Char map %d\n",m_Face->num_glyphs);
+	printf("Char map %d\n",m_Face->num_glyphs);
 	//FT_Set_Charmap(m_Face, FT_ENCODING_UNICODE);
 
 	IFont *font = new IFont();
@@ -75,29 +77,24 @@ IFont* IFontManager::LoadFont(IString filename, int quality)
 	state.size=fontsize;
 	state.curvequality=quality;
 
+	font->m_aCharMap.resize(255-StartChar);
 	for (int i=StartChar;i<255;i++)
 	{
-		error = FT_Load_Char( m_Face, i, FT_LOAD_NO_BITMAP|FT_LOAD_RENDER );
+		error = FT_Load_Char( m_Face, i, FT_LOAD_NO_BITMAP );
 		if (error)
-		{
-			font->m_aCharMap.Add(IFontChar());
+		{			
 			continue;
 			//printf("%c error\n",i);
 		}
-		//printf("%c ok %d %d\n",i, m_Face->glyph->outline.n_contours,m_Face->glyph->outline.n_points);
 		
-		IFontChar *car = new IFontChar();
-		if (car)
-		{
-			car->m_iChar=i;
-			FT_Outline outline = m_Face->glyph->outline;	
-			//state.Array.Clear();
-			FT_Outline_Decompose(&outline,&handlers,&state);
-			car->SetPolygons(state.Array);
+		IFontChar& car=font->m_aCharMap[i-StartChar];
+		car.m_iChar=i;
+		FT_Outline outline = m_Face->glyph->outline;	
+		state.Array.clear();
+		FT_Outline_Decompose(&outline,&handlers,&state);
+		car.SetPolygons(state.Array);
 
-			car->m_fWidth=m_Face->glyph->advance.x/fontsize;
-		}
-		font->m_aCharMap.Add(*car);
+		car.m_fWidth=m_Face->glyph->advance.x/fontsize;
 	}
 
 	FT_Done_Face(m_Face);
@@ -105,31 +102,35 @@ IFont* IFontManager::LoadFont(IString filename, int quality)
 	return font;
 }
 
-void IFontManager::RenderText(IFont *font, IString text, IFontDrawParam param)
+void IFontManager::RenderText(IFont *font, IString& text, IFontDrawParam param)
 {
+	//printf("Render Text1\n");
 	if (font)
 	{
+		//printf("Render Text2\n");
 		int i, yc=0;
-		if (m_pDevice)
+		if (m_pDevice && m_pDevice->GetRenderDriver())
 		{
-			m_pDevice->UseMaterial(NULL);
-			m_pDevice->_PushMatrix();
-				m_pDevice->_Scale(param.m_fSize,param.m_fSize);
-				//m_pDevice->_DisableExt(IEXT_DEPTH_TEST);
-				m_pDevice->_EnableExt(IEXT_BLEND);			
+			//printf("Render Text3\n");
+			IRenderDriver *driver = m_pDevice->GetRenderDriver();
+			//driver->UseMaterial(NULL);
+			driver->_PushMatrix();
+				driver->_Scale(param.m_fSize,param.m_fSize);
+				//driver->_DisableExt(IEXT_DEPTH_TEST);
+				//driver->_EnableExt(IEXT_BLEND);			
 			
-				for (i=0;i<text.Length()-1;i++)
+				for (i=0;i<text.Length();i++)
 				{
 					if (text[i]=='\n')
 					{
 						yc++;
-						m_pDevice->_PopMatrix();
-						m_pDevice->_PushMatrix();
-						m_pDevice->_Scale(param.m_fSize,param.m_fSize);
-						m_pDevice->_Translate(0,-1*yc,0);
+						driver->_PopMatrix();
+						driver->_PushMatrix();
+						driver->_Scale(param.m_fSize,param.m_fSize);
+						driver->_Translate(0,-1*yc,0);
 					}else if (text[i]=='\t')
 					{
-						m_pDevice->_Translate(1.5,0,0);
+						driver->_Translate(1.5,0,0);
 					}else{
 						unsigned char car = text[i]-StartChar;
 						if (&font->m_aCharMap[car])
@@ -143,31 +144,31 @@ void IFontManager::RenderText(IFont *font, IString text, IFontDrawParam param)
 							//Render Shadow
 							if (param.m_bShadow)
 							{
-								m_pDevice->_PushMatrix();							
-									m_pDevice->_Translate(param.m_fShadowOffsetX,param.m_fShadowOffsetY,-0.001);
-									font->m_aCharMap[car].Render(m_pDevice,param.m_cShadowColor);
-								m_pDevice->_PopMatrix();
+								driver->_PushMatrix();							
+									driver->_Translate(param.m_vShadowOffset.x,param.m_vShadowOffset.y,-0.002);
+									font->m_aCharMap[car].Render(driver,param.m_cShadowColor);
+								driver->_PopMatrix();
 							}
 
 							if (param.m_bSolid)
-								font->m_aCharMap[car].Render(m_pDevice,param.m_cColor);
+								font->m_aCharMap[car].Render(driver,param.m_cColor);
 							if (param.m_bOutline)
 							{
-								m_pDevice->_PushMatrix();							
-									m_pDevice->_Translate(0,0,0.001);
-									font->m_aCharMap[car].Render(m_pDevice,param.m_cOutlineColor,true,param.m_fOutlineSize);
-								m_pDevice->_PopMatrix();
+								driver->_PushMatrix();							
+									driver->_Translate(0,0,-0.001);
+									font->m_aCharMap[car].Render(driver,param.m_cOutlineColor,true,param.m_fOutlineSize/100.0);
+								driver->_PopMatrix();
 							}
 
 							float kerning=0.0;
-							m_pDevice->_Translate(space+kerning,0,0);
+							driver->_Translate(space+kerning,0,0);
 						}
 					}
 				}
 
-				m_pDevice->_DisableExt(IEXT_BLEND);
+				//driver->_DisableExt(IEXT_BLEND);
 				//m_pDevice->_EnableExt(EXT_DEPTH_TEST);
-			m_pDevice->_PopMatrix();
+			driver->_PopMatrix();
 		}
 	}
 }
@@ -175,9 +176,13 @@ void IFontManager::RenderText(IFont *font, IString text, IFontDrawParam param)
 int IFontManager::_MoveTo (FT_Vector *to, void *data)
 {
 	DecomposeState *s = (DecomposeState*) data;
+	ASSERT(s)
 
-	s->Array.Add(new IPolygon());
-	s->Array.Last()->AddPoint(IVector3D(to->x/s->size,to->y/s->size));
+	std::vector<IVector3D> temp;
+	s->Array.push_back(temp);
+	ASSERT(!s->Array.empty())
+	IVector3D val(to->x/s->size,to->y/s->size);
+	s->Array.back().push_back(val);
 
     s->current_x = to->x;
     s->current_y = to->y;
@@ -187,8 +192,11 @@ int IFontManager::_MoveTo (FT_Vector *to, void *data)
 int IFontManager::_LineTo (FT_Vector *to, void *data)
 {
 	DecomposeState *s = (DecomposeState*) data;
+	ASSERT(s)
 
-	s->Array.Last()->AddPoint(IVector3D(to->x/s->size,to->y/s->size));
+	ASSERT(!s->Array.empty())
+	IVector3D val(to->x/s->size,to->y/s->size);
+	s->Array.back().push_back(val);
 
 	s->current_x = to->x;
     s->current_y = to->y;
@@ -198,6 +206,7 @@ int IFontManager::_LineTo (FT_Vector *to, void *data)
 int IFontManager::_ConicTo (FT_Vector *control, FT_Vector *to, void *data)
 {
 	DecomposeState *s = (DecomposeState*) data;
+	ASSERT(s)
 
 	float quality = 0;
 	if (s->curvequality>0)
@@ -205,13 +214,15 @@ int IFontManager::_ConicTo (FT_Vector *control, FT_Vector *to, void *data)
 	else
 		quality=1;
 
-	for (float i=0;i<=1;i+=1/quality)
+	ASSERT(!s->Array.empty())
+	for (float i=1/quality;i<=1;i+=1/quality)
 	{
 		IVector3D pt = Math::RenderConicBezier(IVector3D(s->current_x,s->current_y),
 			IVector3D(to->x,to->y),
 			IVector3D(control->x,control->y),i);
 
-		s->Array.Last()->AddPoint(IVector3D(pt*(1/s->size)));
+		pt = pt*(1.0/s->size);
+		s->Array.back().push_back(pt);
 	}
 
 	s->current_x = to->x;
@@ -222,6 +233,7 @@ int IFontManager::_ConicTo (FT_Vector *control, FT_Vector *to, void *data)
 int IFontManager::_CubicTo (FT_Vector *control1, FT_Vector *control2, FT_Vector *to, void *data)
 {
 	DecomposeState *s = (DecomposeState*) data;
+	ASSERT(s)
 
 	float quality = 0;
 	if (s->curvequality>0)
@@ -229,14 +241,16 @@ int IFontManager::_CubicTo (FT_Vector *control1, FT_Vector *control2, FT_Vector 
 	else
 		quality=1;
 
-	for (float i=0;i<=1;i+=1/quality)
+	ASSERT(!s->Array.empty())
+	for (float i=1/quality;i<=1;i+=1/quality)
 	{
 		IVector3D pt = Math::RenderCubicBezier(IVector3D(s->current_x,s->current_y),
 			IVector3D(to->x,to->y),
 			IVector3D(control1->x,control1->y)*(1/s->size),
 			IVector3D(control2->x,control2->y)*(1/s->size),i);
 
-		s->Array.Last()->AddPoint(IVector3D(pt*(1/s->size)));
+		pt = pt*(1.0/s->size);
+		s->Array.back().push_back(pt);
 	}
 
 	s->current_x = to->x;

@@ -100,7 +100,7 @@ namespace Initial
 					else if (Format==ITF_DEPTH24)
 						CPP=GL_DEPTH_COMPONENT24;
 					else if (Format==ITF_DEPTH32)
-						CPP=GL_DEPTH_COMPONENT24; // temporary
+						CPP=GL_DEPTH_COMPONENT32; // temporary
 					else if (Format==ITF_RGB32F)
 						CPP=GL_RGB32F_ARB; // GL_RGB32F_ARB
 					else if (Format==ITF_RGBA32F)
@@ -144,6 +144,13 @@ namespace Initial
 					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 					//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+					if (CPP2==GL_DEPTH_COMPONENT)
+					{
+						glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_INTENSITY);
+						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+						glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+					}
+
 					//glTexImage2D(GL_TEXTURE_2D, 0, CPP, Width, Height, 0, CPP, GL_FLOAT, 0);
 					glTexImage2D(GL_TEXTURE_2D, 0, CPP, width, height, 0, CPP2, inputtype, data);
 					//gluBuild2DMipmaps(GL_TEXTURE_2D, CPP, Width, Height, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -170,33 +177,33 @@ namespace Initial
 				SetTextureSize(tex,itx->GetWidth(),itx->GetHeight());
 
 				int blockSize=16;
-				if (itx->GetFormat()==IImageITX::DXTF_DXT1 || itx->GetFormat()==IImageITX::DXTF_DXT1a || itx->GetFormat()==IImageITX::DXTF_DXT1nm)
+				if (itx->GetFormat()==IImageITX::ITXF_DXT1 || itx->GetFormat()==IImageITX::ITXF_DXT1a || itx->GetFormat()==IImageITX::ITXF_DXT1nm)
 					blockSize=8;
 
 				int Format;
 				switch (itx->GetFormat())
 				{
-				/*case IImageITX::DXTF_RGBA:
+				/*case IImageITX::ITXF_RGBA:
 					Format=GL_COMPRESSED_RGBA_ARB;
 					break;*/
-				case IImageITX::DXTF_DXT1:
+				case IImageITX::ITXF_DXT1:
 					Format=GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
 					break;
-				case IImageITX::DXTF_DXT1a:
+				case IImageITX::ITXF_DXT1a:
 					Format=GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
 					break;
-				case IImageITX::DXTF_DXT1nm:
+				case IImageITX::ITXF_DXT1nm:
 					Format=GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
 					break;
-				case IImageITX::DXTF_DXT3:
+				case IImageITX::ITXF_DXT3:
 					Format=GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
 					break;
-				case IImageITX::DXTF_DXT5:
-				case IImageITX::DXTF_DXT5nm:
+				case IImageITX::ITXF_DXT5:
+				case IImageITX::ITXF_DXT5nm:
 					Format=GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
 					break;
-				case IImageITX::DXTF_ATI1:
-				case IImageITX::DXTF_ATI2_3Dc:
+				case IImageITX::ITXF_ATI1:
+				case IImageITX::ITXF_ATI2_3Dc:
 					Format=GL_ATI_texture_compression_3dc;
 					break;
 				}
@@ -214,18 +221,26 @@ namespace Initial
 
 					nSize = ((Width+3)/4) * ((Height+3)/4) * blockSize;
 
-					if (itx->GetFormat()==IImageITX::DXTF_RGBA)
+					if (itx->GetFormat()==IImageITX::ITXF_RGBA)
 					{
-						glTexImage2D(GL_TEXTURE_2D, i, GL_RGBA, Width, Height, 0, GL_BGRA_EXT, GL_UNSIGNED_BYTE, (unsigned char*)itx->GetData() + nOffset);
+						glTexImage2D(GL_TEXTURE_2D, 
+							i, 
+							GL_RGBA, 
+							Width, 
+							Height, 
+							0, 
+							GL_BGRA_EXT, 
+							GL_UNSIGNED_BYTE, 
+							(unsigned char*)itx->GetData() + nOffset);
 					}else{
 						glCompressedTexImage2DARB( GL_TEXTURE_2D,
-											   i,
-											   Format,
-											   Width,
-											   Height,
-											   0,
-											   nSize,
-											   (unsigned char*)itx->GetData() + nOffset );
+							i,
+							Format,
+							Width,
+							Height,
+							0,
+							nSize,
+							(unsigned char*)itx->GetData() + nOffset );
 					}
 
 					nOffset += nSize;

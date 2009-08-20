@@ -8,51 +8,10 @@
 #ifndef _INITIAL_HEADER_
 #define _INITIAL_HEADER_
 
-/*namespace Initial
-{
-	class IDevice;
-	//class IdeviceWin32;
-	class ILogger;
-	class IObject;
-	class IProperty;
-	class IRessource;
-	class IRessourceManager;
-	class ISmartPtr;
-	
-	namespace Core
-	{
-		class IString;
-		class IArray;
-		class IColor;
-		class IList;
-		class IVector2D;
-		class IVector3D;
-	}
-
-	namespace Format
-	{
-		class IImageITX;
-		class IMeshIEM;
-	}
-
-	namespace IO
-	{
-		class IConfigINI;
-		namespace XML
-		{
-			class IXMLReader;
-		}
-	}
-
-	namespace Video
-	{
-		class IRenderDriver;
-	}
-}*/
-
 #include		"Config.h"
 #include		"IEnum.h"
 
+//#include		"IMemoryManager.h"
 #include		"ILogger.h"
 #include		"IObject.h"
 #include		"IProperty.h"
@@ -73,7 +32,7 @@
 
 #include		"IO/IFileStream.h"
 #include		"IO/IConfigINI.h"
-#include		"IO/IXMLReader.h"
+#include		"IO/IXMLParser.h"
 
 #include		"Math/IMath.h"
 #include		"Math/IMatrix.h"

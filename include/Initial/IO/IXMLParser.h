@@ -1,9 +1,10 @@
 
-#ifndef _IXMLREADER_HEADER_
-#define _IXMLREADER_HEADER_
+#ifndef _IXMLPARSER_HEADER_
+#define _IXMLPARSER_HEADER_
 
 #include "Initial/Core/IString.h"
 #include "Initial/Core/IArray.h"
+#include "Initial/IO/IFileStream.h"
 
 namespace Initial
 {
@@ -14,7 +15,7 @@ namespace Initial
 			class IXMLValue
 			{
 				friend class IXMLNode;
-				friend class IXMLReader;
+				friend class IXMLParser;
 			public:
 				Core::IString GetName();
 				Core::IString GetValue();
@@ -28,7 +29,7 @@ namespace Initial
 
 			class IXMLNode
 			{
-				friend class IXMLReader;
+				friend class IXMLParser;
 			public:
 				~IXMLNode();
 
@@ -56,19 +57,23 @@ namespace Initial
 				Core::IString m_sBody;
 			};
 
-			class IXMLReader
+			class IXMLParser
 			{
 			public:
-				IXMLReader(Core::IString filename="");
-				~IXMLReader();
+				IXMLParser(Core::IString filename="");
+				~IXMLParser();
 
 				bool Parse();
 				bool Parse(Core::IString filename);
+
+				bool Save(Core::IString filename);
 
 				IXMLNode* GetFirstNode();
 
 				unsigned int GetChildCount();
 				IXMLNode* GetChild(unsigned int pos);
+			protected:
+				void WriteNode(IFileStream& file, IXMLNode *node, int level);
 			protected:
 				Core::IString m_sFilename;
 				Core::IArray<IXMLNode*> m_aNodes;

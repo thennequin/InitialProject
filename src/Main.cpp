@@ -269,7 +269,7 @@ int main(int argn, char *argv[])
 {
 	long time = GetTickCount();
 
-	XML::IXMLReader xmlreader2("config.xml");
+	XML::IXMLParser xmlreader2("config.xml");
 	xmlreader2.Parse();
 
 	printf("%f\n",(GetTickCount()-time)/1000.0);
@@ -430,7 +430,7 @@ int main(int argn, char *argv[])
 	//system("PAUSE");
 	//exit(0);
 
-	XML::IXMLReader xmlreader("test.xml");
+	XML::IXMLParser xmlreader("test.xml");
 	xmlreader.Parse();
 	
 	XML::IXMLNode* node = xmlreader.GetFirstNode();
@@ -515,20 +515,20 @@ int main(int argn, char *argv[])
 
 	//IMesh *_3ds=NULL;
 	//IMesh *_3ds2=NULL;
-	////_3ds = I3DLoad3DS::Load3DS("chair_01.3DS",device);
-	////_3ds = I3DLoad3DS::Load3DS("teapot.3ds",device);
-	////_3ds = I3DLoad3DS::Load3DS("car.3ds",device);
-	////_3ds = I3DLoad3DS::Load3DS("hebe.3ds",device);
-	////_3ds = I3DLoad3DS::Load3DS("lara01.3DS",device);
-	////_3ds = I3DLoad3DS::Load3DS("M1_Abrams.3DS",device);
-	////_3ds = I3DLoad3DS::Load3DS("TIEf3DS8.3ds",device);
-	////_3ds = I3DLoad3DS::Load3DS("dreezle.3ds",device);
-	////_3ds = I3DLoad3DS::Load3DS("ElephantBody.3ds",device);
-	////_3ds = I3DLoad3DS::Load3DS("Projet_tut_IUT.3ds",device);
-	////_3ds = I3DLoad3DS::Load3DS("COCACOLA.3DS",device);
-	////_3ds = I3DLoad3DS::Load3DS("Untitled.3ds",device);	
-	//_3ds = I3DLoad3DS::Load3DS("marcus.3ds",device);
-	//_3ds2 = I3DLoad3DS::Load3DS("car.3ds",device);
+	////_3ds = I3DLoad::Load("chair_01.3DS",device);
+	////_3ds = I3DLoad::Load("teapot.3ds",device);
+	////_3ds = I3DLoad::Load("car.3ds",device);
+	////_3ds = I3DLoad::Load("hebe.3ds",device);
+	////_3ds = I3DLoad::Load("lara01.3DS",device);
+	////_3ds = I3DLoad::Load("M1_Abrams.3DS",device);
+	////_3ds = I3DLoad::Load("TIEf3DS8.3ds",device);
+	////_3ds = I3DLoad::Load("dreezle.3ds",device);
+	////_3ds = I3DLoad::Load("ElephantBody.3ds",device);
+	////_3ds = I3DLoad::Load("Projet_tut_IUT.3ds",device);
+	////_3ds = I3DLoad::Load("COCACOLA.3DS",device);
+	////_3ds = I3DLoad::Load("Untitled.3ds",device);	
+	//_3ds = I3DLoad::Load("marcus.3ds",device);
+	//_3ds2 = I3DLoad::Load("car.3ds",device);
 	//
 	//if (_3ds)
 	//{
@@ -793,7 +793,7 @@ int main(int argn, char *argv[])
 	//		{
 	//			device->_StartTriangleDraw(false);
 	//				device->_DrawTriangle(&result[i]);
-	//			device->_EndPolyDraw();
+	//			device->_EndTriangleDraw();
 	//		}
 	//		for (int i=0;i<result.Count();i++)
 	//		{
@@ -923,8 +923,8 @@ int main2()
 	GUI::IFontManager fontManager;
 	IFont* font=NULL;
 	IFont* font2=NULL;
-	fontManager.SetRenderDevice(device->GetRenderDriver());
-	//font2=fontManager.LoadFont("DS-DIGI.TTF",1);
+	fontManager.SetDevice(device);
+	font2=fontManager.LoadFont("DS-DIGI.TTF",1);
 	//font2=fontManager.LoadFont("african.ttf",2);
 	//font2=fontManager.LoadFont("ALGER.TTF");
 	//font2=fontManager.LoadFont("SLNTHLN.TTF");
@@ -970,8 +970,8 @@ int main2()
 
 	IMesh *_3ds=NULL;
 	IMesh *_3ds2=NULL;
-	_3ds = I3DLoad3DS::Load3DS("marcus.3ds",render);
-	_3ds2 = I3DLoad3DS::Load3DS("car.3ds",render);
+	_3ds = I3DLoad::Load("marcus.3ds",render);
+	_3ds2 = I3DLoad::Load("car.3ds",render);
 	
 	if (_3ds)
 	{

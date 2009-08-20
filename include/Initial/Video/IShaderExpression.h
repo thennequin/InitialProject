@@ -13,6 +13,7 @@
 #include "Initial/Math/IMatrix.h"
 #include "Initial/Core/IArray.h"
 #include "Initial/Core/IString.h"
+#include "Initial/IDebugMemoryOn.h"
 
 //Déclaration
 
@@ -62,7 +63,8 @@
 	Base Log(const Base& val); \
 	Base Exp2(const Base& val); \
 	Base Log2(const Base& val); \
-	ISEFloat Len(const Base& val);
+	ISEFloat Len(const Base& val); \
+	Base Lerp(const Base& a, const Base& b, const ISEFloat& alpha);
 
 #define DECLARE_IF(Base) \
 	Base If(const ISEFloat& A, const ISEFloat& B, Core::IString op, const Base& Ok, const Base& Else); \
@@ -199,6 +201,14 @@ Base Name(const Base& A, const Base& B, const Base& C) \
 	return temp; \
 }
 
+#define DEFINE_COMMON_FUNC_BASE_THREE_DIFF(Base,Base2,Base3,Name) \
+Base Name(const Base& A, const Base2& B, const Base3& C) \
+{ \
+	Base temp; \
+	IShaderExpression::_##Name((IShaderExpression*)&A,(IShaderExpression*)&B,(IShaderExpression*)&C,&temp); \
+	return temp; \
+}
+
 #define DEFINE_COMMON_FUNC(Base) \
 	DEFINE_COMMON_FUNC_BASE_ONE(Base,Base,Abs) \
 	DEFINE_COMMON_FUNC_BASE_ONE(Base,Base,Floor) \
@@ -216,7 +226,8 @@ Base Name(const Base& A, const Base& B, const Base& C) \
 	DEFINE_COMMON_FUNC_BASE_ONE(Base,Base,Log) \
 	DEFINE_COMMON_FUNC_BASE_ONE(Base,Base,Exp2) \
 	DEFINE_COMMON_FUNC_BASE_ONE(Base,Base,Log2) \
-	DEFINE_COMMON_FUNC_BASE_ONE(ISEFloat,Base,Len)
+	DEFINE_COMMON_FUNC_BASE_ONE(ISEFloat,Base,Len) \
+	DEFINE_COMMON_FUNC_BASE_THREE_DIFF(Base,Base,ISEFloat,Lerp)
 
 namespace Initial
 {
@@ -279,6 +290,7 @@ namespace Initial
 
 				ET_TEXTURESAMPLE,
 				ET_TEXTURECOORD,
+				ET_SCREENCOORD,
 
 				ET_IF,
 
@@ -299,6 +311,7 @@ namespace Initial
 				ET_EXP2,
 				ET_LOG2,
 				ET_LEN,
+				ET_LERP,
 				
 				//ET_LINK,
 			};
@@ -328,6 +341,7 @@ namespace Initial
 
 			static void _TextureSample(Core::IString texturename, const ISEVec2& expr, ISEVec4* result);
 			static void _TextureCoord(const ISEInt& expr, ISEVec4* result);
+			static void _ScreenCoord(ISEVec4* result);
 
 			static void _If(IShaderExpression* A, IShaderExpression* B, Core::IString op, IShaderExpression* Ok, IShaderExpression* Else, IShaderExpression* result);
 
@@ -350,6 +364,7 @@ namespace Initial
 			static void _Exp2(IShaderExpression* val, IShaderExpression* result);
 			static void _Log2(IShaderExpression* val, IShaderExpression* result);
 			static void _Len(IShaderExpression* val, IShaderExpression* result);
+			static void _Lerp(IShaderExpression* a, IShaderExpression* b, IShaderExpression* Alpha, IShaderExpression* result);
 
 		protected:
 			void _Copy(const IShaderExpression& expr);
@@ -540,6 +555,7 @@ namespace Initial
 
 		ISEVec4 TextureCoord(ISEInt id=ISEInt(0));
 		ISEVec4 TextureSample(Core::IString texturename,ISEVec2 coord=TextureCoord().xy());
+		ISEVec4 ScreenCoord();
 
 		DECLARE_IF(ISEFloat)
 		DECLARE_IF(ISEVec2)

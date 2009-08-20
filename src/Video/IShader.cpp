@@ -78,7 +78,10 @@ namespace Initial
 			if (m_pShaderManager)
 			{
 				m_bNeedCompile=false;
-				return m_pShaderManager->Compile(this);
+				bool OK = m_pShaderManager->Compile(this);
+				if (!OK)
+					ILogger::LogError("%s\n",ReturnError().c_str());
+				return OK;
 			}
 			else return false;
 		}

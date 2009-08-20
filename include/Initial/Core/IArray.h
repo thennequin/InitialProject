@@ -10,6 +10,7 @@
 #define _IARRAY_HEADER_
 
 #include "Initial/Config.h"
+#include "Initial/IDebugMemoryOn.h"
 
 #include <stdlib.h>
 #include <memory.h>
@@ -183,5 +184,7 @@ namespace Initial
 		};
 	}
 }
+
+//#include "Initial/IDebugMemoryOff.h"
 
 #endif

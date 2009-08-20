@@ -1,7 +1,6 @@
 
-#include "Initial/IO/IXMLReader.h"
+#include "Initial/IO/IXMLParser.h"
 
-#include "Initial/IO/IFileStream.h"
 //#include "wx/filename.h"
 //#include "Util.h"
 
@@ -13,7 +12,6 @@ namespace Initial
 	{
 		namespace XML
 		{
-
 			//-----------------------------------------------
 			// IXMLValue
 			//-----------------------------------------------
@@ -150,12 +148,12 @@ namespace Initial
 			// IXMLNode
 			//-----------------------------------------------
 
-			IXMLReader::IXMLReader(IString filename)
+			IXMLParser::IXMLParser(IString filename)
 			{
 				m_sFilename=filename;
 			}
 
-			IXMLReader::~IXMLReader()
+			IXMLParser::~IXMLParser()
 			{
 				for (UINT i=0;i<m_aNodes.Count();i++)
 				{
@@ -164,13 +162,13 @@ namespace Initial
 				}
 			}
 
-			bool IXMLReader::Parse(IString filename)
+			bool IXMLParser::Parse(IString filename)
 			{
 				m_sFilename=filename;
 				return Parse();
 			}
 
-			bool IXMLReader::Parse()
+			bool IXMLParser::Parse()
 			{
 				IFileStream file(m_sFilename,IFileStream::IOM_READ);
 
@@ -350,19 +348,61 @@ namespace Initial
 				return false;
 			}
 
-			IXMLNode* IXMLReader::GetFirstNode()
+			bool IXMLParser::Save(Core::IString filename)
+			{
+				IFileStream file(m_sFilename,IFileStream::IOM_READ);
+
+				if (file.IsOk())
+				{
+					file.Printf("<?xml ?>\n");
+					for (int i=0;i<m_aNodes.Count();i++)
+					{
+						WriteNode(file,m_aNodes[i],0);
+					}
+					return true;
+				}
+				return false;
+			}
+
+			void IXMLParser::WriteNode(IFileStream& file, IXMLNode *node, int level)
+			{
+				if (node)
+				{
+					for (int i=0;i<level;i++)
+					{
+						file.Printf("\t");
+					}
+					file.Printf("<%s ",node->GetName().c_str());
+					IXMLValue *value;
+					for (int i=0;i<node->GetValueCount();i++)
+					{
+						value = node->GetValue(i);
+						file.Printf("%s=\"%s\" ",value->GetName().c_str(),value->GetValue().c_str());
+					}
+					file.Printf(">\n");
+					IXMLNode *child;
+					for (int i=0;i<node->GetChildCount();i++)
+					{
+						child = node->GetChild(i);
+						WriteNode(file,child,level++);
+					}
+
+				}
+			}
+
+			IXMLNode* IXMLParser::GetFirstNode()
 			{
 				if (m_aNodes.Count())
 					return m_aNodes[0];
 				return NULL;
 			}
 
-			unsigned int IXMLReader::GetChildCount()
+			unsigned int IXMLParser::GetChildCount()
 			{
 				return m_aNodes.Count();
 			}
 
-			IXMLNode* IXMLReader::GetChild(unsigned int i)
+			IXMLNode* IXMLParser::GetChild(unsigned int i)
 			{
 				return m_aNodes[i];
 			}

@@ -15,7 +15,7 @@
 #include "Initial/Video/IShader.h"
 #include "Initial/Video/ITexture.h"
 #include "Initial/IO/IFileStream.h"
-#include "Initial/IO/IXMLReader.h"
+#include "Initial/IO/IXMLParser.h"
 
 using namespace Initial::Core;
 using namespace Initial::IO;
@@ -72,8 +72,16 @@ namespace Initial
 			strs.PushBack(IString("Masked"));
 			strs.PushBack(IString("Translucent"));
 			AddProperty("Blend mode",IPT_CHOICE,NULL,strs);
+
+			strs.Clear();
+			strs.PushBack(IString("Lit"));
+			strs.PushBack(IString("Unlit"));
+			strs.PushBack(IString("Omnidirectional"));
+			AddProperty("Light mode",IPT_CHOICE,NULL,strs);
+
 			AddProperty("Mask clip",IPT_FLOAT);
 			SetPropertyValue("Mask clip","0.5");
+			AddProperty("Two side",IPT_BOOL);
 		}
 
 		IMaterial::~IMaterial()
@@ -124,6 +132,7 @@ namespace Initial
 					}
 				}
 
+				CompileV2();
 				m_bOnPropChange=false;
 			}
 			
@@ -397,7 +406,7 @@ namespace Initial
 
 		bool IMaterial::LoadV2(IString file)
 		{
-			IXMLReader xmlreader(file);
+			IXMLParser xmlreader(file);
 			if (xmlreader.Parse())
 			{
 				Lock();
@@ -417,6 +426,8 @@ namespace Initial
 				XML::IXMLNode* nodeIMA = xmlreader.GetFirstNode();
 					XML::IXMLNode* nodeTex = NULL;
 						XML::IXMLNode* nodeTexFile = NULL;
+					XML::IXMLNode* nodeParams = NULL;
+						XML::IXMLNode* nodeParamVal = NULL;
 					XML::IXMLNode* nodeExprs = NULL;
 						XML::IXMLNode* nodeExpr = NULL;
 						XML::IXMLNode* nodeConnect = NULL;
@@ -444,6 +455,25 @@ namespace Initial
 											SetTexture(m_pDevice->GetRessourceManager()->LoadTexture(nodeTexFile->GetValue("File")),TexId);
 											//ILogger::LogDebug("Tex %d %s %s\n", TexId, nodeTexFile->GetValue("File").c_str(),m_pTextures[TexId]->GetFilename().c_str());
 										}
+									}
+									nodeTexFile = nodeTexFile->GetNext();
+								}
+								break;
+							}
+							nodeTex = nodeTex->GetNext();
+						}
+
+						nodeParams = nodeIMA->GetChild();
+						while (nodeTex)
+						{
+							if (nodeTex->GetName().ToLower()=="parameters")
+							{
+								nodeTexFile = nodeTex->GetChild();
+								while (nodeTexFile)
+								{
+									if (nodeTexFile->GetName().ToLower()=="parameter")
+									{
+										SetPropertyValue(nodeTexFile->GetValue("Name",""),nodeTexFile->GetValue("Value",""));
 									}
 									nodeTexFile = nodeTexFile->GetNext();
 								}
@@ -561,6 +591,7 @@ namespace Initial
 				hFile.Printf("<?xml version=\"1.0\"?>\n");
 				hFile.Printf("<IMA version=\"1.0\">\n");
 				hFile.Printf("\t<Textures>\n");
+				
 				for (int i=0;i<8;i++)
 				{
 					if (m_pTextures[i])
@@ -569,6 +600,18 @@ namespace Initial
 					}
 				}
 				hFile.Printf("\t</Textures>\n");
+
+				hFile.Printf("\t<Parameters>\n");
+				IPropertyList& list = GetPropertyList();
+				for (UINT i=0;i<list.Count();i++)
+				{
+					IProperty *prop = list.GetProperty(i);
+					if (prop)
+					{
+						hFile.Printf("\t\t<Parameter Name=\"%s\" Value=\"%s\"/>\n",prop->GetName().c_str(),prop->GetString().c_str());
+					}
+				}
+				hFile.Printf("\t</Parameters>\n");
 
 				hFile.Printf("\t<Expressions>\n");
 					//Write Final expression

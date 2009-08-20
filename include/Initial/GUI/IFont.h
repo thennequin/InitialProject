@@ -15,6 +15,8 @@
 #include "Initial/3D/IPolygon.h"
 #include "Initial/Video/IRenderDriver.h"
 
+#include <vector>
+
 namespace Initial
 {
 	namespace GUI
@@ -23,9 +25,9 @@ namespace Initial
 		{
 		public:
 			IFontDrawParam()
-				: m_bSolid(true), m_bOutline(false), m_bShadow(true), m_bFixedSpace(false),
+				: m_bSolid(true), m_bOutline(true), m_bShadow(true), m_bFixedSpace(false),
 				m_cShadowColor(0.25,0.25,0.25,0.25), m_cOutlineColor(0,0,0), m_cColor(1,1,1), 
-				m_fOutlineSize(1.0f), m_fShadowOffsetX(0.05f), m_fShadowOffsetY(-0.05f), m_fSize(1.0f), m_fFixedSpaceWidth(1.0f)
+				m_fOutlineSize(1.0f), m_vShadowOffset(0.05f,-0.05f), m_fSize(1.0f), m_fFixedSpaceWidth(1.0f)
 			{
 			}
 
@@ -38,8 +40,7 @@ namespace Initial
 			Core::IColor m_cColor;
 			float m_fOutlineSize;
 
-			float m_fShadowOffsetX;
-			float m_fShadowOffsetY;
+			Core::IVector2D m_vShadowOffset;
 			float m_fSize;
 			float m_fFixedSpaceWidth;
 		};
@@ -51,27 +52,33 @@ namespace Initial
 		public:
 			IFontChar();
 			~IFontChar();
-			void SetPolygons(Core::IArray<IPolygon*>& pols);
+			void SetPolygons(std::vector<std::vector<Core::IVector3D>>& pols);
 			void Render(Video::IRenderDriver *device, Core::IColor color, bool outline=false, float outlinesize=1.0);
 		protected:
 			char						m_iChar;
-			Core::IArray<ITriangle*>	m_aFilled;
-			Core::IArray<IPolygon*>		m_aOutline;
+			std::vector<ITriangle>						m_aFilled;
+			std::vector<std::vector<Core::IVector3D>>	m_aOutline;
 			float						m_fWidth;
 			unsigned int				m_iDisplayListFilled;
 			unsigned int				m_iDisplayListOutline;
 		};
 
-		class IFont
+		class IFont //: public IRessource
 		{
 			friend class IFontManager;
 		public:
 			~IFont() {};
 		protected:		
 			IFont() {};
+			IFont(const IFont& font)
+			{
+				m_sFontName=font.m_sFontName;
+				m_aCharMap=font.m_aCharMap;
+				m_pDevice=font.m_pDevice;
+			};
 		protected:
-			Core::IString				m_sFontName;
-			Core::IArray<IFontChar>	m_aCharMap;
+			Core::IString			m_sFontName;
+			std::vector<IFontChar>	m_aCharMap;
 			Video::IRenderDriver*	m_pDevice;
 		};
 	}
