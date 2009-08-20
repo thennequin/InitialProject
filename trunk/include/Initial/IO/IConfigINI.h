@@ -41,6 +41,7 @@ namespace Initial
 
 		public:
 			IConfigINI(Core::IString Filename);
+			~IConfigINI();
 
 			void		Load();
 			void		Save();

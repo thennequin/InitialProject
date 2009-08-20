@@ -13,6 +13,8 @@
 
 #include "Initial/Core/IString.h"
 
+#include "Initial/IDebugMemoryOn.h"
+
 //#pragma warning( disable : 4311)
 
 namespace Initial

@@ -10,6 +10,15 @@ class InitialPanel : public wxWindow
 {
 	DECLARE_EVENT_TABLE()
 public:
+	enum ToolType
+	{
+		TT_NONE,
+		TT_SELECT,
+		TT_MOVE,
+		TT_ROTATE,
+		TT_SCALE,
+	};
+public:
 	InitialPanel(wxWindow *parent,
                      wxWindowID winid = wxID_ANY,
                      const wxPoint& pos = wxDefaultPosition,
@@ -28,12 +37,18 @@ public:
 
 	Initial::IDevice *GetDevice();
 
+	void SetTool(ToolType tool);
+	ToolType GetTool();
+
 	void Start();
 	void Stop();
-
+protected:
+	void DrawAxis();
+	void DrawArrow(float arrowheight, float width);
 protected:
 	wxTimer Timer;
 
+	bool m_bRender;
 	Initial::IDevice *m_pDevice;
 	Initial::ICameraFPS *m_pCamera;
 	/*Initial::IAnimatedMesh *animObject;
@@ -43,9 +58,14 @@ protected:
 	Initial::IMesh *_3ds3;
 
 	Initial::INodeLight *m_pLight;*/
+
 	long m_lTime;
 	float m_fTime;
 	bool m_bPlay;
+
+	ToolType m_iTool;
+
+	Initial::ISmartPtr<Initial::Video::IMaterial> m_EmissiveVertexAlpha;
 };
 
 #endif

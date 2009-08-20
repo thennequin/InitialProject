@@ -16,8 +16,10 @@ class MainWindowPhazer : public wxFrame
 	enum
 	{
 		//File menu
-		MW_MENU_OPEN_FILE = wxID_HIGHEST+1,
+		MW_MENU_NEW_FILE = wxID_HIGHEST+1,
+		MW_MENU_OPEN_FILE,
 		MW_MENU_SAVE_FILE,
+		MW_MENU_SAVE_AS_FILE,
 
 		//Render menu
 		MW_MENU_RENDER_DEFAULT,
@@ -39,6 +41,9 @@ public:
 	void OnOpenFile(wxCommandEvent& event);
 
 	void OnMenu(wxCommandEvent& event);
+	void OnClose(wxCloseEvent& event);
+
+	bool LoadMaterial(wxString file);
 protected:
 	wxAuiManager m_mgr;
 
@@ -52,6 +57,8 @@ protected:
 	ObjectProperty *m_pProp;
 
 	wxStatusBar *m_pStatusBar;
+
+	wxString m_sUsedFile;
 };
 
 #endif

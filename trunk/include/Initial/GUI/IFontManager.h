@@ -16,12 +16,13 @@
 #include FT_BBOX_H
 
 #include "Initial/Video/IRenderDriver.h"
-#include "Initial/Core/IArray.h"
+#include "Initial/Core/IList.h"
 #include "Initial/Core/IString.h"
 #include "Initial/3D/ILine.h"
 #include "Initial/3D/IPolygon.h"
 #include "Initial/GUI/IFont.h"
 
+#include <vector>
 //class FT_Vector;
 
 namespace Initial
@@ -43,23 +44,23 @@ namespace Initial
 				//IRenderDriver *device;
 				float size;
 				int curvequality;
-				Core::IArray<IPolygon*> Array;
+				//Core::IList<IPolygon> Array;
+				std::vector<std::vector<Core::IVector3D>> Array;
 			};
 		public:
-			IFontManager();
+			IFontManager(IDevice *device=NULL);
 			~IFontManager();
 
-			void SetRenderDevice(Video::IRenderDriver *device);
+			void SetDevice(IDevice *device);
 			IFont* LoadFont(Core::IString filename, int quality=1);
 
-			void RenderText(IFont *font, Core::IString text, IFontDrawParam param=IFontDrawParam());
+			void RenderText(IFont *font, Core::IString& text, IFontDrawParam param=IFontDrawParam());
 
 		protected:
-			Video::IRenderDriver*	m_pDevice;
+			IDevice*	m_pDevice;
 
 			FT_Library		m_Library;
 			FT_Face			m_Face;
-			//static IFontManager
 		};
 	}
 

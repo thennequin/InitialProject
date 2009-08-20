@@ -47,7 +47,7 @@ void MaterialGraph::LinkMaterial(Initial::Video::IMaterial *material)
 		FOREACH(Initial::Video::IMaterialExpression*,ite,m_pMaterial->GetExpressions())
 		{
 			AddShape(ite.GetData());
-			printf("%s\n",ite.GetData()->GetClass()->GetName().c_str());
+			//printf("%s\n",ite.GetData()->GetClass()->GetName().c_str());
 		}
 
 		//m_pMaterial->GetExpressions().First()->GetData();

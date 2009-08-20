@@ -25,6 +25,10 @@ typedef unsigned int size_t;
 #define INITIAL_EXPORT __declspec(dllexport)
 #define INITIAL_IMPORT __declspec(dllimport)
 
+#ifndef USE_MEMORYDEBUG
+#define USE_MEMORYDEBUG 0
+#endif
+
 #ifndef USE_UNICODE
 #define USE_UNICODE 0
 #endif

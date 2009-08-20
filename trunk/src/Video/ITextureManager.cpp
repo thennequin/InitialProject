@@ -55,7 +55,7 @@ namespace Initial
 			tex->m_pTexture = GenTexture();
 			IImageITX *itx = IImageITX::LoadITX(filename);
 			if (itx)
-			{		
+			{
 				//SetCompressedTextureData(tex,itx);
 				tex->m_bCompressed=true;
 				tex->m_pTempData=itx;

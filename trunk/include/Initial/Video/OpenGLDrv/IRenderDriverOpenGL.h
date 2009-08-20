@@ -60,7 +60,7 @@ namespace Initial
 			virtual void _Scale(float x=1.0, float y=1.0, float z=1.0);
 
 			virtual void _StartTriangleDraw(bool Wireframe);
-			virtual void _EndPolyDraw();
+			virtual void _EndTriangleDraw();
 			virtual void _DrawTriangle(ITriangle* polygon);
 			virtual void _DrawLine(const Core::IVector3D& pt1,const Core::IVector3D& pt2);
 			virtual void _SetColor(Core::IColor color);

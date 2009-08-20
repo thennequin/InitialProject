@@ -116,7 +116,7 @@ namespace Initial
 			virtual void _Scale(float x=1.0, float y=1.0, float z=1.0)=0;
 
 			virtual void _StartTriangleDraw(bool Wireframe)=0;
-			virtual void _EndPolyDraw()=0;
+			virtual void _EndTriangleDraw()=0;
 			virtual void _DrawTriangle(ITriangle* polygon/*, bool NoColor=false,Core::IColor ColorPower=Core::IColor(1,1,1)*/)=0;
 			virtual void _DrawLine(const Core::IVector3D& pt1,const Core::IVector3D& pt2)=0;
 			virtual void _SetColor(Core::IColor color)=0;
@@ -228,6 +228,9 @@ namespace Initial
 
 			//Post process parameter
 
+			int m_vCurrentBufferWidth;
+			int m_vCurrentBufferHeight;
+
 			bool m_bBlurEnable;
 			int m_iBlurPass;
 			float m_fBlurPowerMax;
@@ -248,6 +251,7 @@ namespace Initial
 
 			bool m_bGodRayEnable;
 
+			bool m_bShadowEnable;
 			int m_iShadowMapSize;
 
 			bool m_bShowPass;

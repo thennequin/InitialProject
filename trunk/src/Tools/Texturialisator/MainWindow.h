@@ -10,7 +10,7 @@
 #include "wx/bookctrl.h"
 #include "wx/spinctrl.h"
 
-#include "../Frames/GraphWidget.h"
+#include "../Frames/BuildGraph.h"
 
 class MainWindow : public wxFrame
 {
@@ -44,7 +44,7 @@ public:
 
 	wxString GetImageFormat();
 
-	GraphWidget *GetGraph() { return m_pGraph; }
+	BuildGraph *GetGraph() { return m_pGraph; }
 
 	wxGauge		*GetGauge() { return m_pGauge; }
 
@@ -79,7 +79,7 @@ protected:
 			wxButton	*m_pB_Rebuild;
 			wxSpinCtrl	*m_pSC_ThreadCount;
 		wxNotebook	*m_pNoteBookGraph;
-			GraphWidget *m_pGraph;
+			BuildGraph *m_pGraph;
 			wxTextCtrl	*m_pTCDetail;
 
 	wxSemaphore m_sDetailAccess;

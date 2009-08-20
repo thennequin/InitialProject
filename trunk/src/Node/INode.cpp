@@ -8,12 +8,15 @@
 
 #include "Initial/Node/INode.h"
 #include "Initial/Math/IMath.h"
+#include "Initial/IDevice.h"
 
+#include "Initial/Node/INodeContainer.h"
 #include "Initial/Node/INodeCamera.h"
 #include "Initial/Node/INodeLight.h"
 #include "Initial/Node/INodeSkybox.h"
 #include "Initial/Node/INode3DObject.h"
 #include "Initial/Node/INode3DAnimatedMesh.h"
+#include "Initial/Node/INodeText.h"
 
 using namespace Initial::Core;
 using namespace Initial::Math;
@@ -23,11 +26,13 @@ namespace Initial
 {	
 	IMPLEMENT_ABSTRACT_OBJECT(INode,IObject)
 
+	IMPLEMENT_OBJECT(INodeContainer,INode)
 	IMPLEMENT_OBJECT(INodeCamera,INode)
 	IMPLEMENT_OBJECT(INodeLight,INode)
 	IMPLEMENT_OBJECT(INodeSkybox,INode)
 	IMPLEMENT_OBJECT(INode3DObject,INode)
 	IMPLEMENT_OBJECT(INode3DAnimatedMesh,INode)
+	IMPLEMENT_OBJECT(INodeText,INode)
 
 
 	INode::INode(IDevice *device)
@@ -37,6 +42,33 @@ namespace Initial
 		m_vScale.Set(1.0,1.0,1.0);
 		m_mAngle.MakeIdentity(3);
 		m_pParent=NULL;
+		m_bSelected=false;
+		m_bShow=true;
+
+		AddProperty("Name",IPT_STRING,&m_sName);
+		AddProperty("Show",IPT_BOOL,&m_bShow);
+		//if (IsMovable())
+			AddProperty("Position",IPT_VEC3,&m_vPosition);
+		//if (IsScalable())
+			AddProperty("Scale",IPT_VEC3,&m_vScale);	
+		//if (IsRotatable())
+	}
+
+	INode::~INode()
+	{
+		FOREACH(INode*,ite,m_aChildren)
+		{
+			if (ite.GetData())
+			{
+				delete ite.GetData();
+			}
+		}
+	}
+
+	void INode::InitNode()
+	{
+		m_sName=GetClass()->GetName();
+		_InitNode();
 	}
 
 	void INode::SetDevice(IDevice *device)
@@ -62,7 +94,8 @@ namespace Initial
 				if (node)
 				{
 					node->SetDevice(m_pDevice);
-					AddNode(node);
+					node->InitNode();
+					node->SetParent(this);
 				}
 				return node;
 			}
@@ -73,7 +106,10 @@ namespace Initial
 	void INode::AddNode(INode *node)
 	{
 		if (node)
-			m_aChildren.Add(node);
+		{
+			m_aChildren.PushBack(node);
+			node->m_pParent=this;
+		}
 	}
 
 	void INode::DeleteNode(INode *node)
@@ -96,43 +132,83 @@ namespace Initial
 		return NULL;
 	}
 
-	IArray<INode*> INode::GetNodeByClass(IObject::IObjectInfo *classinfo, bool recursive, bool noSubClass)
+	void INode::SetParent(INode *node)
 	{
-		IArray<INode*> result;
-		for (UINT i=0;i<m_aChildren.Count();i++)
+		if (!IsChild(node) /*&& node!=m_pParent*/)
 		{
-			if (noSubClass)
+			if (m_pParent)
 			{
-				if (m_aChildren[i]->GetStaticClass()==classinfo)
-					result.Add(m_aChildren[i]);
-			}else{
-				if (m_aChildren[i]->IsKindOf(classinfo))
-					result.Add(m_aChildren[i]);
+				m_pParent->DeleteNode(this);
 			}
 
-			if (recursive)
+			if (node)
 			{
-				IArray<INode*> resultRec = m_aChildren[i]->GetNodeByClass(classinfo,true);
-				for (UINT j=0;j<resultRec.Count();j++)
-					result.Add(resultRec[j]);
+				node->AddNode(this);
+			}
+		}		
+	}
+
+	bool INode::IsChild(INode *node)
+	{
+		FOREACH(INode*,ite,m_aChildren)
+		{
+			if (ite.GetData())
+			{
+				if (ite.GetData()==node)
+					return true;
+				bool res = ite.GetData()->IsChild(node);
+				if (res)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	IList<INode*> INode::GetNodeByClass(IObject::IObjectInfo *classinfo, bool recursive, bool noSubClass)
+	{
+		IList<INode*> result;
+		FOREACH(INode*,ite,m_aChildren)
+		{
+			if (ite.GetData())
+			{
+				INode *node = ite.GetData();
+				if (noSubClass)
+				{
+					if (node->GetStaticClass()==classinfo)
+						result.PushBack(node);
+				}else{
+					if (node->IsKindOf(classinfo))
+						result.PushBack(node);
+				}
+
+				if (recursive)
+				{
+					IList<INode*> resultRec = node->GetNodeByClass(classinfo,true);
+					for (UINT j=0;j<resultRec.Count();j++)
+						result.PushBack(resultRec[j]);
+				}
 			}
 		}
 		return result;
 	}
 
-	IArray<INode*> INode::GetNodeByName(IString name, bool recursive)
+	IList<INode*> INode::GetNodeByName(IString name, bool recursive)
 	{
-		IArray<INode*> result;
-		for (UINT i=0;i<m_aChildren.Count();i++)
+		IList<INode*> result;
+		FOREACH(INode*,ite,m_aChildren)
 		{
-			if (name==m_aChildren[i]->m_sName)
-				result.Add(m_aChildren[i]);
-
-			if (recursive)
+			if (ite.GetData())
 			{
-				IArray<INode*> resultRec = m_aChildren[i]->GetNodeByName(name,true);
-				for (UINT j=0;j<resultRec.Count();j++)
-					result.Add(resultRec[j]);
+				INode *node = ite.GetData();
+				if (name==node->m_sName)
+					result.PushBack(node);
+
+				if (recursive)
+				{
+					IList<INode*> resultRec = node->GetNodeByName(name,true);
+					for (UINT j=0;j<resultRec.Count();j++)
+						result.PushBack(resultRec[j]);
+				}
 			}
 		}
 		return result;
@@ -140,9 +216,14 @@ namespace Initial
 
 	void INode::Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags)
 	{
-		for (UINT i=0;i<m_aChildren.Count();i++)
+		if (!m_bShow)
+			return;
+		FOREACH(INode*,ite,m_aChildren)
 		{
-			m_aChildren[i]->Render(driver,frustum,flags);
+			if (ite.GetData())
+			{
+				ite.GetData()->Render(driver,frustum,flags);
+			}
 		}
 	}
 

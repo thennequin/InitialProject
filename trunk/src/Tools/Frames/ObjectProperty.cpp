@@ -70,6 +70,11 @@ void ObjectProperty::GenerateFromObject(Initial::IObject *object)
 						props.GetProperty(i)->GetName().c_str(),
 						props.GetProperty(i)->GetString().c_str()));
 					break;
+				case IPT_LONG_STRING:
+					Append(new wxLongStringProperty(props.GetProperty(i)->GetName().c_str(),
+						props.GetProperty(i)->GetName().c_str(),
+						props.GetProperty(i)->GetString().c_str()))->SetFlagRecursively(wxPG_PROP_NO_ESCAPE,true);
+					break;
 				case IPT_CHOICE:
 					{
 						wxArrayString choices;
@@ -97,6 +102,13 @@ void ObjectProperty::OnPropertyChange( wxPropertyGridEvent& event )
 	printf("Changed %d %d %s\n",m_pObject,event.GetProperty(),event.GetProperty()->GetValueAsString().c_str());
 	if (m_pObject && event.GetProperty())
 	{
-		m_pObject->SetPropertyValue(event.GetProperty()->GetName().c_str(),event.GetProperty()->GetValueAsString().c_str());
+		if (event.GetProperty()->IsKindOf(&wxEnumProperty::ms_classInfo))
+		{
+			//We return integer value for Enum property
+			wxString val;
+			val.Printf("%d",event.GetProperty()->GetValue().GetInteger());
+			m_pObject->SetPropertyValue(event.GetProperty()->GetName().c_str(),val.c_str());
+		}else
+			m_pObject->SetPropertyValue(event.GetProperty()->GetName().c_str(),event.GetProperty()->GetValueAsString().c_str());
 	}
 }

@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
 				PreprocessorDefinitions="WIN32"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -59,8 +59,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="opengl32.lib glew32.lib glu32.lib freetype237.lib libgfl.lib libgfle.lib lib3ds.lib binkw32.lib cal3d.lib nvtt.lib nvcore.lib nvimage.lib libboost_thread-vc80-mt-1_37.lib wxcode_msw28_propgrid.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
+				AdditionalDependencies="opengl32.lib glew32.lib glu32.lib freetype239MT.lib libgfl.lib libgfle.lib lib3ds.lib binkw32.lib cal3d.lib nvtt.lib nvcore.lib nvimage.lib libboost_thread-vc80-mt-1_37.lib wxcode_msw28_propgrid.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -104,7 +104,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
 				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0600"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
@@ -125,8 +125,8 @@
 			<Tool
 				Name="VCLibrarianTool"
 				LinkLibraryDependencies="true"
-				AdditionalDependencies="opengl32.lib glew32.lib glu32.lib freetype237.lib libgfl.lib libgfle.lib lib3ds.lib binkw32.lib cal3d.lib nvtt.lib nvcore.lib nvimage.lib libboost_thread-vc80-mt-1_37.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
+				AdditionalDependencies="opengl32.lib glew32.lib glu32.lib freetype239MT.lib libgfl.lib libgfle.lib lib3ds.lib binkw32.lib cal3d.lib nvtt.lib nvcore.lib nvimage.lib libboost_thread-vc80-mt-1_37.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -163,6 +163,10 @@
 			</File>
 			<File
 				RelativePath=".\Engine\ILogger.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Engine\IMemoryManager.cpp"
 				>
 			</File>
 			<File
@@ -269,11 +273,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Node\INodeContainer.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Node\INodeLight.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\Node\INodeSkybox.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Node\INodeText.cpp"
 					>
 				</File>
 			</Filter>
@@ -445,7 +457,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\IO\IXMLReader.cpp"
+					RelativePath=".\IO\IXMLParser.cpp"
 					>
 				</File>
 			</Filter>
@@ -457,6 +469,14 @@
 			>
 			<File
 				RelativePath="..\include\Initial\Config.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Initial\IDebugMemoryOff.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Initial\IDebugMemoryOn.h"
 				>
 			</File>
 			<File
@@ -473,6 +493,10 @@
 			</File>
 			<File
 				RelativePath="..\include\Initial\ILogger.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Initial\IMemoryManager.h"
 				>
 			</File>
 			<File
@@ -527,11 +551,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\include\Initial\Node\INodeContainer.h"
+					>
+				</File>
+				<File
 					RelativePath="..\include\Initial\Node\INodeLight.h"
 					>
 				</File>
 				<File
 					RelativePath="..\include\Initial\Node\INodeSkybox.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\Initial\Node\INodeText.h"
 					>
 				</File>
 			</Filter>
@@ -791,7 +823,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\include\Initial\IO\IXMLReader.h"
+					RelativePath="..\include\Initial\IO\IXMLParser.h"
 					>
 				</File>
 			</Filter>
@@ -808,6 +840,10 @@
 			Name="Fichiers de ressources"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+		</Filter>
+		<Filter
+			Name="Lib"
 			>
 		</Filter>
 	</Files>

@@ -12,6 +12,7 @@
 #include "Initial/Format/IImageITX.h"
 #include "Initial/Core/IImage.h"
 #include "Initial/IO/IFileStream.h"
+#include "Initial/Math/IMath.h"
 
 
 using namespace Initial::Core;
@@ -127,7 +128,7 @@ namespace Initial
 			return m_iHeight;
 		}
 
-		IImageITX::DXTFormat IImageITX::GetFormat()
+		IImageITX::ITXFormat IImageITX::GetFormat()
 		{
 			return m_iFormat;
 		}
@@ -186,7 +187,7 @@ namespace Initial
 				return false; // File error
 
 			unsigned char ITX[3] ={'I','T','X'};
-			unsigned char Version=1;
+			unsigned char Version=2;
 			short NameSize = m_sName.Length();
 			unsigned char Options = (m_iType&0x1) | (m_iBorder&0x2)<<1 | (m_iFormat&0xf)<<3 | (m_bZip&0x1)<<7;
 			short Width = m_iWidth;
@@ -248,7 +249,7 @@ namespace Initial
 				return false; // Bad file format
 
 			file.Read(&version,1,1); //char - Version
-			if (version!=1)
+			if (version!=1 && version!=2)
 				return false; // Bad version
 
 			file.Read(&NameSize,2,1); //short - Name
@@ -285,7 +286,9 @@ namespace Initial
 
 			m_iType=(ImageType)((options>>0)&0x1);
 			m_iBorder=(BorderType)((options>>1)&0x2);
-			m_iFormat=(DXTFormat)((options>>3)&0xf);
+			m_iFormat=(ITXFormat)((options>>3)&0xf);
+			if (version==1)
+				m_iFormat=(ITXFormat)(m_iFormat+ITXF_RGBA);
 			m_bZip=(bool)((options>>7)&0x1);
 
 			m_iMipMapsCount=MipMapsCount;
@@ -305,12 +308,12 @@ namespace Initial
 		{
 			IImage image;
 
-			if (m_iFormat==DXTF_RGBA)
+			if (m_iFormat==ITXF_RGBA)
 			{
 				image.SetImage(m_iWidth,m_iHeight,IIF_RGBA);
 				image.SetData(m_pData);
 			}else{
-				if (m_iFormat==DXTF_DXT1 || m_iFormat==DXTF_DXT1nm || m_iFormat==DXTF_DXT5nm)
+				if (m_iFormat==ITXF_DXT1 || m_iFormat==ITXF_DXT1nm || m_iFormat==ITXF_DXT5nm)
 					image.SetImage(m_iWidth,m_iHeight,IIF_RGB);
 				else
 					image.SetImage(m_iWidth,m_iHeight,IIF_RGBA);
@@ -322,31 +325,31 @@ namespace Initial
 
 				for (int i=0;i<((m_iWidth+3)/4) * ((m_iHeight+3)/4);i++)
 				{
-					if (m_iFormat==DXTF_DXT1 || m_iFormat==DXTF_DXT1nm || m_iFormat==DXTF_DXT1a)
+					if (m_iFormat==ITXF_DXT1 || m_iFormat==ITXF_DXT1nm || m_iFormat==ITXF_DXT1a)
 					{
 						nv::BlockDXT1 dxBlock;					
 						memcpy(&dxBlock,(unsigned char*)m_pData+i*8,8);					
 						dxBlock.decodeBlock(&block);
 					}
-					else if (m_iFormat==DXTF_DXT3)
+					else if (m_iFormat==ITXF_DXT3)
 					{
 						nv::BlockDXT3 dxBlock;
 						memcpy(&dxBlock,(unsigned char*)m_pData+i*16,16);					
 						dxBlock.decodeBlock(&block);
 					}
-					else if (m_iFormat==DXTF_DXT5 || m_iFormat==DXTF_DXT5nm)
+					else if (m_iFormat==ITXF_DXT5 || m_iFormat==ITXF_DXT5nm)
 					{
 						nv::BlockDXT5 dxBlock;
 						memcpy(&dxBlock,(unsigned char*)m_pData+i*16,16);					
 						dxBlock.decodeBlock(&block);
 					}
-					else if (m_iFormat==DXTF_ATI1)
+					else if (m_iFormat==ITXF_ATI1)
 					{
 						nv::BlockATI1 dxBlock;
 						memcpy(&dxBlock,(unsigned char*)m_pData+i*8,8);					
 						dxBlock.decodeBlock(&block);
 					}
-					else if (m_iFormat==DXTF_ATI2_3Dc)
+					else if (m_iFormat==ITXF_ATI2_3Dc)
 					{
 						nv::BlockATI2 dxBlock;
 						memcpy(&dxBlock,(unsigned char*)m_pData+i*16,16);					
@@ -354,7 +357,7 @@ namespace Initial
 					}
 
 					int colorSize=4;
-					if (m_iFormat==DXTF_DXT1 || m_iFormat==DXTF_DXT1nm || m_iFormat==DXTF_DXT5nm)
+					if (m_iFormat==ITXF_DXT1 || m_iFormat==ITXF_DXT1nm || m_iFormat==ITXF_DXT5nm)
 						colorSize=3;
 					
 					for (int x=0;x<4;x++)
@@ -363,11 +366,11 @@ namespace Initial
 						{
 							nv::Color32 color = block.color(x,y);
 							int pos = colorSize*(col+m_iWidth*line*4+m_iWidth*y+x);
-							if (m_iFormat==DXTF_DXT5nm)
+							if (m_iFormat==ITXF_DXT5nm)
 							{
 								float r = /*(color.r/255.0)*/(color.a/255.0)*2.0-1.0;
 								float g = (color.g/255.0)*2.0-1.0;
-								float b = sqrt(1.0-r*r-g*g);
+								float b = 1.0/Q_rsqrt(1.0-r*r-g*g);
 								r=(r+1.0)*0.5;
 								g=(g+1.0)*0.5;
 								b=(b+1.0)*0.5;
@@ -507,29 +510,29 @@ namespace Initial
 				nvtt::Format format=nvtt::Format_RGBA;
 				switch (params.format)
 				{
-				case DXTF_DXT1: // DXT1
+				case ITXF_DXT1: // DXT1
 					format=nvtt::Format_DXT1;
 					break;
-				case DXTF_DXT1nm: // DXT1nm
+				case ITXF_DXT1nm: // DXT1nm
 					format=nvtt::Format_DXT1;
 					compressionOptions.setColorWeights(1, 1, 0);
 					break;
-				case DXTF_DXT1a: // DXT1a
+				case ITXF_DXT1a: // DXT1a
 					format=nvtt::Format_DXT1a;
 					break;
-				case DXTF_DXT3: // DXT3
+				case ITXF_DXT3: // DXT3
 					format=nvtt::Format_DXT3;
 					break;
-				case DXTF_DXT5: // DXT5
+				case ITXF_DXT5: // DXT5
 					format=nvtt::Format_DXT5;
 					break;
-				case DXTF_DXT5nm: // DXT5nm
+				case ITXF_DXT5nm: // DXT5nm
 					format=nvtt::Format_DXT5n;
 					break;
-				case DXTF_ATI1: // ATI1
+				case ITXF_ATI1: // ATI1
 					format=nvtt::Format_BC4;
 					break;
-				case DXTF_ATI2_3Dc: // ATI2/3Dc
+				case ITXF_ATI2_3Dc: // ATI2/3Dc
 					format=nvtt::Format_BC5;
 					break;
 				};

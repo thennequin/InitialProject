@@ -10,7 +10,7 @@
 #define _INODE_HEADER_
 
 #include "Initial/IObject.h"
-#include "Initial/Core/IArray.h"
+#include "Initial/Core/IList.h"
 #include "Initial/Core/IString.h"
 #include "Initial/Core/IVector3D.h"
 #include "Initial/Math/IMatrix.h"
@@ -30,9 +30,22 @@ namespace Initial
 		INode(IDevice *device=NULL);
 		//virtual ~INode()=0;
 	public:
+		~INode();
+
+		void InitNode();		
+
+		//Return name of bitmap used in editor
+		virtual Core::IString GetBitmapName() { return ""; }
 
 		void SetDevice(IDevice *device);
 		IDevice* GetDevice();
+
+		Core::IString GetName() { return m_sName; }
+		void SetName(Core::IString name) { m_sName=name; }
+		Core::IString GetCategorie() { return Categorie; }
+
+		bool IsSelected() { return m_bSelected; }
+		void Select(bool selected) { m_bSelected=selected; }
 
 		INode *AddNodeByClass(Core::IString nodeClassName);
 		void AddNode(INode *node);
@@ -41,11 +54,14 @@ namespace Initial
 		UINT GetNodeCount();
 		INode *GetNode(UINT nodeIndex);
 
+		void SetParent(INode *node);
+		bool IsChild(INode *node);
+
 		/**
 			bool nosuper : just this class, not sub class
 		**/
-		Core::IArray<INode*> GetNodeByClass(IObject::IObjectInfo *classinfo, bool recursive=true, bool noSubClass=false);
-		Core::IArray<INode*> GetNodeByName(Core::IString name, bool recursive=true);
+		Core::IList<INode*> GetNodeByClass(IObject::IObjectInfo *classinfo, bool recursive=true, bool noSubClass=false);
+		Core::IList<INode*> GetNodeByName(Core::IString name, bool recursive=true);
 
 		virtual bool IsVisible(Video::IRenderDriver *driver)/*=0*/{ return true; };
 		virtual void Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags=0);
@@ -90,11 +106,16 @@ namespace Initial
 		//virtual IBBox GetBBox()=0;
 
 	protected:
+		virtual void _InitNode() {}
+	protected:
 		IDevice *m_pDevice;
 
+		Core::IString Categorie;
 		Core::IString m_sName;
+		bool m_bSelected;
+		bool m_bShow;
 
-		Core::IArray<INode*> m_aChildren;
+		Core::IList<INode*> m_aChildren;
 		INode *m_pParent;
 
 		Core::IVector3D m_vPosition;

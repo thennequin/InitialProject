@@ -191,6 +191,13 @@ namespace Initial
 							glUniform1iARB(uniform_location, i);
 					}
 
+					uniform_location = glGetUniformLocationARB(ProgramId, "ScreenDepth");
+					if (uniform_location!=-1)
+						glUniform1iARB(uniform_location, 8);
+					uniform_location = glGetUniformLocationARB(ProgramId, "ScreenColor");
+					if (uniform_location!=-1)
+						glUniform1iARB(uniform_location, 9);
+
 					/*IString temp;
 					temp.AllocBuffer(1024);
 					glGetShaderSource(FragmentId,1024,NULL,temp.c_str());
@@ -201,15 +208,18 @@ namespace Initial
 			return OK;
 		}
 
-		void IShaderManagerOpenGL::UseShader(IShader *shader)
+		bool IShaderManagerOpenGL::UseShader(IShader *shader)
 		{
 			if (shader)
 			{
+				bool Ok=true;
 				if (!shader->IsCompiled())
-					shader->Compile();
+					Ok = shader->Compile();
 				glUseProgramObjectARB(shader->GetProgram());
+				return Ok;
 			}else
 				glUseProgramObjectARB(0);
+			return true;
 		}
 
 		bool IShaderManagerOpenGL::SetParameterInt(IShader *shader, IString Parameter, int value)

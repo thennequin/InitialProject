@@ -9,7 +9,6 @@
 #ifndef _ITRIANGLE_HEADER_
 #define _ITRIANGLE_HEADER_
 
-#include "Initial/Core/IArray.h"
 #include "Initial/Core/IColor.h"
 #include "Initial/Core/IVector2D.h"
 #include "Initial/Core/IVector3D.h"

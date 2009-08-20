@@ -113,6 +113,11 @@ namespace Initial
 		}
 	}
 
+	IProperty* IObject::GetProperty(Core::IString name)
+	{
+		return m_aProperties.GetProperty(name);
+	}
+
 	void IObject::OnPropertyChange(Core::IString name)
 	{
 

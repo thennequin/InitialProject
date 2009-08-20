@@ -10,8 +10,11 @@
 #define _IMATH_HEADER_
 
 #include "Initial/Math/IMatrix.h"
+#include "Initial/Core/IVector2D.h"
 #include "Initial/Core/IVector3D.h"
 #include "Initial/3D/ITriangle.h"
+
+float Q_rsqrt( float number );
 
 namespace Initial
 {
@@ -22,7 +25,9 @@ namespace Initial
 	{
 		const double I_PIE = 3.1415926535897932384626433832795;
 		#define RAD_TO_DEG(rad) 180.0*(rad)/I_PIE
-		#define DEG_TO_RAD(deg) I_PIE*(deg)/180.0
+		#define DEG_TO_RAD(deg) I_PIE*(deg)/180.0		
+
+		Core::IVector3D Lerp(Core::IVector3D a, Core::IVector3D b, float val);
 
 		IMatrix TranslationToMatrix(float x, float y, float z);
 		IMatrix ScaleToMatrix(float x, float y, float z);
@@ -68,6 +73,8 @@ namespace Initial
 
 		Math::IMatrix GetOrthoMatrix(float right=1, float left=0, float top=1, float bottom=0, float m_fzFar=1000, float m_fzNear=0.1);
 		Math::IMatrix GetPerspectiveMatrix(float fov, float ratio, float Far, float Near);
+
+		void MakeRayFromMouseOnScreen(Core::IVector2D point, IMatrix projection_4x4, Core::IVector2D viewport, Core::IVector3D& start, Core::IVector3D& dir);
 	}
 }
 #endif

@@ -16,13 +16,20 @@
 #include "Initial/3D/ITriangle.h"
 #include "Initial/3D/IBBox.h"
 
+#include <vector>
+
 using namespace Initial::Math;
 
 namespace Initial
 {
+	class IMeshLoader
+	{
+
+	};
 	class IMesh : public IObject
 	{
 		friend class Video::IRenderDriver;
+		friend class IMeshLoader;
 	public:
 		/*#pragma pack(push, 1)
 		struct MeshIndex
@@ -46,6 +53,22 @@ namespace Initial
 
 			MeshIndex* pIndex;
 		};*/
+
+		struct MeshIndex
+		{
+			unsigned long VerticeIndex[3];
+			unsigned long NormalIndex[3];
+			unsigned long TextureIndex[3];
+		};
+		struct SubMesh
+		{
+			std::vector<Core::IVector3D> m_Vertices;
+			std::vector<Core::IVector3D> m_Normal;
+			std::vector<Core::IVector3D> m_Tangent;
+			std::vector<Core::IVector2D> m_Coord;
+			std::vector<MeshIndex> m_Index;			
+		};
+		//
 	public:
 		IMesh(Video::IRenderDriver *Device=NULL, IMesh* parent=NULL);
 		IMesh(Video::IRenderDriver *Device, Core::IArray<ITriangle> polygons, IMesh* parent=NULL);
@@ -117,6 +140,9 @@ namespace Initial
 		bool m_bUpdated;
 
 		static Core::IArray<IMesh*> m_aObjects;
+
+		std::vector<SubMesh> m_SubMeshs;
+		std::vector<ISmartPtr<Video::IMaterial>> m_Materials;
 	};
 }
 

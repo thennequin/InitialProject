@@ -40,7 +40,7 @@ void* FolderScanThread::Entry()
 	ConvertThread::LockQueryAcces();
 		wxGetApp().GetWindow()->GetGraph()->AddEvent(0,GetTickCount(),0,"Scan folder");
 
-		_sleep(500);
+		//_sleep(500);
 
 		ScanDirectory(m_sFolder);
 		m_iFilesNumber=ConvertThread::GetQueryCount();

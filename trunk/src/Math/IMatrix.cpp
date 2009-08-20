@@ -65,13 +65,13 @@ IMatrix::IMatrix(int n)
 
 IMatrix::~IMatrix()
 {
-	if (data) delete data;
-	if (floatdata) delete floatdata;
+	if (data) delete[] data;
+	if (floatdata) delete[] floatdata;
 }
 
 void IMatrix::SetSize(int width, int height)
 {
-	if (data) delete data;
+	if (data) delete[] data;
 	_Alloc(width,height);
 }
 
@@ -91,7 +91,7 @@ const double* IMatrix::GetValues()
 
 const float* IMatrix::GetFloatValues()
 {
-	if (floatdata) delete floatdata;
+	if (floatdata) delete[] floatdata;
 	floatdata = new float[Width*Height];
 	for (int j=0;j<Height;j++)
 			for (int i=0;i<Width;i++)		

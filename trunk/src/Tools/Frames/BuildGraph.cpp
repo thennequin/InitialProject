@@ -1,19 +1,19 @@
 
 
-#include "GraphWidget.h"
+#include "BuildGraph.h"
 #include "wx/dcbuffer.h"
 
-BEGIN_EVENT_TABLE(GraphWidget, wxScrolledWindow)
-    EVT_PAINT(GraphWidget::OnPaint)
-	EVT_ERASE_BACKGROUND(GraphWidget::OnEraseBackground)
-	EVT_MOUSE_EVENTS(GraphWidget::OnMouseEvent)
-	EVT_TIMER(wxID_ANY,GraphWidget::OnTimer)
+BEGIN_EVENT_TABLE(BuildGraph, wxScrolledWindow)
+    EVT_PAINT(BuildGraph::OnPaint)
+	EVT_ERASE_BACKGROUND(BuildGraph::OnEraseBackground)
+	EVT_MOUSE_EVENTS(BuildGraph::OnMouseEvent)
+	EVT_TIMER(wxID_ANY,BuildGraph::OnTimer)
 END_EVENT_TABLE()
 
 const int RefreshTime=30;
 const int RefreshTimeIdle=30;
 
-GraphWidget::GraphWidget(wxWindow *parent,
+BuildGraph::BuildGraph(wxWindow *parent,
                      wxWindowID winid,
                      const wxPoint& pos,
                      const wxSize& size,
@@ -43,7 +43,7 @@ GraphWidget::GraphWidget(wxWindow *parent,
 	Timer.Start(RefreshTimeIdle);
 }
 
-void GraphWidget::OnPaint(wxPaintEvent& event)
+void BuildGraph::OnPaint(wxPaintEvent& event)
 {
 	wxBufferedPaintDC dc(this);
 
@@ -147,21 +147,21 @@ void GraphWidget::OnPaint(wxPaintEvent& event)
 		else
 			cornerR=0;
 
-		if (((StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId>ScrollPosV && 
+		if (BlockWidth>=0.5 && ((StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId>ScrollPosV && 
 			StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId<ScrollPosV+GetSize().y)
 			|| (StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+BlockHeight>ScrollPosV && 
 			StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+BlockHeight<ScrollPosV+GetSize().y))
 			&&
 			(cornerR==0 || cornerL==0 || (cornerL==-1 && cornerR==1)) )
 		{
-			dc.DrawRectangle(StartPixelsWidth+TimeRatio*sec,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId,BlockWidth,BlockHeight);
+			dc.DrawRectangle(StartPixelsWidth+TimeRatio*sec+1,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId,BlockWidth-1,BlockHeight);
 
-			dc.GradientFillLinear(wxRect(StartPixelsWidth+TimeRatio*sec+1,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+1,BlockWidth2-2,BlockHeight-2),blockcolour,blockcolourdest,wxNORTH);
+			dc.GradientFillLinear(wxRect(StartPixelsWidth+TimeRatio*sec+2,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+1,BlockWidth2-3,BlockHeight-2),blockcolour,blockcolourdest,wxNORTH);
 
-			if (size<=BlockWidth-6 || Finish==false)
-				dc.DrawText(Text,StartPixelsWidth+TimeRatio*sec+3,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+3);
+			if (size<=BlockWidth-7 || Finish==false)
+				dc.DrawText(Text,StartPixelsWidth+TimeRatio*sec+4,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+3);
 			else{
-				if (TriDotSize<=BlockWidth-6)
+				if (TriDotSize<=BlockWidth-7)
 				{
 					//	dc.DrawText(TriDot,StartPixelsWidth+TimeRatio*sec+3,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+3);
 
@@ -170,9 +170,9 @@ void GraphWidget::OnPaint(wxPaintEvent& event)
 					{
 						Temp=Text.Left(j);
 						dc.GetTextExtent(Temp,&size,NULL);
-						if (size+TriDotSize<=BlockWidth-6)
+						if (size+TriDotSize<=BlockWidth-7)
 						{
-							dc.DrawText(Temp+TriDot,StartPixelsWidth+TimeRatio*sec+3,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+3);
+							dc.DrawText(Temp+TriDot,StartPixelsWidth+TimeRatio*sec+4,StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId+3);
 							break;
 						}
 					}
@@ -261,7 +261,7 @@ void GraphWidget::OnPaint(wxPaintEvent& event)
 	SetScrollbars(1,1,MaxWidth,MaxHeight,HorizPos,GetScrollPos(wxVERTICAL),true);
 }
 
-void GraphWidget::AddEvent(int BuildId,unsigned long Time, int AgentIdOrType, wxString Name)
+void BuildGraph::AddEvent(int BuildId,unsigned long Time, int AgentIdOrType, wxString Name)
 {
 	EventsAccess.Wait();
 
@@ -290,7 +290,7 @@ void GraphWidget::AddEvent(int BuildId,unsigned long Time, int AgentIdOrType, wx
 	EventsAccess.Post();
 }
 
-void GraphWidget::SetEvent(int BuildId,unsigned long Size, unsigned long current)
+void BuildGraph::SetEvent(int BuildId,unsigned long Size, unsigned long current)
 {
 	EventsAccess.Wait();
 
@@ -309,7 +309,7 @@ void GraphWidget::SetEvent(int BuildId,unsigned long Size, unsigned long current
 	EventsAccess.Post();
 }
 
-void GraphWidget::OnMouseEvent(wxMouseEvent &event)
+void BuildGraph::OnMouseEvent(wxMouseEvent &event)
 {
 	//SetToolTip("My tips");
 	if (event.ButtonDown())
@@ -323,6 +323,35 @@ void GraphWidget::OnMouseEvent(wxMouseEvent &event)
 	}else{
 		SetCursor(NULL);
 	}
+
+	//ToolTip
+	EventsAccess.Wait();
+	int posX=event.GetPosition().x;
+	int posY=event.GetPosition().y;
+	bool OverEvent=false;
+	for (unsigned int i=0;i<Events.Count();i++)
+	{
+		if (Events[i] && Events[i]->StartTime<Events[i]->FinishTime)
+		{
+			float sec = (float)(Events[i]->StartTime-StartTime)/1000.0;
+			float BlockWidth = (Events[i]->FinishTime-Events[i]->StartTime)*TimeRatio/1000.0 - 1;
+			float x=StartPixelsWidth+TimeRatio*sec+1;
+			float y=StartPixelsHeight+AgentsSpace+(AgentsSpace+BlockHeight)*Events[i]->AgentId;
+			if (posX>=x && 
+				posY>=y &&
+				posX<=x+BlockWidth && posY<=y+BlockHeight)
+			{
+				SetToolTip(Events[i]->Name);
+				OverEvent=true;
+				break;
+			}
+		}
+	}
+	if (OverEvent==false)
+	{
+		UnsetToolTip();
+	}
+	EventsAccess.Post();
 
 	if (DragBorder==false)
 	{
@@ -350,7 +379,7 @@ void GraphWidget::OnMouseEvent(wxMouseEvent &event)
 }
 
 
-void GraphWidget::OnTimer(wxTimerEvent &event)
+void BuildGraph::OnTimer(wxTimerEvent &event)
 {
 	if (TimeRatio!=TimeRatioTarget)
 	{
@@ -370,13 +399,13 @@ void GraphWidget::OnTimer(wxTimerEvent &event)
 	Refresh();
 }
 
-void GraphWidget::ResetStartTime()
+void BuildGraph::ResetStartTime()
 {
 	StartTime=GetTickCount();
 }
 
 
-void GraphWidget::Clear()
+void BuildGraph::Clear()
 {
 	for (unsigned int i=0;i<Events.Count();i++)
 	{

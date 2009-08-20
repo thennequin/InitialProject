@@ -1,18 +1,20 @@
 
 #ifdef WIN32
 #include <windows.h>
+#include "wx/wx.h"
 #endif
 
 #include "Initial/Core/IAssert.h"
 #include "Initial/ILogger.h"
 
+#define SIMPLE_ASSERT 0
+
 namespace Initial
 {
 	namespace Core
 	{
-#if defined(WIN32) && defined(WXWIDGET)
-#define SIMPLE_ASSERT 0
-
+#ifdef WIN32
+		//&& defined(WXWIDGET)
 		class AssertDialog : public wxDialog
 		{
 			enum
@@ -37,7 +39,7 @@ namespace Initial
 				m_pIgnoreAllAssert = new wxButton(this,BT_ALL,"Ignore all assert",wxPoint(365,5),wxSize(120,20));
 				m_pExit = new wxButton(this,BT_EXIT,"exit",wxPoint(490,5),wxSize(60,20));
 
-				m_pText = new wxStaticText(this,wxID_ANY,assert,wxPoint(10,30),wxSize(420,150));
+				m_pText = new wxStaticText(this,wxID_ANY,assert.c_str(),wxPoint(10,30),wxSize(420,150));
 
 				SetSize(555,200);
 			};
@@ -125,13 +127,12 @@ namespace Initial
 				return;
 
 			IString str;
-			str.Printf("%d : %s\n	%s\n	%s",line,file,message,message2);
-	#if defined(SIMPLE_ASSERT) && SIMPLE_ASSERT
-			wxMessageDialog *dialog = new wxMessageDialog(NULL,str,"Assert");
+			str.Printf("%d : %s\n	%s\n	%s",line,file.c_str(),message.c_str(),message2.c_str());
+	#if SIMPLE_ASSERT
+			wxMessageDialog *dialog = new wxMessageDialog(NULL,str.c_str(),"Assert");
 			dialog->ShowModal();
 			delete dialog;
 	#else
-
 			bool Ignored=false;
 			for (unsigned long i=0;i<IgnredAssert.Count();i++)
 				if (IgnredAssert[i] && IgnredAssert[i]->line==line && IgnredAssert[i]->file==file)
@@ -143,7 +144,7 @@ namespace Initial
 			if (Ignored==false)
 			{
 				if (IsDebuggerPresent())
-					OutputDebugString(str+"\n");
+					OutputDebugString((str+"\n").c_str());
 				if (IsDebuggerPresent())
 					DebugBreak();
 				AssertDialog *dial = new AssertDialog(str);
@@ -178,7 +179,7 @@ namespace Initial
 		void myassert(int line,IString file, IString message, IString message2)
 		{
 			IString str;
-			str.Printf("%d : %s\n	%s\n	%s",line,file,message,message2);
+			str.Printf("%d : %s\n	%s\n	%s",line,file.c_str(),message.c_str(),message2.c_str());
 			ILogger::LogError("%s\n",str.c_str());
 		}	
 #endif

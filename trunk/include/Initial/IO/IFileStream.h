@@ -4,7 +4,6 @@
 
 #include "Initial/Config.h"
 #include "Initial/Core/IString.h"
-#include "Initial/Core/IArray.h"
 
 #include <stdio.h>
 
@@ -45,6 +44,15 @@ namespace Initial
 
 			UINT Write(void *src, UINT size, UINT count);
 			UINT Printf(const char *Format, ...);
+
+			template <class T> IFileStream& operator <<(const T& ToLog)
+			{
+				std::ostringstream Stream;
+				Stream << ToLog;
+				//Printf("%s",Stream.str());
+
+				return *this;
+			}
 
 			int Seek(long pos, SeekMode mode=ISM_SET);
 			UINT Tell();

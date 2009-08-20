@@ -10,6 +10,7 @@
 #define _ILIST_HEADER_
 
 #include "Initial/Config.h"
+#include "Initial/IDebugMemoryOn.h"
 
 #include <stdlib.h>
 #include <memory.h>
@@ -97,7 +98,7 @@ namespace Initial
 				Clear();
 			}
 
-			void AddAfter(T& Item, ListNode *after)
+			void AddAfter(T Item, ListNode *after)
 			{
 				ListNode *newNode = new ListNode;
 				newNode->Data=Item;
@@ -116,7 +117,7 @@ namespace Initial
 					pLast=newNode;
 			}
 
-			void AddBefore(T& Item, ListNode *before)
+			void AddBefore(T Item, ListNode *before)
 			{
 				ListNode *newNode = new ListNode;
 				newNode->Data=Item;
@@ -135,7 +136,7 @@ namespace Initial
 					pFirst=newNode;
 			}
 			
-			bool DeleteItem(T& item)
+			bool DeleteItem(T item)
 			{
 				ListNode *node=pFirst;
 				while (node)
@@ -232,7 +233,7 @@ namespace Initial
 
 			ListNode* Last()
 			{
-				return pLast->Data;
+				return pLast;
 			}
 
 			Iterator Ite()
@@ -242,9 +243,9 @@ namespace Initial
 				return ite;
 			}
 
-			void operator+=(IList<T>& Array)
+			void operator+=(const IList<T>& Array)
 			{
-				ListNode *node = Array.First();
+				ListNode *node = Array.pFirst;
 				while (node)
 				{
 					PushBack(node->Data);
@@ -252,10 +253,10 @@ namespace Initial
 				}
 			}
 
-			void operator=(IList<T>& Array)
+			void operator=(const IList<T>& Array)
 			{
 				Clear();
-				ListNode *node = Array.First();
+				ListNode *node = Array.pFirst;
 				while (node)
 				{
 					PushBack(node->Data);
@@ -273,7 +274,7 @@ namespace Initial
 
 			}
 
-			void PushBack(T& item)
+			void PushBack(T item)
 			{
 				AddBefore(item,NULL);
 			}
@@ -283,7 +284,7 @@ namespace Initial
 				Delete(pLast);
 			}
 
-			void PushFront(T& item)
+			void PushFront(T item)
 			{
 				AddAfter(item,NULL);
 			}
@@ -301,5 +302,7 @@ namespace Initial
 		};
 	}
 }
+
+//#include "Initial/IDebugMemoryOff.h"
 
 #endif

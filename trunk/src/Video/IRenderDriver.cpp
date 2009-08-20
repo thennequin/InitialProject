@@ -94,6 +94,7 @@ namespace Initial
 
 			m_fRenderScale = engineParameter.ReadFloatValue("RenderScale",1.0,true);
 
+			m_bShadowEnable = engineParameter.ReadIntValue("ShadowEnable",1,true);
 			m_iShadowMapSize = engineParameter.ReadIntValue("ShadowMapSize",512,true);
 
 			if (engineParameter.NeedToBeSave())
@@ -109,10 +110,10 @@ namespace Initial
 			{
 				m_pFrameBuffer = new IFrameBuffer(this);
 					m_pFrameDepthTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_DEPTH24);
-					m_pFrameDiffuseTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
-					m_pFrameEmissiveTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
-					m_pFrameNormalTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
-					m_pFrameSpecularTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
+					m_pFrameDiffuseTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F);
+					m_pFrameEmissiveTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F);
+					m_pFrameNormalTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F);
+					m_pFrameSpecularTexture = m_pTextureManager->CreateTexture(m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F);
 				m_pFrameBuffer->AttachDepthTexture(m_pFrameDepthTexture);
 				m_pFrameBuffer->AttachTexture(0,m_pFrameDiffuseTexture);
 				m_pFrameBuffer->AttachTexture(1,m_pFrameEmissiveTexture);
@@ -176,10 +177,10 @@ namespace Initial
 			_ResizeDriver();
 
 			m_pTextureManager->SetTextureData(m_pFrameDepthTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_DEPTH24,IIF_GREY);
-			m_pTextureManager->SetTextureData(m_pFrameDiffuseTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
-			m_pTextureManager->SetTextureData(m_pFrameEmissiveTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
-			m_pTextureManager->SetTextureData(m_pFrameNormalTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
-			m_pTextureManager->SetTextureData(m_pFrameSpecularTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
+			m_pTextureManager->SetTextureData(m_pFrameDiffuseTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F); // Albedo(RGB) / None(A)
+			m_pTextureManager->SetTextureData(m_pFrameEmissiveTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F); // Emissive(RGB) / None(A)
+			m_pTextureManager->SetTextureData(m_pFrameNormalTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F); // Normal(RGB) / None(A)
+			m_pTextureManager->SetTextureData(m_pFrameSpecularTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGBA16F); // Specular(RGB) / Pow(A)
 
 			m_pTextureManager->SetTextureData(m_pDeferredLightTexture,NULL,m_iWidth*m_fRenderScale,m_iHeight*m_fRenderScale,ITF_RGB16F);
 
@@ -196,10 +197,10 @@ namespace Initial
 		void IRenderDriver::ResizeTexturesPP(int Width, int Height)
 		{
 			m_pTextureManager->SetTextureData(m_pFrameDepthTexture,NULL,Width,Height,ITF_DEPTH24,IIF_GREY);
-			m_pTextureManager->SetTextureData(m_pFrameDiffuseTexture,NULL,Width,Height,ITF_RGB16F);
-			m_pTextureManager->SetTextureData(m_pFrameEmissiveTexture,NULL,Width,Height,ITF_RGB16F);
-			m_pTextureManager->SetTextureData(m_pFrameNormalTexture,NULL,Width,Height,ITF_RGB16F);
-			m_pTextureManager->SetTextureData(m_pFrameSpecularTexture,NULL,Width,Height,ITF_RGB16F);
+			m_pTextureManager->SetTextureData(m_pFrameDiffuseTexture,NULL,Width,Height,ITF_RGBA16F);
+			m_pTextureManager->SetTextureData(m_pFrameEmissiveTexture,NULL,Width,Height,ITF_RGBA16F);
+			m_pTextureManager->SetTextureData(m_pFrameNormalTexture,NULL,Width,Height,ITF_RGBA16F);
+			m_pTextureManager->SetTextureData(m_pFrameSpecularTexture,NULL,Width,Height,ITF_RGBA16F);
 
 			m_pTextureManager->SetTextureData(m_pDeferredLightTexture,NULL,Width,Height,ITF_RGB16F);
 
@@ -221,7 +222,7 @@ namespace Initial
 				if (IMesh::m_aObjects[i] &&
 					IMesh::m_aObjects[i]->GetFlag(IRF_ALWAYS_RENDER) &&
 					IMesh::m_aObjects[i]->GetParent()==NULL)
-					IMesh::m_aObjects[i]->Render(this,flags);
+					IMesh::m_aObjects[i]->Render(this/*,flags*/);
 			}
 
 			if (node)
@@ -313,10 +314,12 @@ namespace Initial
 						IShader *shader = mat->GetShader();
 						if (m_pShaderManager)
 						{
-							m_pShaderManager->UseShader(shader);
+							if (!m_pShaderManager->UseShader(shader))
+								ILogger::LogError("Compilation error in %s\n",mat->GetFilename().c_str());
 							if (shader)
 							{
 								shader->SetParameterFloat("Time",GetTickCount()/1000.0);
+								shader->SetParameter2Float("ViewportSize",m_vCurrentBufferWidth,m_vCurrentBufferHeight);
 							}
 						}
 					}
@@ -325,17 +328,19 @@ namespace Initial
 					for (int i=0;i<8;i++)
 						if (/*mat->TextureIsDefine(i) ||*/ mat->GetParent()==NULL || mat->GetTexture(i))
 							m_pTextureManager->BindTexture(mat->GetTexture(i),i);
+					m_pTextureManager->BindTexture(m_pFrameDepthTexture,8);
+					m_pTextureManager->BindTexture(m_pFrameDiffuseTexture,9);
 					
 					if (mat->IsTranslucent())
 					{
 						_EnableExt(IEXT_BLEND);
-						_EnableDepthWrite(false);
+						//_EnableDepthWrite(false);
 						//_DisableExt(IEXT_DEPTH);
 						//_DisableExt(IEXT_COLOR);
 					}else{
 						_DisableExt(IEXT_BLEND);
 						//_EnableExt(IEXT_DEPTH);
-						_EnableDepthWrite(true);
+						//_EnableDepthWrite(true);
 						//_EnableExt(IEXT_COLOR);
 					}
 					mat->Unlock();
@@ -462,7 +467,7 @@ namespace Initial
 			{
 				pp->GetShader()->SetParameterMatrix44("InvProjection",invProj);
 
-				IArray<INode*> lights = m_pDevice->GetSceneManager()->GetNodeByClass(INodeLight::GetStaticClass(),true);
+				IList<INode*> lights = m_pDevice->GetSceneManager()->GetNodeByClass(INodeLight::GetStaticClass(),true);
 
 				_SetClearColor(IColor(0,0,0,0));
 				BeginRender(m_pDeferredLightBuffer,false,true);
@@ -485,34 +490,47 @@ namespace Initial
 							//ILogger::LogDebug("BBox %f %f %f %f\n",min.x,min.y,max.x,max.y);
 							//m_iShadowMapSize
 							
-							for (int l=0;l<6;l++)
+							int pass=1;
+							if (m_bShadowEnable)
 							{
-								//Render shadow map 
-								IMatrix lightView = light->GetProjectionMatrix(l);//GetPerspectiveMatrix(90,1,0.01,light->GetRadius());
-								IFrustum frustum;
-								frustum.SetFrustumFromMatrix(lightView);
-								UseMaterial(NULL);
-								_SetColor(IColor(1,1,1,1));
-								_EnableDepthWrite(true);
-								_EnableColorWrite(false);
-								_EnableDepthTest(true);
-								BeginRender(m_pShadowMapBuffer);
-									_SetProjectionMatrix();
-									_PushMatrix();								
-										_SetMatrix(lightView);
-										_SetModelViewMatrix();
-										_LoadIdentity();
-											Render(NULL,&frustum,IRF_SHADOW_MAP_RENDER);
+								pass=6;
+							}
+							IMatrix lightView;
+							for (int l=0;l<pass;l++)
+							{
+								if (m_bShadowEnable)
+								{
+									//Render shadow map 
+									lightView = light->GetProjectionMatrix(l);//GetPerspectiveMatrix(90,1,0.01,light->GetRadius());
+									IFrustum frustum;
+									frustum.SetFrustumFromMatrix(lightView);
+									UseMaterial(NULL);
+									_SetColor(IColor(1,1,1,1));
+									_EnableDepthWrite(true);
+									_EnableColorWrite(false);
+									_EnableDepthTest(true);
+									BeginRender(m_pShadowMapBuffer);
 										_SetProjectionMatrix();
-									_PopMatrix();
-								EndRender();
+										_PushMatrix();								
+											_SetMatrix(lightView);
+											_SetModelViewMatrix();
+											_LoadIdentity();
+												Render(NULL,&frustum,IRF_SHADOW_MAP_RENDER);
+											_SetProjectionMatrix();
+										_PopMatrix();
+									EndRender();
+								}
 
 								UseMaterial(pp);
 								pp->GetShader()->SetParameter3Float("LightPos",light->GetPosition());
 								pp->GetShader()->SetParameter3Float("LightColor",light->GetColor());
 								pp->GetShader()->SetParameterFloat("LightRadius",light->GetRadius());
-								pp->GetShader()->SetParameterMatrix44("HalfLightProjection",halfMatrix*lightView);
-								pp->GetShader()->SetParameterMatrix44("LightProjection",lightView);
+								pp->GetShader()->SetParameterInt("ShadowEnable",m_bShadowEnable);
+								if (m_bShadowEnable)
+								{
+									pp->GetShader()->SetParameterMatrix44("LightProjection",lightView);
+									pp->GetShader()->SetParameterMatrix44("HalfLightProjection",halfMatrix*lightView);
+								}
 
 								m_pTextureManager->BindTexture(m_pFrameNormalTexture,0);
 								m_pTextureManager->BindTexture(m_pFrameSpecularTexture,1);
@@ -550,6 +568,7 @@ namespace Initial
 
 				m_pTextureManager->BindTexture(m_pFrameDiffuseTexture,1);
 				m_pTextureManager->BindTexture(m_pFrameEmissiveTexture,2);
+				m_pTextureManager->BindTexture(m_pFrameNormalTexture,3);
 				
 				_DrawQuadPP();
 			EndRender();
@@ -764,7 +783,7 @@ namespace Initial
 						//Create light info texture
 						//m_pTextureManager->SetTextureData(LightInfo,lightData,ILight::m_aLights.Count()+1,1,IF_RGBA32F,IIF_RGB);
 						
-						IArray<INode*> lights = m_pDevice->GetSceneManager()->GetNodeByClass(INodeLight::GetStaticClass(),true);
+						IList<INode*> lights = m_pDevice->GetSceneManager()->GetNodeByClass(INodeLight::GetStaticClass(),true);
 
 						for (unsigned int j=0;j<lights.Count();j++)
 						{
@@ -1148,14 +1167,14 @@ namespace Initial
 					_StartTriangleDraw(false);			
 						_DrawTriangle(&triBR[0]);		
 						_DrawTriangle(&triBR[1]);
-					_EndPolyDraw();
+					_EndTriangleDraw();
 
 					m_pTextureManager->BindTexture(m_pFrameDiffuseTexture,0);
 
 					_StartTriangleDraw(false);			
 						_DrawTriangle(&triBL[0]);		
 						_DrawTriangle(&triBL[1]);
-					_EndPolyDraw();
+					_EndTriangleDraw();
 
 					//m_pTextureManager->BindTexture(m_pBlurTexture,0);
 					m_pTextureManager->BindTexture(m_pFrameNormalTexture,0);
@@ -1163,7 +1182,7 @@ namespace Initial
 					_StartTriangleDraw(false);			
 						_DrawTriangle(&triTL[0]);		
 						_DrawTriangle(&triTL[1]);
-					_EndPolyDraw();		
+					_EndTriangleDraw();		
 
 					m_pTextureManager->BindTexture(m_pFrameSpecularTexture,0);
 					//m_pTextureManager->BindTexture(m_pFrameEmissiveTexture,0);
@@ -1171,7 +1190,7 @@ namespace Initial
 					_StartTriangleDraw(false);			
 						_DrawTriangle(&triTR[0]);		
 						_DrawTriangle(&triTR[1]);
-					_EndPolyDraw();
+					_EndTriangleDraw();
 				}
 			EndRender();
 

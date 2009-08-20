@@ -23,6 +23,14 @@ namespace Initial
 			Values.Clear();
 		}
 
+		IConfigINI::~IConfigINI()
+		{
+			for (UINT i=0;i<Values.Count();i++)
+			{
+				delete Values[i];
+			}
+		}
+
 		bool IConfigINI::ExistFile()
 		{
 			IFileStream file(m_sFilename,IFileStream::IOM_READ);

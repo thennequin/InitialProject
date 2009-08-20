@@ -54,6 +54,7 @@ namespace Initial
 
 		void AddProperty(Core::IString Name,PropertyType Type,void *var=NULL,Core::IList<Core::IString>& choices=Core::IList<Core::IString>());
 		IPropertyList& GetPropertyList();
+		IProperty *GetProperty(Core::IString name);
 		void SetPropertyValue(Core::IString Name,Core::IString Value);
 		virtual void OnPropertyChange(Core::IString name);
 

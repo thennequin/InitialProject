@@ -11,7 +11,7 @@
 
 #include "Initial/Core/IString.h"
 #include "Initial/Core/IImage.h"
-#include "Initial/IRessource.h"
+//#include "Initial/IRessource.h"
 
 namespace Initial
 {
@@ -40,20 +40,20 @@ namespace Initial
 				BT_MIRROR,
 			};
 
-			enum DXTFormat
+			enum ITXFormat
 			{
-				DXTF_RGBA=0,
-				DXTF_DXT1,
-				DXTF_DXT1nm,
-				DXTF_DXT1a,
-				DXTF_DXT3,
-				DXTF_DXT5,
-				DXTF_DXT5nm,
-				DXTF_ATI1,
-				DXTF_ATI2_3Dc,
-
-				DXTF_RGB,
-				DXTF_GREY,
+				ITXF_GREY=0,
+				ITXF_AL, // Alpha and Grey
+				ITXF_RGB,
+				ITXF_RGBA,
+				ITXF_DXT1,
+				ITXF_DXT1nm,
+				ITXF_DXT1a,
+				ITXF_DXT3,
+				ITXF_DXT5,
+				ITXF_DXT5nm,
+				ITXF_ATI1,
+				ITXF_ATI2_3Dc,				
 			};
 
 			enum OutputQuality
@@ -70,7 +70,7 @@ namespace Initial
 				{
 					type=IT_COLOR;
 					border=BT_REPEAT;
-					format=DXTF_DXT5;
+					format=ITXF_DXT5;
 					mipmaps=true;
 					quality=OQ_NORMAL;
 					GPUacce=true;
@@ -80,7 +80,7 @@ namespace Initial
 
 				ImageType type;
 				BorderType border;
-				DXTFormat format;
+				ITXFormat format;
 				bool mipmaps;
 				OutputQuality quality;
 				bool GPUacce;
@@ -97,7 +97,7 @@ namespace Initial
 			Core::IString		GetName();
 			int			GetWidth();
 			int			GetHeight();
-			DXTFormat	GetFormat();
+			ITXFormat	GetFormat();
 			Core::IString		GetOrigFilename();
 			time_t		GetOrigFileTime();
 			void*		GetData();
@@ -147,7 +147,7 @@ namespace Initial
 			//Options
 			ImageType	m_iType;
 			BorderType	m_iBorder;
-			DXTFormat	m_iFormat;
+			ITXFormat	m_iFormat;
 			bool		m_bZip;
 
 			int			m_iMipMapsCount;

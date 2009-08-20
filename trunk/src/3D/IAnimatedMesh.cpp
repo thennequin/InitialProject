@@ -276,7 +276,7 @@ void IAnimatedMesh::Render(IRenderDriver *Device, unsigned int Flags)
 
 								dev->_StartTriangleDraw(false);
 									dev->_DrawTriangle(&tri);
-								dev->_EndPolyDraw();
+								dev->_EndTriangleDraw();
 							}
 
 						}

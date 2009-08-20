@@ -4,6 +4,14 @@
 using namespace Initial;
 using namespace Initial::Core;
 using namespace Initial::Video;
+using namespace Initial::GUI;
+
+const float AXIS_HEIGHT = 0.7;
+const float CIRCLE_HEIGHT = 0.9; // to 1
+const float CUBE_HEIGHT = 0.8; // to 1
+const int CIRCLE_QUALITY = 32;
+const float SCALE_FOV = 42.0;
+const float SCALE_MIN = 0.1;
 
 BEGIN_EVENT_TABLE(InitialPanel, wxWindow)
 	EVT_SIZE(InitialPanel::OnSize)
@@ -20,128 +28,116 @@ END_EVENT_TABLE()
 InitialPanel::InitialPanel(wxWindow *parent, wxWindowID winid, const wxPoint& pos, const wxSize& size)
 : wxWindow(parent,winid,pos,size)
 {
-	/*IMatrix test(4,4);
-	test.MakeIdentity();
-	test(0,0)=5.0;
-	test(1,0)=7.0;
-	test(0,3)=3.0;
-	IMatrix test2(4,4);
-	test2.MakeIdentity();
-	test2(0,0)=7.0;
-	test2(1,0)=3.0;
-	test2(0,3)=5.0;
-	IMatrix test3(4,4);
-	test3.MakeIdentity();
-	test3(0,0)=4.0;
-	test3(1,1)=2.0;
-	test3(0,3)=9.0;
-
-	(test3*test*test2).Print();
-	printf("\n");
-	(test3*(test*test2)).Print();*/
-
 	m_pDevice = NULL;
-	WXWidget handle =  GetHandle();
+	m_lTime=0;
+	m_fTime=0;
+	m_bPlay=true;
+	m_iTool=TT_NONE;
+
+	WXWidget handle = GetHandle();
 	m_pDevice = CreateDeviceEx(IVDT_OPENGL,32,&handle);
+	m_bRender=false;
+	//ASSERT(m_pDevice);
+	if (!m_pDevice)
+		wxLogError("Error for creating render");
 
-	/*class MyOutput : public Format::IImageITX::ITXOutput
-	{
-	public:
-		MyOutput()
-		{
-			Time=GetTickCount();
-		}
-
-		virtual void Progress(int current)
-		{
-			if (GetTickCount()-Time>30)
-			{
-				printf("\b\b\b\b\b\b\b\b%.2f",((float)current/Total)*100.0);
-				Time=GetTickCount();
-			}
-		}
-
-		virtual void SetTotal(int totalSize)
-		{
-			Total=totalSize;
-		}
-
-		int Total;
-		long Time;
-	};
-	
-	Format::IImageITX image;
-	Format::IImageITX::ITXParameter params;
-	params.output = new MyOutput;
-	//params.format=Format::IImageITX::DXTF_RGBA;
-	params.format=Format::IImageITX::DXTF_DXT5;
-	params.quality=Format::IImageITX::OQ_FAST;
-	params.mipmaps=false;
-
-	/*image.CreateFromImage("TextureSrc/brick.png",params);
-	image.Save("Textures/brick_temp.itx");
-	IImage myimage = image.GetImage();
-	myimage.Save("test.tga");
-
-	IImage myimage2("image.bmp");
-	myimage2.Save("image2.tga");*/
-
-	//Format::IImageITX *imagebak=Format::IImageITX::LoadITX("marcus.itx");
-
-	/*printf("Object count %d\n",Initial::IObject::ObjectsClass.Count());
-	for (UINT i=0;i<IObject::ObjectsClass.Count();i++)
-		printf("%s\n",IObject::ObjectsClass[i]->GetName());*/
-
-	//m_pDevice->GetRenderDriver()->SetCurrent();
-	//m_pDevice->SetShowMouse(false);
-	//m_pDevice->SetMouseLock(true);
+	if (m_pDevice)
+		m_EmissiveVertexAlpha = m_pDevice->GetRessourceManager()->LoadMaterial("Materials/engine/diffuse-vertex-alpha.ima");
 
 	m_pCamera = new ICameraFPS(90,m_pDevice->GetWidth()/(float)m_pDevice->GetHeight());
 	m_pCamera->Move(0,0,-2);
 
 	Timer.SetOwner(this,wxID_ANY);
-	//Timer.Start(15);
 	Start();
-
-	m_lTime=0;
-	m_fTime=0;
-	m_bPlay=true;
 }
 
 void InitialPanel::OnPaint(wxPaintEvent& event)
 {
-	wxPaintDC dc(this);
-
-	if (m_pDevice)
+	if (m_bRender)
 	{
-		m_pDevice->Run();
-		m_pDevice->GetRenderDriver()->SetCurrent();
+		wxPaintDC dc(this);
 
-		/*m_pDevice->GetRenderDriver()->BeginRender();
-		m_pDevice->GetRenderDriver()->SetCamera(m_pCamera);
-			m_pDevice->GetRenderDriver()->Render(NULL,NULL);
-			animObject->Render(m_pDevice->GetRenderDriver());
-		m_pDevice->GetRenderDriver()->EndRender();*/
+		if (m_pDevice)
+		{
+			m_pDevice->Run();
+			m_pDevice->GetRenderDriver()->SetCurrent();
+
+			/*m_pDevice->GetRenderDriver()->BeginRender();
+			m_pDevice->GetRenderDriver()->SetCamera(m_pCamera);
+				m_pDevice->GetRenderDriver()->Render(NULL,NULL);
+				animObject->Render(m_pDevice->GetRenderDriver());
+			m_pDevice->GetRenderDriver()->EndRender();*/
 
 
-		/*long lTime = GetTickCount();
-		long diff = lTime - m_lTime;
-		m_lTime=lTime;
-		if (m_bPlay)
-			m_fTime +=diff/1000.0;
+			/*long lTime = GetTickCount();
+			long diff = lTime - m_lTime;
+			m_lTime=lTime;
+			if (m_bPlay)
+				m_fTime +=diff/1000.0;
 
-		m_pLight->SetPosition(IVector3D(-5.8+3,3+2.6,0.7)+IVector3D(2*cos(m_fTime),0,2*sin(m_fTime)));*/
+			m_pLight->SetPosition(IVector3D(-5.8+3,3+2.6,0.7)+IVector3D(2*cos(m_fTime),0,2*sin(m_fTime)));*/
 
-		m_pDevice->GetRenderDriver()->RenderCamera(m_pCamera);
+			m_pDevice->GetRenderDriver()->RenderCamera(m_pCamera);
 
-		m_pDevice->GetRenderDriver()->SwapBuffer();
-		//SwapBuffers((HDC) ::GetDC((HWND) GetHWND()));
+			if (m_iTool!=TT_NONE && m_iTool!=TT_SELECT)
+			{
+				float ratio=ratio = (float)GetSize().x/GetSize().y;
+
+				IMatrix cameraMatrix(4,4);
+				if (m_pCamera)
+				{
+					m_pCamera->SetRatio(ratio);
+					cameraMatrix = m_pCamera->GetUpdateViewMatrix();
+				}else
+					cameraMatrix.MakeIdentity(4);
+
+				m_pDevice->GetRenderDriver()->_SetProjectionMatrix();
+				m_pDevice->GetRenderDriver()->_SetMatrix(cameraMatrix);
+
+				IVector3D center;// = selectedObj->GetPosition();
+
+				IMatrix projMatInv;
+				cameraMatrix.Inv(projMatInv);
+				IVector2D viewport(GetSize().x, GetSize().y);
+				IVector3D camPos = projMatInv*IVector3D(0,0,0);
+				IVector3D dist = center-camPos;
+				float scale = dist.Length()/(m_pCamera->GetFov()/SCALE_FOV); // 36 = 180/10 * 2
+				scale = scale<SCALE_MIN ? SCALE_MIN : scale;
+
+				//m_pDevice->GetRenderDriver()->_PushMatrix();
+				m_pDevice->GetRenderDriver()->_Translate(center.x,center.y,center.z);
+				//Rotate
+				m_pDevice->GetRenderDriver()->_Scale(scale,scale,scale);
+
+				m_pDevice->GetRenderDriver()->_UseFrameBuffer(0);
+				m_pDevice->GetRenderDriver()->_ClearBuffer(IVB_DEPTH);
+				//m_pDevice->GetRenderDriver()->BeginRender();
+				//DrawAxis();
+				//m_pDevice->GetRenderDriver()->EndRender();
+
+				switch (m_iTool)
+				{
+				case TT_MOVE:
+					DrawAxis();
+					break;
+				case TT_ROTATE:
+					break;
+				case TT_SCALE:
+					break;
+				}
+			}
+
+			m_pDevice->GetRenderDriver()->SwapBuffer();
+			//SwapBuffers((HDC) ::GetDC((HWND) GetHWND()));
+		}
 	}
 }
 
 void InitialPanel::OnMouseEvent(wxMouseEvent &event)
 {
-	SetFocus();
+	if (event.GetButton())
+		SetFocus();
+
 	if (m_pDevice)
 	{
 		//m_pDevice->OnCustomEvent(IDevice::IET_FOCUS,1,0);
@@ -258,9 +254,106 @@ IDevice* InitialPanel::GetDevice()
 void InitialPanel::Start()
 {
 	Timer.Start(15);
+	m_bRender=true;
 }
 
 void InitialPanel::Stop()
 {
+	m_bRender=false;
 	Timer.Stop();
 }
+
+void InitialPanel::SetTool(ToolType tool)
+{
+	m_iTool=tool;
+}
+
+InitialPanel::ToolType InitialPanel::GetTool()
+{
+	return m_iTool;
+}
+
+void InitialPanel::DrawAxis()
+{
+	if (m_pDevice)
+	{
+		Video::IRenderDriver *render = m_pDevice->GetRenderDriver();
+		if (render)
+		{			
+			render->UseMaterial(m_EmissiveVertexAlpha);
+			//render->UseMaterial(NULL);
+			//Draw axis 
+			render->_SetColor(IColor(1,0,0));
+			DrawArrow(AXIS_HEIGHT,0.05);
+
+			render->_SetColor(IColor(0,1,0));
+			render->_PushMatrix();
+			render->_RotateZ(90);
+			DrawArrow(AXIS_HEIGHT,0.05);
+			render->_PopMatrix();
+
+			render->_SetColor(IColor(0,0,1));
+			render->_PushMatrix();
+			render->_RotateY(-90);
+			DrawArrow(AXIS_HEIGHT,0.05);
+			render->_PopMatrix();
+
+			ITriangle tri;
+			tri.SetVertex(0,IVector3D(0,0,0));
+			//Draw plan
+			render->_SetColor(IColor(0,1,0));
+			render->_DrawLine(IVector3D(AXIS_HEIGHT,0,0),IVector3D(0,0,AXIS_HEIGHT));
+			tri.SetVertex(1,IVector3D(AXIS_HEIGHT,0,0));
+			tri.SetVertex(2,IVector3D(0,0,AXIS_HEIGHT));
+			render->_StartTriangleDraw(false);
+			render->_DrawTriangle(&tri);
+			render->_EndTriangleDraw();			
+
+			render->_SetColor(IColor(0,0,1));
+			render->_DrawLine(IVector3D(AXIS_HEIGHT,0,0),IVector3D(0,AXIS_HEIGHT,0));
+			tri.SetVertex(1,IVector3D(AXIS_HEIGHT,0,0));
+			tri.SetVertex(2,IVector3D(0,AXIS_HEIGHT,0));
+			render->_StartTriangleDraw(false);
+			render->_DrawTriangle(&tri);
+			render->_EndTriangleDraw();
+
+			render->_SetColor(IColor(1,0,0));
+			render->_DrawLine(IVector3D(0,AXIS_HEIGHT,0),IVector3D(0,0,AXIS_HEIGHT));
+			tri.SetVertex(1,IVector3D(0,AXIS_HEIGHT,0));
+			tri.SetVertex(2,IVector3D(0,0,AXIS_HEIGHT));
+			render->_StartTriangleDraw(false);
+			render->_DrawTriangle(&tri);
+			render->_EndTriangleDraw();
+
+			//DrawArrow(AXIS_HEIGHT,0.05);
+		}
+	}
+}
+
+void InitialPanel::DrawArrow(float arrowheight,float width)
+{
+	m_pDevice->GetRenderDriver()->_SetLineSize(2.0);
+	m_pDevice->GetRenderDriver()->_DrawLine(IVector3D(0,0,0),IVector3D(arrowheight,0,0));
+	m_pDevice->GetRenderDriver()->_SetLineSize(1.0);
+
+	ITriangle tri;
+	m_pDevice->GetRenderDriver()->_StartTriangleDraw(false);
+		tri.SetVertex(0,IVector3D(arrowheight,width,-width));
+		tri.SetVertex(1,IVector3D(arrowheight,-width,-width));
+		tri.SetVertex(2,IVector3D(1,0,0));
+		m_pDevice->GetRenderDriver()->_DrawTriangle(&tri);
+
+		tri.SetVertex(0,IVector3D(arrowheight,width,width));
+		tri.SetVertex(1,IVector3D(arrowheight,-width,width));
+		m_pDevice->GetRenderDriver()->_DrawTriangle(&tri);
+
+		tri.SetVertex(0,IVector3D(arrowheight,width,-width));
+		tri.SetVertex(1,IVector3D(arrowheight,width,width));
+		m_pDevice->GetRenderDriver()->_DrawTriangle(&tri);
+
+		tri.SetVertex(0,IVector3D(arrowheight,-width,-width));
+		tri.SetVertex(1,IVector3D(arrowheight,-width,width));
+		m_pDevice->GetRenderDriver()->_DrawTriangle(&tri);
+	m_pDevice->GetRenderDriver()->_EndTriangleDraw();
+}
+

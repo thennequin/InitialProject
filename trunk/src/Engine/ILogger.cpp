@@ -33,6 +33,7 @@ namespace Initial
 		{
 			RegisterLogger(new ILoggerConsole);
 			RegisterLogger(new ILoggerDebugger);
+			RegisterLogger(new ILoggerFile);
 		}
 
 		for (UINT i=0;i<m_pRegistred.Count();i++)
@@ -107,5 +108,26 @@ namespace Initial
 
 		//if (type==LT_ERROR && IsDebuggerPresent())
 		//	DebugBreak();
+	}
+
+	ILoggerFile::ILoggerFile() :
+		m_fStdOut("Log.txt",IO::IFileStream::IOM_WRITE),
+		m_fStdErr("LogError.txt",IO::IFileStream::IOM_WRITE)
+	{
+	}
+
+	void ILoggerFile::Output(LogType type, IString output)
+	{		
+		switch (type)
+		{
+		case LT_MESSAGE:
+		case LT_WARNING:
+		case LT_DEBUG:
+			m_fStdOut.Printf("%s",output.c_str());
+			break;
+		case LT_ERROR:
+			m_fStdErr.Printf("%s",output.c_str());
+			break;
+		}
 	}
 };

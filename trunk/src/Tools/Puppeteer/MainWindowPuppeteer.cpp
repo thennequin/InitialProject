@@ -1,18 +1,22 @@
 
-#include "MainWindow.h"
+#include "MainWindowPuppeteer.h"
+
+#include "Initial/Node/INodeText.h"
 
 #include "wx/filename.h" // filename support
 //#include "wx/dirdlg.h" // filename support
 
-BEGIN_EVENT_TABLE(MainWindow, wxFrame)
-	/*EVT_BUTTON(MW_OPEN_FILE,MainWindow::OnOpenFile)
-	EVT_BUTTON(MW_AUTO,MainWindow::OnAuto)
-	EVT_BUTTON(MW_CONVERT,MainWindow::OnConvert)
+#include <vector>
+
+BEGIN_EVENT_TABLE(MainWindowPuppeteer, wxFrame)
+	/*EVT_BUTTON(MW_OPEN_FILE,MainWindowPuppeteer::OnOpenFile)
+	EVT_BUTTON(MW_AUTO,MainWindowPuppeteer::OnAuto)
+	EVT_BUTTON(MW_CONVERT,MainWindowPuppeteer::OnConvert)
 	EVT_RADIOBOX(wxID_ANY,OnRadio)
 
-	EVT_BUTTON(MW_OPEN_FOLDER,MainWindow::OnOpenFolder)
-	EVT_BUTTON(MW_START,MainWindow::OnStart)
-	EVT_BUTTON(MW_REBUILD,MainWindow::OnStart)*/
+	EVT_BUTTON(MW_OPEN_FOLDER,MainWindowPuppeteer::OnOpenFolder)
+	EVT_BUTTON(MW_START,MainWindowPuppeteer::OnStart)
+	EVT_BUTTON(MW_REBUILD,MainWindowPuppeteer::OnStart)*/
 
 	EVT_MENU(wxID_ANY,OnMenu)
 END_EVENT_TABLE()
@@ -20,7 +24,7 @@ END_EVENT_TABLE()
 using namespace Initial;
 using namespace Initial::Core;
 
-MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& size)
+MainWindowPuppeteer::MainWindowPuppeteer(const wxString& title, const wxPoint& pos, const wxSize& size)
  : wxFrame((wxFrame*) NULL, -1, title, pos, size,wxDEFAULT_FRAME_STYLE/*&~wxRESIZE_BORDER*/)
 {
 	m_mgr.SetManagedWindow(this);
@@ -58,6 +62,35 @@ MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& 
 		ClearTree();
 	}
 
+	m_pProp = new ObjectProperty(this);
+	if (m_pProp)
+	{
+		m_pProp->SetSize(300,150);
+		m_mgr.AddPane(m_pProp,wxAuiPaneInfo().
+			Name(wxT("Properties")).Caption(wxT("Properties")).
+			Left().Bottom().BestSize(300,150).
+			CloseButton(false).MaximizeButton(true).
+			Dockable(true));
+	}
+
+	std::vector<std::vector<Initial::Core::IVector3D>> test, test2;
+	std::vector<Initial::Core::IVector3D> val;
+	Initial::Core::IVector3D val2;
+	test.push_back(val);
+	test.back().push_back(val2);
+	test.back().push_back(val2);
+	test2=test;
+
+	printf("%d\n",test.size());
+	printf("%d\n",test.back().size());
+
+
+	/*Initial::Core::IList<Initial::Core::IList<Initial::Core::IVector3D>> test, test2;
+	test.PushBack(Initial::Core::IList<Initial::Core::IVector3D>());
+	test.Last()->GetData().PushBack(Initial::Core::IVector3D());
+	test2=test;*/
+
+	//m_pInitial=NULL;
 	m_pInitial = new InitialPanel(this,wxID_ANY,wxPoint(0,0),wxSize(640,480));
 	if (m_pInitial)
 	{
@@ -121,12 +154,12 @@ MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& 
 		_3ds=NULL;
 		_3ds2=NULL;
 		_3ds3=NULL;
-		_3ds = I3DLoad3DS::Load3DS("marcus.3ds",m_pDevice->GetRenderDriver());
-		_3ds2 = I3DLoad3DS::Load3DS("car.3ds",m_pDevice->GetRenderDriver());
-		//_3ds3 = I3DLoad3DS::Load3DS("teapot.3ds",m_pDevice->GetRenderDriver());
-		//_3ds3 = I3DLoad3DS::Load3DS("ElephantBody.3ds",m_pDevice->GetRenderDriver());
-		//_3ds3 = I3DLoad3DS::Load3DS("TIEf3DS8.3ds",m_pDevice->GetRenderDriver());
-		//_3ds3 = I3DLoad3DS::Load3DS("cube.3ds",m_pDevice->GetRenderDriver());
+		_3ds = I3DLoad::Load("marcus.3ds",m_pDevice->GetRenderDriver());
+		_3ds2 = I3DLoad::Load("car.3ds",m_pDevice->GetRenderDriver());
+		//_3ds3 = I3DLoad::Load("teapot.3ds",m_pDevice->GetRenderDriver());
+		//_3ds3 = I3DLoad::Load("ElephantBody.3ds",m_pDevice->GetRenderDriver());
+		//_3ds3 = I3DLoad::Load("TIEf3DS8.3ds",m_pDevice->GetRenderDriver());
+		//_3ds3 = I3DLoad::Load("cube.3ds",m_pDevice->GetRenderDriver());
 
 
 		if (_3ds)
@@ -174,10 +207,25 @@ MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& 
 
 		//m_pDevice->GetRessourceManager()->LoadMaterial("materials/elephant.ima")->LoadV2("testv2.ima");
 
-		for (UINT i=0;i<IObject::ObjectsClass.Count();i++)
+		INodeText *text = (INodeText*)m_pDevice->GetSceneManager()->AddNodeByClass("INodeText");
+		if (text)
+		{
+			printf("NodeText created\n");
+			text->SetText("Super message de la mort\nHihihi!!!");
+			text->SetText("<--\n\tInitial engine\t0.1\n\tBy CameleonTH\n-->");
+			Initial::GUI::IFontDrawParam& params=text->GetParams();
+			//params.m_bOutline=false;
+			params.m_fOutlineSize=2.0;
+			//params.m_fSize=2.0;
+			params.m_cOutlineColor.Set(1.0,0,0,1.0);
+			params.m_bShadow=false;
+			//params.m_bSolid=false;
+		}
+
+		/*for (UINT i=0;i<IObject::ObjectsClass.Count();i++)
 		{
 			printf("%s\n",IObject::ObjectsClass[i]->GetName());
-		}
+		}*/
 	}
 
 	m_pStatusBar = new wxStatusBar(this,wxID_ANY,0);
@@ -193,20 +241,21 @@ MainWindow::MainWindow(const wxString& title, const wxPoint& pos, const wxSize& 
 	//SetIcon(wxIcon("IDI_ICON"));
 }
 
-MainWindow::~MainWindow()
+MainWindowPuppeteer::~MainWindowPuppeteer()
 {
 	m_mgr.UnInit();
 }
 
-void MainWindow::OnMenu(wxCommandEvent& event)
+void MainWindowPuppeteer::OnMenu(wxCommandEvent& event)
 {
 	if (event.GetId()>=MW_MENU_RENDER_DEFAULT && event.GetId()<=MW_MENU_RENDER_BLOOM)
 	{
-		m_pInitial->GetDevice()->GetRenderDriver()->SetOutputTexture(event.GetId()-MW_MENU_RENDER_DEFAULT);
+		if (m_pInitial)
+			m_pInitial->GetDevice()->GetRenderDriver()->SetOutputTexture(event.GetId()-MW_MENU_RENDER_DEFAULT);
 	}
 }
 
-void MainWindow::ClearTree()
+void MainWindowPuppeteer::ClearTree()
 {
 	if (m_pTree)
 	{

@@ -13,6 +13,7 @@ namespace Initial
 		//m_pRessourceManager = IRessourceManager::GetRessourceManager();
 		m_pRessourceManager = new IRessourceManager(this);
 		m_pSceneManager = new ISceneManager(this);
+		m_pFontManager = new GUI::IFontManager(this);
 		m_pRessourceManager->Run();
 	}
 
@@ -30,6 +31,11 @@ namespace Initial
 	{
 		return m_pSceneManager;
 	}	
+
+	GUI::IFontManager *IDevice::GetFontManager()
+	{
+		return m_pFontManager;
+	}
 
 	int IDevice::GetWidth()
 	{
