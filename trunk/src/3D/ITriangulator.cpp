@@ -68,7 +68,7 @@ void ITriangulator::Triangulate(std::vector<ITriangle>& ret)
 				coord[0]=m_aContours[i][j].GetX();
 				coord[1]=m_aContours[i][j].GetY();
 				coord[2]=m_aContours[i][j].GetZ();
-				gluTessVertex(tobj,coord,m_aContours[i][j]);
+				gluTessVertex(tobj,coord,&m_aContours[i][j]);
 			}
 			gluTessEndContour(tobj);
 		}
@@ -81,9 +81,10 @@ void ITriangulator::Triangulate(std::vector<ITriangle>& ret)
 
 void CALLBACK ITriangulator::vertexCallback(GLvoid *vertex)
 {
-	IVector3D vert(*(IVector3D*)vertex);
-	if (vert==NULL)
+	if (vertex==NULL)
 		return;
+
+	IVector3D vert(*(IVector3D*)vertex);
 
 	//printf("	vertex callback %f %f %f\n",vert[0],vert[1],vert[2]);
 

@@ -58,6 +58,7 @@ protected:
 	wxTreeItemId m_tRoot;
 
 	TreeNode    *m_draggedItem;       // the item being dragged
+	wxArrayTreeItemIds m_aItemSelected;
 };
 
 #endif

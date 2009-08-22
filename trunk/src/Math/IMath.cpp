@@ -241,17 +241,17 @@ namespace Initial
 			if (mat.GetWidth()==3 && mat.GetHeight()==3)
 			{
 				IMatrix matVec(1,3);
-				matVec[0][0]=vec[0];
-				matVec[0][1]=vec[1];
-				matVec[0][2]=vec[2];
+				matVec[0][0]=vec.x;
+				matVec[0][1]=vec.y;
+				matVec[0][2]=vec.z;
 				matVec=mat*matVec;
 				return IVector3D(matVec[0][0],matVec[0][1],matVec[0][2]);
 			}else if (mat.GetWidth()==4 && mat.GetHeight()==4)
 			{
 				IMatrix matVec(1,4);
-				matVec[0][0]=vec[0];
-				matVec[0][1]=vec[1];
-				matVec[0][2]=vec[2];
+				matVec[0][0]=vec.x;
+				matVec[0][1]=vec.y;
+				matVec[0][2]=vec.z;
 				matVec[0][3]=1.0;
 				matVec=mat*matVec;
 				return IVector3D(matVec[0][0]/matVec[0][3],matVec[0][1]/matVec[0][3],matVec[0][2]/matVec[0][3]);
@@ -264,17 +264,17 @@ namespace Initial
 			if (mat.GetWidth()==3 && mat.GetHeight()==3)
 			{
 				IMatrix matVec(3,1);
-				matVec[0][0]=vec[0];
-				matVec[1][0]=vec[1];
-				matVec[2][0]=vec[2];
+				matVec[0][0]=vec.x;
+				matVec[1][0]=vec.y;
+				matVec[2][0]=vec.z;
 				matVec=matVec*mat;
 				return IVector3D(matVec[0][0],matVec[1][0],matVec[2][0]);
 			}else if (mat.GetWidth()==4 && mat.GetHeight()==4)
 			{
 				IMatrix matVec(4,1);
-				matVec[0][0]=vec[0];
-				matVec[1][0]=vec[1];
-				matVec[2][0]=vec[2];
+				matVec[0][0]=vec.x;
+				matVec[1][0]=vec.y;
+				matVec[2][0]=vec.z;
 				matVec[3][0]=1.0;
 				matVec=matVec*mat;
 				return IVector3D(matVec[0][0]/matVec[3][03],matVec[1][0]/matVec[3][0],matVec[2][0]/matVec[3][0]);
@@ -349,17 +349,17 @@ namespace Initial
 
 			IVector3D normal(0.0,0.0,0.0);
 
-			normal[0] = (vert[0][1] - vert[1][1]) * (vert[0][2] - vert[1][2])
-						+(vert[1][1] - vert[2][1]) * (vert[1][2] - vert[2][2])
-						+(vert[2][1] - vert[0][1]) * (vert[2][2] - vert[0][2]);
+			normal.x = (vert[0].y - vert[1].y) * (vert[0].z - vert[1].z)
+						+(vert[1].y - vert[2].y) * (vert[1].z - vert[2].z)
+						+(vert[2].y - vert[0].y) * (vert[2].z - vert[0].z);
 
-			normal[1] = (vert[0][2] - vert[1][2]) * (vert[0][0] - vert[1][0])
-						+(vert[1][2] - vert[2][2]) * (vert[1][0] - vert[2][0])
-						+(vert[2][2] - vert[0][2]) * (vert[2][0] - vert[0][0]);
+			normal.y = (vert[0].z - vert[1].z) * (vert[0].x - vert[1].x)
+						+(vert[1].z - vert[2].z) * (vert[1].x - vert[2].x)
+						+(vert[2].z - vert[0].z) * (vert[2].x - vert[0].x);
 
-			normal[2] = (vert[0][0] - vert[1][0]) * (vert[0][1] - vert[1][1])
-						+(vert[1][0] - vert[2][0]) * (vert[1][1] - vert[2][1])
-						+(vert[2][0] - vert[0][0]) * (vert[2][1] - vert[0][1]);
+			normal.z = (vert[0].x - vert[1].x) * (vert[0].y - vert[1].y)
+						+(vert[1].x - vert[2].x) * (vert[1].y - vert[2].y)
+						+(vert[2].x - vert[0].x) * (vert[2].y - vert[0].y);
 
 			return normal;
 		}
@@ -514,14 +514,18 @@ namespace Initial
 
 		void MakeRayFromMouseOnScreen(IVector2D point, IMatrix projection_4x4, IVector2D viewport, IVector3D& start, IVector3D& dir)
 		{
-			/*IVector3D res;
-			IMatrix modelviewIdent(4,4);
-			modelviewIdent.MakeIdentity(4);
-			UnProject(projection_4x4,modelviewIdent,viewport,Vector3D(point.GetU(),point.GetV(),0.0),res);
-			linestart=res;
-			UnProject(projection_4x4,modelviewIdent,viewport,Vector3D(point.GetU(),point.GetV(),0.01),res);
-			dir=res-linestart;
-			dir.Normalize();*/
+			IMatrix inv;
+			IVector3D winpos;
+			projection_4x4.Inv(inv);
+			//Start
+			winpos.Set(point.x/viewport.x,1.0-point.y/viewport.y,0.0);
+			winpos=winpos*2-1;
+			start=inv*winpos;
+			//Dir
+			winpos.Set(point.x/viewport.x,1.0-point.y/viewport.y,0.1);
+			winpos=winpos*2-1;
+			dir=inv*winpos-start;
+			dir.Normalize();
 		}
 	}
 }

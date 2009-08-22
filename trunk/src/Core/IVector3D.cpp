@@ -196,16 +196,25 @@ namespace Initial
 			return res;
 		}
 
+		const IVector3D IVector3D::operator- (const float scale) const
+		{
+			IVector3D res;
+			res.x=x-scale;
+			res.y=y-scale;
+			res.z=z-scale;
+			return res;
+		}
+
 		const IVector3D IVector3D::operator-() const
 		{
 			IVector3D res = IVector3D(0,0,0)-*this;
 			return res;
 		}
 
-		IVector3D::operator float*() const
+		/*IVector3D::operator float*() const
 		{
 			return (float*)val;
-		}
+		}*/
 
 		float Dot(IVector3D pt1, IVector3D pt2)
 		{
@@ -241,4 +250,19 @@ namespace Initial
 const Initial::Core::IVector3D operator* (float val, const Initial::Core::IVector3D& vec)
 {
 	return vec*val;
+}
+
+const Initial::Core::IVector3D operator/ (float val, const Initial::Core::IVector3D& vec)
+{
+	return Initial::Core::IVector3D(val/vec.x,val/vec.y,val/vec.z);
+}
+
+const Initial::Core::IVector3D operator+ (float val, const Initial::Core::IVector3D& vec)
+{
+	return vec+val;
+}
+
+const Initial::Core::IVector3D operator- (float val, const Initial::Core::IVector3D& vec)
+{
+	return -vec+val;
 }

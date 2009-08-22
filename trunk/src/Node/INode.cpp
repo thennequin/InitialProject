@@ -10,7 +10,7 @@
 #include "Initial/Math/IMath.h"
 #include "Initial/IDevice.h"
 
-#include "Initial/Node/INodeContainer.h"
+#include "Initial/Node/INodeLayer.h"
 #include "Initial/Node/INodeCamera.h"
 #include "Initial/Node/INodeLight.h"
 #include "Initial/Node/INodeSkybox.h"
@@ -26,7 +26,7 @@ namespace Initial
 {	
 	IMPLEMENT_ABSTRACT_OBJECT(INode,IObject)
 
-	IMPLEMENT_OBJECT(INodeContainer,INode)
+	IMPLEMENT_OBJECT(INodeLayer,INode)
 	IMPLEMENT_OBJECT(INodeCamera,INode)
 	IMPLEMENT_OBJECT(INodeLight,INode)
 	IMPLEMENT_OBJECT(INodeSkybox,INode)
@@ -134,7 +134,7 @@ namespace Initial
 
 	void INode::SetParent(INode *node)
 	{
-		if (!IsChild(node) /*&& node!=m_pParent*/)
+		if (!IsChild(node) && node!=this/*&& node!=m_pParent*/)
 		{
 			if (m_pParent)
 			{
@@ -212,6 +212,34 @@ namespace Initial
 			}
 		}
 		return result;
+	}
+
+	Core::IList<INode*> INode::GetSelectedNode()
+	{
+		Core::IList<INode*> selected;
+		if (IsSelected())
+			selected.PushBack(this);
+
+		FOREACH(INode*,ite,m_aChildren)
+		{
+			if (ite.GetData())
+			{
+				selected+=ite.GetData()->GetSelectedNode();
+			}
+		}
+		return selected;
+	}
+
+	void INode::ResetSelection()
+	{
+		Select(false);
+		FOREACH(INode*,ite,m_aChildren)
+		{
+			if (ite.GetData())
+			{
+				ite.GetData()->ResetSelection();
+			}
+		}
 	}
 
 	void INode::Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags)
@@ -358,5 +386,15 @@ namespace Initial
 	Math::IMatrix INode::GetPositionMatrix()
 	{
 		return TranslationToMatrix(m_vPosition);
+	}
+
+	void INode::StartDrag()
+	{
+		m_vStartDragPosition=m_vPosition;
+	}
+
+	IVector3D INode::GetDragPosition()
+	{
+		return m_vStartDragPosition;
 	}
 }

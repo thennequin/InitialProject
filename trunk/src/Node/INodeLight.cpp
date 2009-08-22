@@ -103,7 +103,7 @@ namespace Initial
 
 	void INodeLight::Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags)
 	{
-		if (!m_bShow)
+		if (!m_bShow || !IsSelected())
 			return;
 
 		float cubeSize=0.1;

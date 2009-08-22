@@ -45,7 +45,7 @@ namespace Initial
 		Core::IString GetCategorie() { return Categorie; }
 
 		bool IsSelected() { return m_bSelected; }
-		void Select(bool selected) { m_bSelected=selected; }
+		void Select(bool selected=true) { m_bSelected=selected; }
 
 		INode *AddNodeByClass(Core::IString nodeClassName);
 		void AddNode(INode *node);
@@ -62,6 +62,9 @@ namespace Initial
 		**/
 		Core::IList<INode*> GetNodeByClass(IObject::IObjectInfo *classinfo, bool recursive=true, bool noSubClass=false);
 		Core::IList<INode*> GetNodeByName(Core::IString name, bool recursive=true);
+
+		Core::IList<INode*> GetSelectedNode();
+		void ResetSelection();
 
 		virtual bool IsVisible(Video::IRenderDriver *driver)/*=0*/{ return true; };
 		virtual void Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags=0);
@@ -105,6 +108,10 @@ namespace Initial
 
 		//virtual IBBox GetBBox()=0;
 
+		//Editing
+		void StartDrag();
+		Core::IVector3D GetDragPosition();
+
 	protected:
 		virtual void _InitNode() {}
 	protected:
@@ -122,6 +129,8 @@ namespace Initial
 		Core::IVector3D m_vScale;
 		Math::IMatrix m_mAngle; // Matrix 3x3
 		//Core::IVector3D m_vAngle; // Use for property
+
+		Core::IVector3D m_vStartDragPosition;
 	};
 
 }

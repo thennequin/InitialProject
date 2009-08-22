@@ -273,7 +273,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Node\INodeContainer.cpp"
+					RelativePath=".\Node\INodeLayer.cpp"
 					>
 				</File>
 				<File
@@ -551,7 +551,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\include\Initial\Node\INodeContainer.h"
+					RelativePath="..\include\Initial\Node\INodeLayer.h"
 					>
 				</File>
 				<File

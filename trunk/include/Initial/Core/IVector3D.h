@@ -55,10 +55,11 @@ namespace Initial
 			const IVector3D operator* (const float scale) const;
 			const IVector3D operator/ (const float scale) const;
 			const IVector3D operator+ (const float scale) const;
+			const IVector3D operator- (const float scale) const;
 
 			const IVector3D operator-() const;
 
-			operator float*() const;
+			//operator float*() const;
 
 		public:
 			union
@@ -78,5 +79,8 @@ namespace Initial
 }
 
 const Initial::Core::IVector3D operator* (float val, const Initial::Core::IVector3D& vec);
+const Initial::Core::IVector3D operator/ (float val, const Initial::Core::IVector3D& vec);
+const Initial::Core::IVector3D operator+ (float val, const Initial::Core::IVector3D& vec);
+const Initial::Core::IVector3D operator- (float val, const Initial::Core::IVector3D& vec);
 
 #endif

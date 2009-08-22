@@ -122,6 +122,13 @@ namespace Initial
 			return false;
 		}
 
+		bool IShader::SetParameter2Float(IString Parameter, Core::IVector2D& value)
+		{
+			if (m_pShaderManager)
+				return m_pShaderManager->SetParameter2Float(this, Parameter, value.x,value.y);
+			return false;
+		}
+
 		bool IShader::SetParameter3Float(IString Parameter, float value1, float value2, float value3)
 		{
 			if (m_pShaderManager)
@@ -133,6 +140,13 @@ namespace Initial
 		{
 			if (m_pShaderManager)
 				return m_pShaderManager->SetParameter3Float(this, Parameter, value);
+			return false;
+		}
+
+		bool IShader::SetParameter3Float(IString Parameter,Core::IVector3D& value)
+		{
+			if (m_pShaderManager)
+				return m_pShaderManager->SetParameter3Float(this, Parameter, value.x,value.y,value.z);
 			return false;
 		}
 

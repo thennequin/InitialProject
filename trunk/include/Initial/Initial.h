@@ -35,6 +35,7 @@
 #include		"IO/IXMLParser.h"
 
 #include		"Math/IMath.h"
+#include		"Math/IMathIntersect.h"
 #include		"Math/IMatrix.h"
 
 #include		"Format/IImageITX.h"

@@ -136,16 +136,17 @@ MainWindowPhazer::MainWindowPhazer(const wxString& title, const wxPoint& pos, co
 		printf("Light %d\n",light);
 
 		Initial::IMesh *_3ds;
-		_3ds = I3DLoad::Load("marcus.3ds",m_pDevice->GetRenderDriver());
+		//_3ds = I3DLoad::Load("marcus.3ds",m_pDevice->GetRenderDriver());
 		//_3ds = I3DLoad::Load("car.3ds",m_pDevice->GetRenderDriver());
 		//_3ds = I3DLoad::Load("teapot.3ds",m_pDevice->GetRenderDriver());
+		_3ds = I3DLoad::Load("cube.3ds",m_pDevice->GetRenderDriver());
 
 		m_pMaterial = m_pDevice->GetRessourceManager()->CreateNewMaterial("Phazer");
 		//m_pMaterial = m_pDevice->GetRessourceManager()->LoadMaterial("materials/testV2.ima");
 
 		if (_3ds)
 		{
-			_3ds->SetScale(0.02);
+			//_3ds->SetScale(0.02);
 			_3ds->RotateOrigX(DEG_TO_RAD(-90));
 			//_3ds->RotateOrigZ(DEG_TO_RAD(180));
 			_3ds->Translate(0,0,-3);

@@ -433,11 +433,11 @@ void IRenderDriverOpenGL::_DrawTriangle(ITriangle* polygon)
 
 		for (int i=0;i<3;i++)
 		{
-			glNormal3fv(normal[i]);
+			glNormal3fv(normal[i].val);
 			glMultiTexCoord3fARB(GL_TEXTURE0_ARB,coord[i].GetU(),coord[i].GetV(),0);
 			//glVertex3f(vertex[i][0],vertex[i][1],vertex[i][2]);
 			//glMultiTexCoord2fvARB(GL_TEXTURE0_ARB,coord[i]);
-			glVertex3fv(vertex[i]);
+			glVertex3fv(vertex[i].val);
 		}
 	}
 }
@@ -446,15 +446,15 @@ void IRenderDriverOpenGL::_DrawLine(const IVector3D& pt1,const IVector3D& pt2)
 {
 	m_iLineCount++;
 	glBegin(GL_LINES);
-		glVertex3fv(pt1);
-		glVertex3fv(pt2);
+		glVertex3fv(pt1.val);
+		glVertex3fv(pt2.val);
 	glEnd();
 }
 
 void IRenderDriverOpenGL::_SetColor(IColor color)
 {
-	//glColor4f(color.GetRed(),color.GetGreen(),color.GetBlue(),color.GetAlpha());
-	glColor4f(color.GetRed()/1.0,color.GetGreen()/1.0,color.GetBlue()/1.0,color.GetAlpha());
+	glColor4f(color.GetRed(),color.GetGreen(),color.GetBlue(),color.GetAlpha());
+	//glColor4f(color.GetRed()/1.0,color.GetGreen()/1.0,color.GetBlue()/1.0,color.GetAlpha());
 }
 
 void IRenderDriverOpenGL::_SetLineSize(float size)
@@ -477,13 +477,13 @@ void IRenderDriverOpenGL::_DrawQuad(IVector3D a,IVector3D b,IVector3D c,IVector3
 {
 	glBegin(GL_QUADS);
 		glMultiTexCoord2sARB(GL_TEXTURE0_ARB,1,0);
-		glVertex3fv(a);
+		glVertex3fv(a.val);
 		glMultiTexCoord2sARB(GL_TEXTURE0_ARB,0,0);
-		glVertex3fv(b);
+		glVertex3fv(b.val);
 		glMultiTexCoord2sARB(GL_TEXTURE0_ARB,0,1);
-		glVertex3fv(c);
+		glVertex3fv(c.val);
 		glMultiTexCoord2sARB(GL_TEXTURE0_ARB,1,1);
-		glVertex3fv(d);
+		glVertex3fv(d.val);
 	glEnd();
 }
 
