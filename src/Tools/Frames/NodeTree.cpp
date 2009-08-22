@@ -3,6 +3,7 @@
 
 BEGIN_EVENT_TABLE(NodeTree, wxTreeCtrl)
 	EVT_TREE_SEL_CHANGED(wxID_ANY,NodeTree::OnSelect)
+	EVT_TREE_SEL_CHANGING(wxID_ANY,NodeTree::OnSelect)
 	EVT_TREE_BEGIN_DRAG(wxID_ANY, NodeTree::OnBeginDrag)
     EVT_TREE_END_DRAG(wxID_ANY, NodeTree::OnEndDrag)
 	EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY, NodeTree::OnRightClick)
@@ -16,7 +17,7 @@ END_EVENT_TABLE()
 NodeTree::NodeTree(wxWindow *parent, wxWindowID id,
                const wxPoint& pos,
                const wxSize& size)
-: wxTreeCtrl(parent,id,pos,size, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT | wxTR_EDIT_LABELS), m_Images(16,16)
+: wxTreeCtrl(parent,id,pos,size, wxTR_HAS_BUTTONS | wxTR_LINES_AT_ROOT | wxTR_EDIT_LABELS | wxTR_MULTIPLE), m_Images(16,16)
 {
 	m_pManager=NULL;
 	m_pProperty=NULL;
@@ -95,46 +96,61 @@ void NodeTree::RefreshItem(wxTreeItemId& item)
 
 void NodeTree::OnSelect(wxTreeEvent& event)
 {
+	printf("Select\n");
 	if (m_pProperty)
 	{
-		Initial::INode *node=NULL;
-		TreeNode *itemData=(TreeNode*)GetItemData(event.GetItem());
-		if (itemData)
-			node=itemData->m_pNode;
-		m_pProperty->GenerateFromObject(node);
+		wxArrayTreeItemIds selected;
+		GetSelections(selected);
+		if (selected.Count()==1)
+		{
+			Initial::INode *node=NULL;
+			TreeNode *itemData=(TreeNode*)GetItemData(event.GetItem());
+			if (itemData)
+				node=itemData->m_pNode;
+			m_pProperty->GenerateFromObject(node);
+		}else
+			m_pProperty->GenerateFromObject(NULL);
+
+		m_pManager->ResetSelection();
+		for (size_t i=0;i<selected.Count();i++)
+		{
+			TreeNode *itemData=(TreeNode*)GetItemData(selected[i]);
+			if (itemData && itemData->m_pNode)
+				itemData->m_pNode->Select(true);
+		}
 	}
 }
 
 void NodeTree::OnBeginDrag(wxTreeEvent& event)
 {
+	GetSelections(m_aItemSelected);
+
 	TreeNode *itemData=(TreeNode*)GetItemData(event.GetItem());
 	if (itemData)
 	{
-		m_draggedItem=itemData;
-		 event.Allow();
+		event.Allow();
 	}
 }
 
 void NodeTree::OnEndDrag(wxTreeEvent& event)
 {
+	Initial::INode *dstNode;
 	TreeNode *itemData=(TreeNode*)GetItemData(event.GetItem());
-	Initial::INode *srcNode = NULL;
-	Initial::INode *dstNode = NULL;
 	if (itemData)
 		dstNode=itemData->m_pNode;
 	else
 		dstNode=m_pManager;
 
-	if (m_draggedItem)
-		srcNode=m_draggedItem->m_pNode;
-
-	if (dstNode)
+	for (size_t i=0;i<m_aItemSelected.Count();i++)
 	{
-		srcNode->SetParent(dstNode);
-		RefreshList();
+		itemData=(TreeNode*)GetItemData(m_aItemSelected[i]);
+
+		if (itemData && itemData->m_pNode)
+		{
+			itemData->m_pNode->SetParent(dstNode);
+		}		
 	}
-	
-	m_draggedItem=NULL;
+	RefreshList();
 }
 
 void NodeTree::OnRightClick(wxTreeEvent& event)
@@ -275,7 +291,10 @@ void NodeTree::OnChar(wxKeyEvent& event)
         DeleteSelected();
         return;
 	case WXK_F2:
-		EditLabel(GetSelection());
+		{
+			GetSelections(m_aItemSelected);
+			EditLabel(m_aItemSelected[0]);
+		}
 		return;
 	}
 
@@ -293,13 +312,18 @@ void NodeTree::OnLabelEditBegin(wxTreeEvent& event)
 
 void NodeTree::OnLabelEditEnd(wxTreeEvent& event)
 {
-	TreeNode *itemData=(TreeNode*)GetItemData(event.GetItem());
-	if (itemData)
+	if (!event.IsEditCancelled())
 	{
-		if (itemData->m_pNode && !event.GetSkipped())
-		{			
-			itemData->m_pNode->SetName(event.GetLabel().c_str());
-			m_pProperty->GenerateFromObject(itemData->m_pNode);
+		for (size_t i=0;i<m_aItemSelected.Count();i++)
+		{
+			TreeNode *itemData=(TreeNode*)GetItemData(m_aItemSelected[i]);
+			if (itemData && itemData->m_pNode)
+			{
+				SetItemText(itemData->GetId(),event.GetLabel());
+				itemData->m_pNode->SetName(event.GetLabel().c_str());
+				if (m_aItemSelected.Count()==1)
+					m_pProperty->GenerateFromObject(itemData->m_pNode);
+			}
 		}
 	}
 }

@@ -323,31 +323,31 @@ void IMesh::CalculateBBox(bool WithChild)
 	float minx,miny,minz,maxx,maxy,maxz;
 	if (m_aPolygons.Count())
 	{
-		minx=(m_aPolygons[0].GetVertex()[0])[0];
-		miny=(m_aPolygons[0].GetVertex()[0])[1];
-		minz=(m_aPolygons[0].GetVertex()[0])[2];
+		minx=(m_aPolygons[0].GetVertex()[0]).x;
+		miny=(m_aPolygons[0].GetVertex()[0]).y;
+		minz=(m_aPolygons[0].GetVertex()[0]).z;
 
-		maxx=(m_aPolygons[0].GetVertex()[0])[0];
-		maxy=(m_aPolygons[0].GetVertex()[0])[1];
-		maxz=(m_aPolygons[0].GetVertex()[0])[2];
+		maxx=(m_aPolygons[0].GetVertex()[0]).x;
+		maxy=(m_aPolygons[0].GetVertex()[0]).y;
+		maxz=(m_aPolygons[0].GetVertex()[0]).z;
 		
 		for (int i=0;i<m_aPolygons.Count();i++)
 		{
 			for (int j=0;j<3;j++)
 			{
-				if (minx>(m_aPolygons[i].GetVertex()[j])[0])
-					minx=(m_aPolygons[i].GetVertex()[j])[0];
-				if (miny>(m_aPolygons[i].GetVertex()[j])[1])
-					miny=(m_aPolygons[i].GetVertex()[j])[1];
-				if (minz>(m_aPolygons[i].GetVertex()[j])[2])
-					minz=(m_aPolygons[i].GetVertex()[j])[2];
+				if (minx>(m_aPolygons[i].GetVertex()[j]).x)
+					minx=(m_aPolygons[i].GetVertex()[j]).x;
+				if (miny>(m_aPolygons[i].GetVertex()[j]).y)
+					miny=(m_aPolygons[i].GetVertex()[j]).y;
+				if (minz>(m_aPolygons[i].GetVertex()[j]).z)
+					minz=(m_aPolygons[i].GetVertex()[j]).z;
 
-				if (maxx<(m_aPolygons[i].GetVertex()[j])[0])
-					maxx=(m_aPolygons[i].GetVertex()[j])[0];
-				if (maxy<(m_aPolygons[i].GetVertex()[j])[1])
-					maxy=(m_aPolygons[i].GetVertex()[j])[1];
-				if (maxz<(m_aPolygons[i].GetVertex()[j])[2])
-					maxz=(m_aPolygons[i].GetVertex()[j])[2];
+				if (maxx<(m_aPolygons[i].GetVertex()[j]).x)
+					maxx=(m_aPolygons[i].GetVertex()[j]).x;
+				if (maxy<(m_aPolygons[i].GetVertex()[j]).y)
+					maxy=(m_aPolygons[i].GetVertex()[j]).y;
+				if (maxz<(m_aPolygons[i].GetVertex()[j]).z)
+					maxz=(m_aPolygons[i].GetVertex()[j]).z;
 			}
 		}
 		m_BBox.SetBBox(minx,miny,minz,maxx,maxy,maxz);

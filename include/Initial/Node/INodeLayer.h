@@ -1,25 +1,25 @@
 //---------------------------------------------
 //                Initial Engine
-//             Container node Module
+//               Layer node Module
 //
 //            By Thibault HENNEQUIN
 //              December 20th  2008
 //---------------------------------------------
 
-#ifndef _INODECONTAINER_HEADER_
-#define _INODECONTAINER_HEADER_
+#ifndef _INODELAYER_HEADER_
+#define _INODELAYER_HEADER_
 
 #include "Initial/Node/INode.h"
 
 namespace Initial
 {
-	class INodeContainer : public INode
+	class INodeLayer : public INode
 	{
-		DECLARE_OBJECT(INodeContainer,INode)
+		DECLARE_OBJECT(INodeLayer,INode)
 	public:
-		INodeContainer(IDevice *device=NULL);
+		INodeLayer(IDevice *device=NULL);
 
-		virtual Core::IString GetBitmapName() { return "NodeContainer.bmp"; }
+		virtual Core::IString GetBitmapName() { return "NodeLayer.bmp"; }
 	protected:
 	};
 }

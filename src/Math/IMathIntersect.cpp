@@ -107,7 +107,7 @@ namespace Initial
 				return false;
 			}
 
-			bool RayIntersectTriangle(ITriangle tri, IVector3D linestart, IVector3D lineend, IVector3D& result, bool allray)
+			bool RayIntersectTriangle(ITriangle& tri, IVector3D linestart, IVector3D lineend, IVector3D& result, bool allray)
 			{
 				IVector3D pt[3];
 				pt[0]=tri.GetVertex()[0];
@@ -313,6 +313,19 @@ namespace Initial
 				n0_n1 = n0_n1*c.GetD();
 
 				res = -(n1_n2 + n2_n0 + n0_n1) * secTheta;
+				return true;
+			}
+
+			bool PointOnRay(Core::IVector3D point, Core::IVector3D start, Core::IVector3D end)
+			{
+				IVector3D dir1, dir2, sub;
+				dir1=point-start;
+				dir2=point-end;
+				sub=end-start;
+
+				if (dir2.Length()+dir1.Length()>sub.Length()+0.001)
+					return false;
+
 				return true;
 			}
 		}

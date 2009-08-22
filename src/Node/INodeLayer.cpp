@@ -6,7 +6,7 @@
 //              December 20th  2008
 //---------------------------------------------
 
-#include "Initial/Node/INodeContainer.h"
+#include "Initial/Node/INodeLayer.h"
 #include "Initial/IDevice.h"
 #include "Initial/Video/IRenderDriver.h"
 
@@ -15,7 +15,7 @@ using namespace Initial::Video;
 
 namespace Initial
 {	
-	INodeContainer::INodeContainer(IDevice *device)
+	INodeLayer::INodeLayer(IDevice *device)
 		: INode(device)
 	{
 	}

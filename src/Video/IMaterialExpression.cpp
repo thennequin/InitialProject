@@ -326,6 +326,8 @@ vec4 "+func+"()\n\
 }\n";
 			fragment = Header+"\n"+FuncHeader+"\n"+Func+"\n"+Main;
 
+			//printf(fragment.c_str());
+
 			vertex = "varying vec3 m_Normal;\
 void main( void )\
 {\
@@ -413,16 +415,17 @@ void main( void )\
 			if (OutId==0) // Color
 			{
 				if (InputIsConnect(0))
-					return GetInputExpr(0); 
+					return ISEVec4(GetInputExpr(0).xyz(),GetInputExpr(2).x());
 				else{ // Damier
-					ISEVec4 grey(0.7,0.7,0.7,1.0);
-					ISEVec4 white(0.3,0.3,0.3,1.0);
-					//Purple and black
-					/*ISEVec4 grey(0.7,0,0.7,1.0);
-					ISEVec4 white(0,0,0,1.0);*/
-					return If(TextureCoord().y(),ISEFloat(0.5),"<=",
-						If(TextureCoord().x(),ISEFloat(0.5),"<=",grey,white),
-						If(TextureCoord().x(),ISEFloat(0.5),"<=",white,grey));
+					//ISEVec4 grey(0.7,0.7,0.7,GetInputExpr(2).x());
+					//ISEVec4 white(0.3,0.3,0.3,GetInputExpr(2).x());
+					////Purple and black
+					///*ISEVec4 grey(0.7,0,0.7,1.0);
+					//ISEVec4 white(0,0,0,1.0);*/
+					//return If(TextureCoord().y(),ISEFloat(0.5),"<=",
+					//	If(TextureCoord().x(),ISEFloat(0.5),"<=",grey,white),
+					//	If(TextureCoord().x(),ISEFloat(0.5),"<=",white,grey));
+					return ISEVec4(1.0,1.0,1.0,GetInputExpr(2).x());
 				}
 				
 			}else if (OutId==1)// Emissive

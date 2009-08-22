@@ -72,8 +72,8 @@ MainWindowInitialisEd::MainWindowInitialisEd(const wxString& title, const wxPoin
 		m_pToolbar->AddTool(MW_TB_ROTATE,"Rotate",wxBitmap("res/TBRotate.bmp",wxBITMAP_TYPE_BMP),wxEmptyString,wxITEM_CHECK);
 		m_pToolbar->AddTool(MW_TB_SCALE,"Scale",wxBitmap("res/TBScale.bmp",wxBITMAP_TYPE_BMP),wxEmptyString,wxITEM_CHECK);
 		wxArrayString choices;
-		choices.Add("Local");
 		choices.Add("World");
+		choices.Add("Local");
 		choices.Add("View");
 		m_pToolbarMode = new wxChoice(m_pToolbar,MW_TB_TRANS_MODE,wxDefaultPosition,wxSize(100,-1),choices);
 		m_pToolbarMode->SetSelection(0);
@@ -134,7 +134,8 @@ MainWindowInitialisEd::MainWindowInitialisEd(const wxString& title, const wxPoin
 		_3ds2=NULL;
 		_3ds3=NULL;
 		_3ds = I3DLoad::Load("marcus.3ds",m_pDevice->GetRenderDriver());
-		_3ds2 = I3DLoad::Load("car.3ds",m_pDevice->GetRenderDriver());
+		//_3ds2 = I3DLoad::Load("car.3ds",m_pDevice->GetRenderDriver());
+		_3ds2 = I3DLoad::Load("cube.3ds",m_pDevice->GetRenderDriver());
 		//_3ds3 = I3DLoad::Load("teapot.3ds",m_pDevice->GetRenderDriver());
 		//_3ds3 = I3DLoad::Load("ElephantBody.3ds",m_pDevice->GetRenderDriver());
 		_3ds3 = I3DLoad::Load("TIEf3DS8.3ds",m_pDevice->GetRenderDriver());
@@ -166,7 +167,8 @@ MainWindowInitialisEd::MainWindowInitialisEd(const wxString& title, const wxPoin
 		if (_3ds2)
 		{
 			//_3ds->CalcNormals();
-			_3ds2->SetScale(0.1f);
+			//_3ds2->SetScale(0.1f);
+			_3ds2->SetScale(2);
 			_3ds2->RotateOrigX(DEG_TO_RAD(-90));
 			_3ds2->Translate(-6,0,0);
 			//_3ds->SetColor(IColor(1,1,0));
@@ -270,4 +272,7 @@ void MainWindowInitialisEd::OnTool(wxCommandEvent& event)
 
 void MainWindowInitialisEd::OnTrandModeChoice(wxCommandEvent& event)
 {
+	printf("%d\n",event.GetInt());
+	if (m_pInitial)
+		m_pInitial->SetTransMode((InitialPanel::TransMode)event.GetInt());
 }

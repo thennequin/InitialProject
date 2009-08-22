@@ -44,8 +44,10 @@ namespace Initial
 			bool SetParameterFloat(Core::IString Parameter, float value);
 			bool SetParameter2Float(Core::IString Parameter, float value1, float value2);
 			bool SetParameter2Float(Core::IString Parameter, float value[2]);
+			bool SetParameter2Float(Core::IString Parameter, Core::IVector2D& value);
 			bool SetParameter3Float(Core::IString Parameter, float value1, float value2, float value3);
 			bool SetParameter3Float(Core::IString Parameter, float value[3]);
+			bool SetParameter3Float(Core::IString Parameter, Core::IVector3D& value);
 			bool SetParameter4Float(Core::IString Parameter, float value1, float value2, float value3, float value4);
 			bool SetParameter4Float(Core::IString Parameter, float value[4]);
 			bool SetParameterMatrix22(Core::IString Parameter, Math::IMatrix& mat);
