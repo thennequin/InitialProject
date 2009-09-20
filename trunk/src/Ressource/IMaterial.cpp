@@ -99,7 +99,7 @@ namespace Initial
 
 				if (GetDevice() && GetDevice()->GetRessourceManager())
 				{
-					printf("OnPropertyChange\n");
+					//printf("OnPropertyChange\n");
 					int Id=-1;
 					if (name=="Texture1")
 						Id=0;
@@ -124,9 +124,11 @@ namespace Initial
 						if (prop)
 						{
 							IString tex = prop->GetString();
-							printf("%s\n",tex.c_str());
-							ITexture *Tex = GetDevice()->GetRessourceManager()->LoadTexture(tex);
-							printf("%s\n",GetFilename().c_str());
+							//printf("%s\n",tex.c_str());
+							ITexture *Tex=NULL;
+							if (tex!="")
+								Tex = GetDevice()->GetRessourceManager()->LoadTexture(tex);
+							//printf("%s\n",GetFilename().c_str());
 							SetTexture(Tex,Id);
 						}
 					}
@@ -297,7 +299,7 @@ namespace Initial
 				}
 
 				if (state==MAT_END)
-					ILogger::LogMessage("Aucun probleme dans le fichier\n");
+					ILogger::LogDebug("Aucun probleme dans le fichier\n");
 				else{
 					ILogger::LogWarning("Probleme detecte dans le fichier\n");
 					return false;
@@ -327,7 +329,7 @@ namespace Initial
 						}
 					}else if (defaultStrs[i].ToLower()=="translucent")
 					{
-						ILogger::LogMessage("Material Translucent\n");
+						ILogger::LogDebug("Material Translucent\n");
 						m_bTranslucent=atoi(defaultStrsValue[i].c_str());
 					}	
 				}
@@ -564,6 +566,7 @@ namespace Initial
 						SetFilename(GetFullPath(file));
 						CompileV2();
 						Unlock();
+						ILogger::LogMessage("Material Loaded %s\n",GetFullPath(file).c_str());
 						return true;
 					}
 					nodeIMA=nodeIMA->GetNext();

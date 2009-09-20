@@ -61,6 +61,7 @@ namespace Initial
 				tex->m_pTempData=itx;
 				tex->SetFilename(filename);
 				//delete itx;
+				ILogger::LogMessage("Texture Loaded : %s\n",filename.c_str());
 				return tex;
 			}
 
@@ -72,8 +73,10 @@ namespace Initial
 				tex->m_pTempData=image;
 				tex->SetFilename(filename);
 				//delete image;
+				ILogger::LogMessage("Texture Loaded : %s\n",filename.c_str());
 				return tex;				
 			}
+			ILogger::LogError("Texture not loaded : %s\n",filename.c_str());
 
 			return NULL;
 		}

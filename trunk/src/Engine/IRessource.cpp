@@ -44,7 +44,7 @@ namespace Initial
 
 	void IRessource::SetFilename(IString filename)
 	{
-		printf("SetFilename %s\n",filename);
+		ILogger::LogDebug("SetFilename %s\n",filename);
 		m_sFileName=filename;
 	}
 
