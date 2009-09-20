@@ -35,9 +35,9 @@ namespace Initial
 			return mat;
 
 		mat = new IMaterial(m_pDevice);
-		bool OK = mat->Load(filename);
+		bool OK = mat->LoadV2(filename);
 		if (OK==false)
-			OK = mat->LoadV2(filename);
+			OK = mat->Load(filename);
 		AddRessource(mat);
 		return mat;
 	}
@@ -98,7 +98,7 @@ namespace Initial
 	{
 		ITexture *tex =m_pDevice->GetRenderDriver()->GetTextureManager()->CreateTexture(1,1,ITF_RGBA);
 		AddRessource(tex);
-		tex->SetFilename("#"+name);
+		tex->SetFilename("<"+name+">");
 		return tex;
 	}
 
@@ -106,7 +106,7 @@ namespace Initial
 	{
 		m_mMutex.Lock();
 		if (ptr)
-			m_aRessources.Add(ptr);
+			m_aRessources.PushFront(ptr);
 		m_mMutex.Unlock();
 	}
 

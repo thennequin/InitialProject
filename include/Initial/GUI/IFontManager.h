@@ -9,18 +9,20 @@
 #ifndef _IFONTMANAGER_HEADER_
 #define _IFONTMANAGER_HEADER_
 
-#include <ft2build.h> 
-#include FT_FREETYPE_H 
-#include FT_GLYPH_H
-#include FT_OUTLINE_H
-#include FT_BBOX_H
+#ifdef _IFONTMANAGER_COMPILE_
+	#include <ft2build.h> 
+	#include FT_FREETYPE_H 
+	#include FT_GLYPH_H
+	#include FT_OUTLINE_H
+	#include FT_BBOX_H
+#endif
 
 #include "Initial/Video/IRenderDriver.h"
 #include "Initial/Core/IList.h"
 #include "Initial/Core/IString.h"
 #include "Initial/3D/ILine.h"
 #include "Initial/3D/IPolygon.h"
-#include "Initial/GUI/IFont.h"
+#include "Initial/Ressource/IFont.h"
 
 #include <vector>
 //class FT_Vector;
@@ -31,6 +33,7 @@ namespace Initial
 	{
 		class IFontManager
 		{
+#ifdef _IFONTMANAGER_COMPILE_
 			static int _MoveTo (FT_Vector *to, void *data);
 			static int _LineTo (FT_Vector *to, void *data);
 			static int _ConicTo (FT_Vector *control, FT_Vector *to, void *data);
@@ -47,6 +50,7 @@ namespace Initial
 				//Core::IList<IPolygon> Array;
 				std::vector<std::vector<Core::IVector3D>> Array;
 			};
+#endif
 		public:
 			IFontManager(IDevice *device=NULL);
 			~IFontManager();
@@ -58,9 +62,10 @@ namespace Initial
 
 		protected:
 			IDevice*	m_pDevice;
-
+#ifdef _IFONTMANAGER_COMPILE_
 			FT_Library		m_Library;
 			FT_Face			m_Face;
+#endif
 		};
 	}
 

@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
 				PreprocessorDefinitions="WIN32"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="Initial_Engine.lib"
 				OutputFile="$(OutDir)\$(ProjectName)-DEBUG.exe"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -114,7 +114,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/MP2"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
 				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0600"
 				RuntimeLibrary="2"
 				WarningLevel="1"
@@ -133,7 +133,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="wxmsw28_core.lib wxmsw28_media.lib wxbase28.lib wxexpat.lib winmm.lib comctl32.lib rpcrt4.lib wxtiff.lib wxjpeg.lib wxpng.lib wxzlib.lib wxregex.lib wsock32.lib oleacc.lib gdiplus.lib Initial_Engine.lib Frames.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;;&quot;$(WXWIN)/lib/vc_lib/&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.7/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/stage/lib/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;;&quot;$(WXWIN)/lib/vc_lib/&quot;"
 				GenerateDebugInformation="true"
 			/>
 			<Tool

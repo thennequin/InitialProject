@@ -7,7 +7,7 @@
 //---------------------------------------------
 
 #include "Initial/Video/ITextureManager.h"
-#include "Initial/Video/ITextureVideo.h"
+#include "Initial/Ressource/ITextureVideo.h"
 
 using namespace Initial::Core;
 using namespace Initial::Format;

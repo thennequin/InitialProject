@@ -9,7 +9,7 @@
 #ifndef _ITEXTUREMANAGEROPENGL_HEADER_
 #define _ITEXTUREMANAGEROPENGL_HEADER_
 
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 #include "Initial/Video/ITextureManager.h"
 #include "IRenderDriverOpenGL.h"
 

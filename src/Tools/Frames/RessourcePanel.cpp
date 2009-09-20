@@ -95,31 +95,31 @@ wxString RessourceItem::GetInfo(int i)
 		wxString format;
 		switch (itx.GetFormat())
 		{
-		case Format::IImageITX::DXTF_RGBA:
+		case Format::IImageITX::ITXF_RGBA:
 			format="RGBA";
 			break;
-		case Format::IImageITX::DXTF_DXT1:
+		case Format::IImageITX::ITXF_DXT1:
 			format="DXT1";
 			break;
-		case Format::IImageITX::DXTF_DXT1a:
+		case Format::IImageITX::ITXF_DXT1a:
 			format="DXT1a";
 			break;
-		case Format::IImageITX::DXTF_DXT1nm:
+		case Format::IImageITX::ITXF_DXT1nm:
 			format="DXT1nm";
 			break;
-		case Format::IImageITX::DXTF_DXT3:
+		case Format::IImageITX::ITXF_DXT3:
 			format="DXT3";
 			break;
-		case Format::IImageITX::DXTF_DXT5:
+		case Format::IImageITX::ITXF_DXT5:
 			format="DXT5";
 			break;
-		case Format::IImageITX::DXTF_DXT5nm:
+		case Format::IImageITX::ITXF_DXT5nm:
 			format="DXT5nm";
 			break;
-		case Format::IImageITX::DXTF_ATI1:
+		case Format::IImageITX::ITXF_ATI1:
 			format="ATI1";
 			break;
-		case Format::IImageITX::DXTF_ATI2_3Dc:
+		case Format::IImageITX::ITXF_ATI2_3Dc:
 			format="ATI2/3Dc";
 			break;
 		};

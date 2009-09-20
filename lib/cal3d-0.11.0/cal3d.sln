@@ -1,0 +1,75 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cal3D", "src\cal3d\cal3d.vcproj", "{06BB958C-1B5D-4712-83AE-76C9D4F11134}"
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "Cal3D_Cally", "examples\cally\cally.dsp", "{1C1CAE94-63B7-4D66-8EFF-FCE71E18FEE9}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "Cal3D_MiniViewer", "examples\miniviewer_gl\cal3d_miniviewer.dsp", "{CF281478-F2EE-49C5-85DB-3BF8CF457172}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_converter", "SRC\cal3d_converter.dsp", "{1DC3A576-9284-489C-8A8B-F2C418614E44}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_importer", "plugins\cal3d_max_importer\cal3d_importer.dsp", "{406A0D5F-B57A-4236-AD07-C6B1D7F6279D}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_max_exporter", "plugins\cal3d_max_exporter\cal3d_max_exporter.dsp", "{3B497071-3498-45F9-BD93-37A5DA23DA40}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_maya_exporter", "plugins\cal3d_maya_exporter\cal3d_maya_exporter.dsp", "{3C34253E-D47F-4162-BF84-C94C9EE727CD}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_milk_exporter", "plugins\cal3d_milk_exporter\cal3d_milk_exporter.dsp", "{6C384265-3D80-4788-8E3D-6CE69C5D37C7}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_miniviewer_d3d", "examples\miniviewer_d3d\cal3d_miniviewer_d3d.dsp", "{12853B5C-8F5D-477F-982E-EACFD17DD39A}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_miniviewer_d3d_bump", "examples\miniviewer_d3d_bump\cal3d_miniviewer_d3d_bump.dsp", "{095963DC-E706-47F0-9982-BB973FF4CF32}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_miniviewer_d3d_vs", "examples\miniviewer_d3d_vs\cal3d_miniviewer_d3d_vs.dsp", "{A9476C75-8E32-42C2-8F86-6BAAC182B1C8}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Project("{059D6162-CD51-11D0-AE1F-00A0C90FFFC3}") = "cal3d_miniviewer_gl_vp", "examples\miniviewer_gl_vp\cal3d_miniviewer_gl_vp.dsp", "{A7789770-534D-4ABF-9894-D2EE5DFC6AF2}"
+	ProjectSection(DevStudioProjDeps) = postProject
+		0 = Cal3D
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06BB958C-1B5D-4712-83AE-76C9D4F11134}.Debug|Win32.ActiveCfg = Debug|Win32
+		{06BB958C-1B5D-4712-83AE-76C9D4F11134}.Debug|Win32.Build.0 = Debug|Win32
+		{06BB958C-1B5D-4712-83AE-76C9D4F11134}.Release|Win32.ActiveCfg = Release|Win32
+		{06BB958C-1B5D-4712-83AE-76C9D4F11134}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

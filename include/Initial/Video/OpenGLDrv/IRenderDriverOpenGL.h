@@ -11,7 +11,7 @@
 
 #include "Initial/Video/IRenderDriver.h"
 #include "Initial/3D/ITriangle.h"
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 
 #include <windows.h>
 

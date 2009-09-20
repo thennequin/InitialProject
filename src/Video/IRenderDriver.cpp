@@ -23,7 +23,7 @@
 #include "Initial/Node/INode.h"
 #include "Initial/Node/INodeLight.h"
 
-#include "Initial/3D/IMesh.h"
+#include "Initial/Ressource/IMesh.h"
 #include "Initial/3D/ILight.h"
 
 using namespace Initial::Core;

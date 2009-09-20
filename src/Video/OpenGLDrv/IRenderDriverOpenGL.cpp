@@ -17,10 +17,13 @@
 #include "Initial/Video/OpenGLDrv/ITextureManagerOpenGL.h"
 #include "Initial/Video/OpenGLDrv/IShaderManagerOpenGL.h"
 #include "Initial/Video/OpenGLDrv/IVBOManagerOpenGL.h"
-#include "Initial/Video/IMaterial.h"
+#include "Initial/Ressource/IMaterial.h"
 
 #include "Initial/ILogger.h"
 #include "Initial/Math/IMath.h"
+
+#pragma comment(lib, "opengl32.lib");
+#pragma comment(lib, "glu32.lib");
 
 using namespace Initial;
 using namespace Initial::Core;

@@ -10,7 +10,7 @@
 #define _INODETEXT_HEADER_
 
 #include "Initial/Node/INode.h"
-#include "Initial/gui/IFont.h"
+#include "Initial/Ressource/IFont.h"
 
 namespace Initial
 {

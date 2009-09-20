@@ -12,7 +12,7 @@
 #include "Initial/Core/IColor.h"
 #include "Initial/Core/IVector2D.h"
 #include "Initial/Core/IVector3D.h"
-#include "Initial/Video/IMaterial.h"
+#include "Initial/Ressource/IMaterial.h"
 
 namespace Initial
 {

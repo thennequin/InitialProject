@@ -10,7 +10,7 @@
 #define _INODESKYBOX_HEADER_
 
 #include "Initial/Node/INode.h"
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 
 namespace Initial
 {

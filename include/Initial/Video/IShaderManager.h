@@ -29,7 +29,7 @@ namespace Initial
 			virtual bool Compile(IShader *shader)=0;
 			Core::IString ReturnError();
 
-			virtual void UseShader(IShader *shader)=0;
+			virtual bool UseShader(IShader *shader)=0;
 			virtual bool SetParameterInt(IShader *shader, Core::IString Parameter, int value)=0;
 			virtual bool SetParameterFloat(IShader *shader, Core::IString Parameter, float value)=0;
 			virtual bool SetParameter2Float(IShader *shader, Core::IString Parameter, float value1, float value2)=0;

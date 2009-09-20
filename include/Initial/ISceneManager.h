@@ -13,11 +13,11 @@
 #include "Initial/IObject.h"
 #include "ISmartPtr.h"
 
-#include "Initial/3D/IAnimatedMesh.h"
-#include "Initial/3D/IMesh.h"
-#include "Initial/Video/IMaterial.h"
+#include "Initial/Ressource/IAnimatedMesh.h"
+#include "Initial/Ressource/IMesh.h"
+#include "Initial/Ressource/IMaterial.h"
 #include "Initial/Video/IShader.h"
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 
 #include "Initial/Thread/IThread.h"
 

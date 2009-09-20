@@ -12,7 +12,7 @@
 #include "Initial/IEnum.h"
 #include "Initial/Core/IString.h"
 #include "Initial/Core/IImage.h"
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 #include "Initial/Video/IRenderDriver.h"
 #include "Initial/Format/IImageITX.h"
 

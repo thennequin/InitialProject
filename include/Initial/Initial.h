@@ -11,7 +11,7 @@
 #include		"Config.h"
 #include		"IEnum.h"
 
-//#include		"IMemoryManager.h"
+//#include			"IMemoryManager.h"
 #include		"ILogger.h"
 #include		"IObject.h"
 #include		"IProperty.h"
@@ -41,15 +41,14 @@
 #include		"Format/IImageITX.h"
 #include		"Format/IMeshIEM.h"
 
-#include		"3D/IMesh.h"
-#	include		"3D/IBBox.h"
-#	include		"3D/ITriangle.h"
-#	include		"3D/ILine.h"
+#include		"3D/IBBox.h"
+#include		"3D/ITriangle.h"
+#include		"3D/ILine.h"
 #include		"3D/ILight.h"
 #include		"3D/ITriangulator.h"
 #include		"3D/IPolygon.h"
 
-#include		"3D/IAnimatedMesh.h"
+
 
 #include		"3D/Loader/I3DLoad3DS.h"
 	
@@ -64,14 +63,18 @@
 #include		"Node/INode3DAnimatedMesh.h"
 
 #include		"GUI/IFontManager.h"
-#	include		"GUI/IFont.h"
 
 #include		"Video/IRenderDriver.h"
 #include		"Video/IShaderExpression.h"
-#include		"Video/IMaterial.h"
-#	include		"Video/ITexture.h"
-#	include		"Video/ITextureVideo.h"
-#	include		"Video/IShader.h"
+#include		"Video/IShader.h"
+
+
+#include		"Ressource/IFont.h"
+#include		"Ressource/IMesh.h"
+#include		"Ressource/IAnimatedMesh.h"
+#include		"Ressource/IMaterial.h"
+#include		"Ressource/ITexture.h"
+#include		"Ressource/ITextureVideo.h"
 
 // OpenGL Render
 #include		"Video/OpenGLDrv/IRenderDriverOpenGL.h"

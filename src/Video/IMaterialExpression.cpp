@@ -8,7 +8,7 @@
 
 #include "Initial/Core/IUtil.h"
 #include "Initial/Video/IMaterialExpression.h"
-#include "Initial/Video/IMaterial.h"
+#include "Initial/Ressource/IMaterial.h"
 #include "Initial/IDevice.h"
 #include "Initial/IRessourceManager.h"
 #include "FlowLib/FlowGraph.h"
@@ -296,15 +296,15 @@ vec4 "+func+"()\n\
 					int mode = m_pMaterial->GetProperty("Blend mode")->GetFloat();
 					float clip = m_pMaterial->GetProperty("Mask clip")->GetFloat();
 					LightMode = m_pMaterial->GetProperty("Light mode")->GetFloat()+1;
-					if (mode==0)
+					if (mode==0) // Solid
 					{
 						//Nothing
-					}else if (mode==1)
+					}else if (mode==1) // Masked
 					{
 						AlphaTest=
 	"if ("+alpha.GetGLSLString()+"<="+IString(clip)+")\n\
 		discard;\n";
-					}else{
+					}else{ // Translucent
 					}
 				}
 				ISEVec4 normal = ISEVec4((GetOutput(3).xyz()+1.0)*0.5,1.0/LightMode);
@@ -333,8 +333,8 @@ void main( void )\
 {\
 	gl_BackColor = gl_Color;\
 	gl_FrontColor = gl_Color;\
-	gl_TexCoord[0]=gl_MultiTexCoord0;\
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\
+	gl_TexCoord[0] = gl_MultiTexCoord0;\
+	/*gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;*/\
 	gl_Position = ftransform();\
 	m_Normal = normalize(gl_NormalMatrix * gl_Normal);\
 }";

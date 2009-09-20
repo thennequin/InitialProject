@@ -6,6 +6,8 @@
 //              December 23th  2008
 //---------------------------------------------
 
+#define _IFONTMANAGER_COMPILE_
+
 #include "Initial/Core/IAssert.h"
 #include "Initial/ILogger.h"
 #include "Initial/Math/IMath.h"
@@ -145,7 +147,7 @@ void IFontManager::RenderText(IFont *font, IString& text, IFontDrawParam param)
 							if (param.m_bShadow)
 							{
 								driver->_PushMatrix();							
-									driver->_Translate(param.m_vShadowOffset.x,param.m_vShadowOffset.y,-0.002);
+									driver->_Translate(param.m_vShadowOffset.x,param.m_vShadowOffset.y,-0.004);
 									font->m_aCharMap[car].Render(driver,param.m_cShadowColor);
 								driver->_PopMatrix();
 							}
@@ -155,7 +157,7 @@ void IFontManager::RenderText(IFont *font, IString& text, IFontDrawParam param)
 							if (param.m_bOutline)
 							{
 								driver->_PushMatrix();							
-									driver->_Translate(0,0,-0.001);
+									driver->_Translate(0,0,-0.002);
 									font->m_aCharMap[car].Render(driver,param.m_cOutlineColor,true,param.m_fOutlineSize/100.0);
 								driver->_PopMatrix();
 							}

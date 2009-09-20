@@ -129,31 +129,31 @@ void* ConvertThread::Entry()
 						type="Color";
 					switch (itxFile.GetFormat())
 					{
-					case IImageITX::DXTF_RGBA:
+					case IImageITX::ITXF_RGBA:
 						format="RGBA";
 						break;
-					case IImageITX::DXTF_DXT1:
+					case IImageITX::ITXF_DXT1:
 						format="DXT1";
 						break;
-					case IImageITX::DXTF_DXT1a:
+					case IImageITX::ITXF_DXT1a:
 						format="DXT1a";
 						break;
-					case IImageITX::DXTF_DXT1nm:
+					case IImageITX::ITXF_DXT1nm:
 						format="DXT1nm";
 						break;
-					case IImageITX::DXTF_DXT3:
+					case IImageITX::ITXF_DXT3:
 						format="DXT3";
 						break;
-					case IImageITX::DXTF_DXT5:
+					case IImageITX::ITXF_DXT5:
 						format="DXT5";
 						break;
-					case IImageITX::DXTF_DXT5nm:
+					case IImageITX::ITXF_DXT5nm:
 						format="DXT5nm";
 						break;
-					case IImageITX::DXTF_ATI1:
+					case IImageITX::ITXF_ATI1:
 						format="ATI1";
 						break;
-					case IImageITX::DXTF_ATI2_3Dc:
+					case IImageITX::ITXF_ATI2_3Dc:
 						format="ATI2/3Dc";
 						break;
 					};

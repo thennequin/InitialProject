@@ -6,7 +6,7 @@
 //              December 20th  2008
 //---------------------------------------------
 
-//#define _ITHREAD_COMPILE_
+#define _ITHREAD_COMPILE_
 
 #include "Initial/Thread/IThread.h"
 
