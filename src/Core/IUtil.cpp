@@ -182,9 +182,9 @@ namespace Initial
 			if (pos2>pos)
 				pos=pos2;
 
-			IString path = filepath.Left(pos2);
+			IString path = filepath.Left(pos);
 			if (file.Find(path)!=-1)
-				file = file.Right(file.Length()-path.Length()-1);
+				file = file.Right(path.Length()+1);
 
 			return file;
 		}
@@ -199,6 +199,13 @@ namespace Initial
 			IString path = filepath.Left(pos2);
 
 			return path+"\\"+file;
+		}
+
+		IString AppPath()
+		{
+			char buffer[2048];
+			GetCurrentDirectory(2048,buffer);
+			return IString(buffer)+"\\";
 		}
 	}
 }

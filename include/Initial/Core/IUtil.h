@@ -27,6 +27,7 @@ namespace Initial
 		IString FilePath(IString file); // return folder of file
 		IString RelativeToPath(IString filepath, IString file);
 		IString PathToFile(IString filepath, IString file);
+		IString AppPath();
 	}
 }
 

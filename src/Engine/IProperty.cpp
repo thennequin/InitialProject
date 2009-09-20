@@ -136,7 +136,9 @@ namespace Initial
 				//if (((ISmartPtr<ITexture>*)m_pVar))
 					//return (*(ISmartPtr<ITexture>*)m_pVar)->GetFilename();
 				//return "";
-				return *((IString*)m_pVar);
+				
+				//return *((IString*)m_pVar);
+				return Core::RelativeToPath(Core::AppPath(),*((IString*)m_pVar));
 				break;
 			case IPT_RESSOURCE_IMA: // Material
 				break;

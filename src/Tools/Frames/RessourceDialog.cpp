@@ -39,16 +39,16 @@ void RessourceDialog::OnSelected(wxCommandEvent& event)
 	m_aSelected.Clear();
 	wxRessourceItemArray& list = m_pPanel->GetSelection();
 	
-	char buffer[2048];
-	GetCurrentDirectory(2048,buffer);
+	//char buffer[2048];
+	//GetCurrentDirectory(2048,buffer);
 
 	for (int i=0;i<list.Count();i++)
 	{
 		//printf("%s\n",list[i]->GetPath().c_str());
 		//printf("%s\n",list[i]->GetFilename().c_str());
-		wxString relativePath = RelativeToPath(buffer,list[i]->GetPath()+"\\"+list[i]->GetFilename());
-		//m_aSelected.Add(wxString(list[i]->GetPath()+"\\"+list[i]->GetFilename()));
-		m_aSelected.Add(wxString(relativePath.c_str()));
+		m_aSelected.Add(wxString(list[i]->GetPath()+"\\"+list[i]->GetFilename()));
+		//wxString relativePath = RelativeToPath(buffer,list[i]->GetPath()+"\\"+list[i]->GetFilename());
+		//m_aSelected.Add(wxString(relativePath.c_str()));		
 	}
 	EndModal(1);
 }

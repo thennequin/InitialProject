@@ -204,7 +204,7 @@ namespace Initial
 			if (pos>=0)
 			{
 				IString temp;
-				temp._SetString(c_str()+pos);
+				temp._SetString(c_str()+/*Length()-*/pos);
 				return IString(temp);
 			}
 			return IString(*this);
@@ -247,9 +247,18 @@ namespace Initial
 			return After(val);
 		}
 
-		int IString::Last(IString val)
+		int IString::Last(IChar val)
 		{
-			return 0;
+			int pos=Length();
+			while(pos>=0)
+			{
+				if (m_pData[pos]==val)
+				{
+					return pos;
+				}
+				pos--;
+			}
+			return -1;
 		}
 
 		void IString::operator=(const IString& str)
