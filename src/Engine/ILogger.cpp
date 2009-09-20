@@ -7,6 +7,8 @@
 //---------------------------------------------
 
 #include "Initial/ILogger.h"
+#include "Initial/IO/IConfigINI.h"
+
 #include "windows.h"
 
 using namespace Initial::Core;
@@ -14,6 +16,7 @@ using namespace Initial::Core;
 namespace Initial
 {
 	IArray<ILogger*> ILogger::m_pRegistred;
+	ILogger::LogType ILogger::m_iMinLevel=ILogger::LT_DEBUG;
 
 	//void ILogger::Log(IString message,LogType type)
 	void ILogger::Log(LogType type,const IChar *format,...)
@@ -34,8 +37,14 @@ namespace Initial
 			RegisterLogger(new ILoggerConsole);
 			RegisterLogger(new ILoggerDebugger);
 			RegisterLogger(new ILoggerFile);
+			IO::IConfigINI config("engine.ini");
+			config.Load();
+			m_iMinLevel = config.ReadIntValue("DebugLog",1,true)?LT_DEBUG:LT_ERROR;
+			if (config.NeedToBeSave())
+				config.Save();
 		}
 
+		
 		for (UINT i=0;i<m_pRegistred.Count();i++)
 		{
 			if (m_pRegistred[i])
@@ -87,18 +96,21 @@ namespace Initial
 
 	void ILoggerConsole::Output(LogType type, IString output)
 	{
-		//Change color
-		if (type==LT_WARNING)
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_INTENSITY);
-		else if (type==LT_ERROR)
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_INTENSITY);
-		else if (type==LT_DEBUG)
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE|FOREGROUND_INTENSITY);
+		if (type<=m_iMinLevel)
+		{
+			//Change color
+			if (type==LT_WARNING)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_INTENSITY);
+			else if (type==LT_ERROR)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_INTENSITY);
+			else if (type==LT_DEBUG)
+				SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE|FOREGROUND_INTENSITY);
 
-		printf("%s",output.c_str());
-		
-		//Default color
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
+			printf("%s",output.c_str());
+			
+			//Default color
+			//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED|FOREGROUND_GREEN|FOREGROUND_BLUE);
+		}
 	}
 
 	void ILoggerDebugger::Output(LogType type, IString output)

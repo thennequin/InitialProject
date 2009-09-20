@@ -39,9 +39,12 @@ namespace Initial
 		static void RegisterLogger(ILogger *logger);
 		static void UnregisterLogger(ILogger *logger);
 
+		static void ShowMinLevel(LogType type=LT_DEBUG);
+
 		virtual void Output(LogType type, Core::IString output)=0;
 	protected:
 		static Core::IArray<ILogger*> m_pRegistred;
+		static LogType m_iMinLevel;
 	};
 
 	class ILoggerConsole : public ILogger
