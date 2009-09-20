@@ -192,8 +192,11 @@ void MainWindowPhazer::OnMenu(wxCommandEvent& event)
 	{
 		if (m_pMaterial)
 		{		
+			char buffer[2048];
+			GetCurrentDirectory(2048,buffer);
+
 			m_pInitial->Stop();
-			wxFileDialog dialog(this, wxT("Select material file to open"), wxT(""), wxT(""), "Initial material (*.IMA)|*.ima", wxOPEN);
+			wxFileDialog dialog(this, wxT("Select material file to open"), wxT(buffer), wxT(""), "Initial material (*.IMA)|*.ima", wxOPEN);
 			if (dialog.ShowModal() == wxID_OK )	
 			{
 				LoadMaterial(dialog.GetPath().c_str());
