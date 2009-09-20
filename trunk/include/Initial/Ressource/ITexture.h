@@ -20,6 +20,7 @@ namespace Initial
 		{
 			friend class ITextureManager;
 		public:
+			virtual void Load();
 			virtual void Reload();
 
 			virtual void UpdateImage();
@@ -36,6 +37,11 @@ namespace Initial
 			//unsigned int m_iTextureId;
 			int m_iWidth;
 			int m_iHeight;
+			
+			bool m_bLoaded;
+			bool m_bCompressed;
+			void *m_pTempData;
+			//For empty
 
 			ITextureManager *m_pTextureManager;
 		};

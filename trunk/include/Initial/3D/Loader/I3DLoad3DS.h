@@ -10,7 +10,7 @@
 #define _I3DLoad_HEADER_
 
 #include "Initial/Core/IString.h"
-#include "Initial/3D/IMesh.h"
+#include "Initial/Ressource/IMesh.h"
 #include "Initial/Video/IRenderDriver.h"
 
 namespace Initial

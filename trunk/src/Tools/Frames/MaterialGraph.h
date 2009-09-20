@@ -3,7 +3,7 @@
 #define _MATERIALGRAPH_HEADER_
 
 #include "FlowLib/FlowGraph.h"
-#include "Initial/Video/IMaterial.h"
+#include "Initial/Ressource/IMaterial.h"
 #include "Initial/Video/IMaterialExpression.h"
 
 #include "ObjectProperty.h"

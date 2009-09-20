@@ -6,7 +6,7 @@
 #include "Initial/Core/IVector3D.h"
 #include "Initial/Core/IColor.h"
 //#include "Initial/Format/IImageITX.h"
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 
 using namespace Initial::Core;
 using namespace Initial::Video;

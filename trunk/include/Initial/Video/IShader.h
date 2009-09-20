@@ -11,7 +11,7 @@
 
 #include "Initial/Core/IString.h"
 #include "Initial/Math/IMatrix.h"
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 #include "Initial/Video/IShaderManager.h"
 
 namespace Initial

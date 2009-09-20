@@ -9,7 +9,7 @@
 #include "Initial/ILogger.h"
 #include "Initial/Video/OpenGLDrv/ITextureManagerOpenGL.h"
 #include "Initial/Core/IImage.h"
-#include "Initial/Video/ITextureVideo.h"
+#include "Initial/Ressource/ITextureVideo.h"
 
 #include <gl/glew.h>
 #include <gl/gl.h>

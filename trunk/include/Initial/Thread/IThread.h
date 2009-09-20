@@ -9,16 +9,16 @@
 #ifndef _ITHREAD_HEADER_
 #define _ITHREAD_HEADER_
 
-//#ifdef _ITHREAD_COMPILE_
+#ifdef _ITHREAD_COMPILE_
 #include <boost/thread.hpp>
-//#endif
+#endif
 
 #include "Initial/Core/IArray.h"
 
-namespace boost
+/*namespace boost
 {
 	class thread;
-}
+}*/
 
 namespace Initial
 {
@@ -43,8 +43,9 @@ namespace Initial
 		int _temp;
 
 		static Core::IArray<IThread*> m_aThreads;
-
+#ifdef _ITHREAD_COMPILE_
 		boost::thread m_pThread;
+#endif
 	};
 
 	class IMutex
@@ -58,12 +59,12 @@ namespace Initial
 
 		bool TryLock();
 	private:
-//#ifdef _ITHREAD_COMPILE_
+#ifdef _ITHREAD_COMPILE_
 		boost::mutex m_Mutex;
 		boost::mutex::scoped_lock m_Lock;
 
 		//boost::mutex m_InternMutex;
-//#endif
+#endif
 	};
 
 	class IMutexLocker
@@ -73,9 +74,9 @@ namespace Initial
 		~IMutexLocker();
 
 	protected:
-//#ifdef _ITHREAD_COMPILE_
+#ifdef _ITHREAD_COMPILE_
 		boost::mutex::scoped_lock m_Lock;
-//#endif
+#endif
 	};
 }
 

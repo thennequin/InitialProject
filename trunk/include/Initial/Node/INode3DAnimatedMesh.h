@@ -10,7 +10,7 @@
 #define _INODE3DANIMATEDMESH_HEADER_
 
 #include "Initial/Node/INode.h"
-//#include "Initial/3D/IAnimatedMesh.h"
+//#include "Initial/Ressource/IAnimatedMesh.h"
 #include "Initial/Format/IMeshIEM.h"
 #include "Initial/Core/IString.h"
 

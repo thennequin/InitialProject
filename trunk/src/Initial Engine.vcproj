@@ -39,7 +39,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
 				PreprocessorDefinitions="WIN32"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -59,8 +59,8 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				AdditionalDependencies="opengl32.lib glew32.lib glu32.lib freetype239MT.lib libgfl.lib libgfle.lib lib3ds.lib binkw32.lib cal3d.lib nvtt.lib nvcore.lib nvimage.lib libboost_thread-vc80-mt-1_37.lib wxcode_msw28_propgrid.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
+				AdditionalDependencies="opengl32.lib glu32.lib libboost_thread-vc80-mt-1_37.lib wxcode_msw28_propgrid.lib"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -104,7 +104,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include\&quot;;&quot;$(WXWIN)\include\msvc\&quot;;&quot;$(WXWIN)\lib\vc_lib\include\&quot;;&quot;$(SolutionDir)../include/&quot;;&quot;$(SolutionDir)../lib/glew/include/&quot;;&quot;$(SolutionDir)../lib/GflSDK/include/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/include/&quot;;&quot;$(SolutionDir)../lib/lib3ds/include/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/src/&quot;;&quot;$(SolutionDir)../lib/propgrid/include/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/src/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/project/vc8/&quot;;&quot;$(SolutionDir)/3rd party/zlib123/&quot;;&quot;$(SolutionDir)/3rd party/libpng-1.2.34/&quot;;&quot;$(SolutionDir)/Tools/Frames/&quot;"
 				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0600"
 				ExceptionHandling="1"
 				RuntimeLibrary="2"
@@ -125,8 +125,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				LinkLibraryDependencies="true"
-				AdditionalDependencies="opengl32.lib glew32.lib glu32.lib freetype239MT.lib libgfl.lib libgfle.lib lib3ds.lib binkw32.lib cal3d.lib nvtt.lib nvcore.lib nvimage.lib libboost_thread-vc80-mt-1_37.lib"
-				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_37_0/lib-vc/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
+				AdditionalLibraryDirectories="&quot;$(SolutionDir)../lib/GflSDK/lib/&quot;;&quot;$(SolutionDir)../lib/glew/lib/&quot;;&quot;$(SolutionDir)../lib/freetype-2.3.9/lib/&quot;;&quot;$(SolutionDir)../lib/lib3ds/lib/&quot;;&quot;$(SolutionDir)../lib/binkw32/&quot;;&quot;$(SolutionDir)../lib/boost_1_40_0/stage/lib/&quot;;&quot;$(SolutionDir)../lib/cal3d-0.11.0/bin/Release/&quot;;&quot;$(SolutionDir)../lib/nvidia-texture-tools/lib/&quot;;&quot;$(SolutionDir)../lib/propgrid/lib/vc_lib/&quot;;&quot;$(SolutionDir)../lib/&quot;"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -197,10 +196,6 @@
 				Name="3D"
 				>
 				<File
-					RelativePath=".\3D\IAnimatedMesh.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\3D\IBBox.cpp"
 					>
 				</File>
@@ -214,10 +209,6 @@
 				</File>
 				<File
 					RelativePath=".\3D\ILine.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\3D\IMesh.cpp"
 					>
 				</File>
 				<File
@@ -293,10 +284,6 @@
 				Name="GUI"
 				>
 				<File
-					RelativePath=".\GUI\IFont.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\GUI\IFontManager.cpp"
 					>
 				</File>
@@ -314,10 +301,6 @@
 				>
 				<File
 					RelativePath=".\Video\IFrameBuffer.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Video\IMaterial.cpp"
 					>
 				</File>
 				<File
@@ -341,15 +324,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Video\ITexture.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Video\ITextureManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Video\ITextureVideo.cpp"
 					>
 				</File>
 				<File
@@ -459,6 +434,52 @@
 				<File
 					RelativePath=".\IO\IXMLParser.cpp"
 					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Ressource"
+				>
+				<File
+					RelativePath=".\Ressource\IAnimatedMesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Ressource\IFont.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Ressource\IMaterial.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Ressource\IMesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Ressource\ITexture.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Ressource\ITextureVideo.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)\$(InputName)1.obj"
+							XMLDocumentationFileName="$(IntDir)\$(InputName)1.xdc"
+						/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>
@@ -571,10 +592,6 @@
 				Name="3D"
 				>
 				<File
-					RelativePath="..\include\Initial\3D\IAnimatedMesh.h"
-					>
-				</File>
-				<File
 					RelativePath="..\include\Initial\3D\IBBox.h"
 					>
 				</File>
@@ -588,10 +605,6 @@
 				</File>
 				<File
 					RelativePath="..\include\Initial\3D\ILine.h"
-					>
-				</File>
-				<File
-					RelativePath="..\include\Initial\3D\IMesh.h"
 					>
 				</File>
 				<File
@@ -650,10 +663,6 @@
 			<Filter
 				Name="GUI"
 				>
-				<File
-					RelativePath="..\include\Initial\GUI\IFont.h"
-					>
-				</File>
 				<File
 					RelativePath="..\include\Initial\GUI\IFontManager.h"
 					>
@@ -835,6 +844,34 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Ressource"
+				>
+				<File
+					RelativePath="..\include\Initial\Ressource\IAnimatedMesh.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\Initial\Ressource\IFont.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\Initial\Ressource\IMaterial.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\Initial\Ressource\IMesh.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\Initial\Ressource\ITexture.h"
+					>
+				</File>
+				<File
+					RelativePath="..\include\Initial\Ressource\ITextureVideo.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Fichiers de ressources"
@@ -845,6 +882,81 @@
 		<Filter
 			Name="Lib"
 			>
+			<File
+				RelativePath="..\lib\freetype-2.3.9\lib\freetype239MT.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\glew\lib\glew32.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\lib3ds\lib\lib3ds.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\boost_1_40_0\stage\lib\libboost_thread-vc80-mt-1_40.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\GflSDK\lib\libgfl.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\GflSDK\lib\libgfle.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\nvidia-texture-tools\lib\CUDA\nvcore.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\nvidia-texture-tools\lib\CUDA\nvimage.lib"
+				>
+			</File>
+			<File
+				RelativePath="..\lib\nvidia-texture-tools\lib\CUDA\nvtt.lib"
+				>
+			</File>
+			<Filter
+				Name="Debug"
+				>
+				<File
+					RelativePath="..\lib\cal3d-0.11.0\bin\Debug\cal3d_d.lib"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="Release"
+				>
+				<File
+					RelativePath="..\lib\cal3d-0.11.0\bin\Release\cal3d.lib"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="true"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

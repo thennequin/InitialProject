@@ -14,14 +14,16 @@
 #include "Initial/IObject.h"
 #include "ISmartPtr.h"
 
-#include "Initial/3D/IAnimatedMesh.h"
-#include "Initial/3D/IMesh.h"
-#include "Initial/Video/IMaterial.h"
+#include "Initial/Ressource/IAnimatedMesh.h"
+#include "Initial/Ressource/IMesh.h"
+#include "Initial/Ressource/IMaterial.h"
 #include "Initial/Video/IShader.h"
-#include "Initial/Video/ITexture.h"
+#include "Initial/Ressource/ITexture.h"
 #include "Initial/Format/IMeshIEM.h"
 
 #include "Initial/Thread/IThread.h"
+
+//#include <list>
 
 
 namespace Initial
@@ -55,7 +57,8 @@ namespace Initial
 	protected:
 		IDevice *m_pDevice;
 
-		Core::IArray<IRessource*>	m_aRessources;
+		Core::IList<IRessource*>	m_aRessources;
+		//std::list<IRessource*>	m_aRessources;
 
 		IMutex m_mMutex;
 	};
