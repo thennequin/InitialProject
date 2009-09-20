@@ -53,7 +53,7 @@ namespace Initial
 			IString BeforeFirst(IString val);
 			IString AfterFirst(IString val);
 
-			int Last(IString val);
+			int Last(IChar val);
 
 			int Cmp(const IString& str) const;
 

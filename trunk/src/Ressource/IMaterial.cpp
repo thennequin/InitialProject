@@ -135,7 +135,7 @@ namespace Initial
 				CompileV2();
 				m_bOnPropChange=false;
 			}
-			
+
 			IRessource::OnPropertyChange(name);
 		}
 
@@ -436,7 +436,7 @@ namespace Initial
 					if (nodeIMA->GetName().ToLower()=="ima")
 					{
 						//Parse texture informations
-						nodeTex = nodeIMA->GetChild();
+						/*nodeTex = nodeIMA->GetChild();
 						while (nodeTex)
 						{
 							if (nodeTex->GetName().ToLower()=="textures")
@@ -461,25 +461,25 @@ namespace Initial
 								break;
 							}
 							nodeTex = nodeTex->GetNext();
-						}
+						}*/
 
 						nodeParams = nodeIMA->GetChild();
-						while (nodeTex)
+						while (nodeParams)
 						{
-							if (nodeTex->GetName().ToLower()=="parameters")
+							if (nodeParams->GetName().ToLower()=="parameters")
 							{
-								nodeTexFile = nodeTex->GetChild();
-								while (nodeTexFile)
+								nodeParamVal = nodeParams->GetChild();
+								while (nodeParamVal)
 								{
-									if (nodeTexFile->GetName().ToLower()=="parameter")
+									if (nodeParamVal->GetName().ToLower()=="parameter")
 									{
-										SetPropertyValue(nodeTexFile->GetValue("Name",""),nodeTexFile->GetValue("Value",""));
+										SetPropertyValue(nodeParamVal->GetValue("Name",""),nodeParamVal->GetValue("Value",""));
 									}
-									nodeTexFile = nodeTexFile->GetNext();
+									nodeParamVal = nodeParamVal->GetNext();
 								}
 								break;
 							}
-							nodeTex = nodeTex->GetNext();
+							nodeParams = nodeParams->GetNext();
 						}
 
 						//Parse Expressions informations
@@ -590,16 +590,20 @@ namespace Initial
 			{
 				hFile.Printf("<?xml version=\"1.0\"?>\n");
 				hFile.Printf("<IMA version=\"1.0\">\n");
-				hFile.Printf("\t<Textures>\n");
+				/*hFile.Printf("\t<Textures>\n");
+
+				IString appPath = AppPath();
 				
 				for (int i=0;i<8;i++)
 				{
 					if (m_pTextures[i])
 					{
-						hFile.Printf("\t\t<Texture Id=\"%d\" File=\"%s\"/>\n",i,m_pTextures[i]->GetFilename().c_str());
+						IString relativeFile=Core::RelativeToPath(appPath,m_pTextures[i]->GetFilename());
+						//hFile.Printf("\t\t<Texture Id=\"%d\" File=\"%s\"/>\n",i,m_pTextures[i]->GetFilename().c_str());
+						//hFile.Printf("\t\t<Texture Id=\"%d\" File=\"%s\"/>\n",i,relativeFile.c_str());
 					}
 				}
-				hFile.Printf("\t</Textures>\n");
+				hFile.Printf("\t</Textures>\n");*/
 
 				hFile.Printf("\t<Parameters>\n");
 				IPropertyList& list = GetPropertyList();
