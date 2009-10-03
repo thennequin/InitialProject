@@ -136,11 +136,11 @@ MainWindowInitialisEd::MainWindowInitialisEd(const wxString& title, const wxPoin
 		_3ds = I3DLoad::Load("marcus.3ds",m_pDevice->GetRenderDriver());
 		//_3ds2 = I3DLoad::Load("car.3ds",m_pDevice->GetRenderDriver());
 		_3ds2 = I3DLoad::Load("cube.3ds",m_pDevice->GetRenderDriver());
-		//_3ds3 = I3DLoad::Load("teapot.3ds",m_pDevice->GetRenderDriver());
+		_3ds3 = I3DLoad::Load("teapot.3ds",m_pDevice->GetRenderDriver());
 		//_3ds3 = I3DLoad::Load("ElephantBody.3ds",m_pDevice->GetRenderDriver());
-		_3ds3 = I3DLoad::Load("TIEf3DS8.3ds",m_pDevice->GetRenderDriver());
+		//_3ds3 = I3DLoad::Load("TIEf3DS8.3ds",m_pDevice->GetRenderDriver());
 		//_3ds3 = I3DLoad::Load("cube.3ds",m_pDevice->GetRenderDriver());
-
+		//_3ds3 = I3DLoad::Load("smurf.3ds",m_pDevice->GetRenderDriver());
 
 		if (_3ds)
 		{
