@@ -33,8 +33,18 @@ namespace Initial
 		AddProperty("Size",IPT_FLOAT,&(m_Params.m_fSize));
 		AddProperty("Shadow Offset",IPT_VEC2,&(m_Params.m_vShadowOffset));
 		
-		//AddProperty("Fixed space",IPT_BOOL,&(m_Params.m_bFixedSpace));
-		//AddProperty("Fixed space width",IPT_FLOAT,&(m_Params.m_fFixedSpaceWidth));
+		AddProperty("Fixed space",IPT_BOOL,&(m_Params.m_bFixedSpace));
+		AddProperty("Fixed space width",IPT_FLOAT,&(m_Params.m_fFixedSpaceWidth));
+
+		AddProperty("COD4 style",IPT_BOOL,&m_bCOD4);		
+		AddProperty("Char change time",IPT_FLOAT,&m_fcharTime);
+		AddProperty("Char change count",IPT_INTEGER,&m_icharChange);
+		m_bCOD4=false;
+		m_fcharTime=0.25;
+		m_icharChange=4;
+
+		m_fState=0.0;
+		m_lLastTime=GetTickCount();
 	}	
 
 	void INodeText::_InitNode()
@@ -49,11 +59,12 @@ namespace Initial
 			//m_pFont = m_pDevice->GetFontManager()->LoadFont("Fonts/SLNTHLN.TTF");
 			//m_pFont = m_pDevice->GetFontManager()->LoadFont("Fonts/SFOR.ttf");
 			//m_pFont = m_pDevice->GetFontManager()->LoadFont("Fonts/BRADHITC.TTF");
-			m_pFont = m_pDevice->GetFontManager()->LoadFont("Fonts/fable2.ttf",2);
+			//m_pFont = m_pDevice->GetFontManager()->LoadFont("Fonts/fable2.ttf",2);
+			m_pFont = m_pDevice->GetFontManager()->LoadFont("Fonts/Bank Gothic Medium BT.ttf",1);
 			//m_pFont = m_pDevice->GetFontManager()->LoadFont("c:/windows/fonts/arial.ttf",1);
 			//m_pFont = m_pDevice->GetFontManager()->LoadFont("c:/windows/fonts/comic.ttf",1);
 		}
-		m_sMessage="Message";
+		m_sMessage="Text";
 	}
 
 	void INodeText::Render(Video::IRenderDriver *driver, IFrustum *frustum, int flags=0)
@@ -68,7 +79,58 @@ namespace Initial
 
 			driver->UseMaterial(m_pMaterial);
 
-			m_pDevice->GetFontManager()->RenderText(m_pFont,m_sMessage,m_Params);			
+			IString newmsg=m_sMessage;
+
+			Initial::GUI::IFontDrawParam tempParams=m_Params;
+
+			if (m_bCOD4)
+			{
+				//const float m_fcharTime=0.15;
+				//const int m_icharChange=3;
+				float time = (GetTickCount()-m_lLastTime)/1000.0;
+				m_lLastTime=GetTickCount();
+				float sequenceLength=newmsg.Length()*m_fcharTime*2.0+2.0;
+				int strLen=newmsg.Length();
+				printf("-------------\n");
+				for (int i=0;i<strLen;i++)
+				{
+					//int newi=((strLen/2)+(2*i)*(2*i)*(2*i))%strLen;
+					int newi=i;
+					printf("%d\t%d\n",i,newi);
+
+					if (newmsg[i]!='\n') // No change line return
+					{
+						float secondTransTime=strLen*m_fcharTime+2.0;
+						
+						//Blank char
+						if (m_fState<newi*m_fcharTime || m_fState>=secondTransTime+(/*strLen-*/newi+1)*m_fcharTime )
+						{
+							newmsg[i]=' ';
+						}//First transform
+						else if (m_fState>=newi*m_fcharTime && m_fState<(newi+1)*m_fcharTime)
+						{
+							float tempState = (m_fState-newi*m_fcharTime);
+
+							newmsg[i]=(newmsg[i]-32+(int)(tempState*(m_icharChange/m_fcharTime)))%223+32;
+						}//Second transform
+						else if (m_fState>=secondTransTime+(/*strLen-*/newi)*m_fcharTime && m_fState<secondTransTime+(/*strLen-*/newi+1)*m_fcharTime)				
+						{
+							float tempState = (m_fState-(secondTransTime+(/*strLen-*/newi)*m_fcharTime));
+
+							newmsg[i]=(newmsg[i]-32+(int)(tempState*(m_icharChange/m_fcharTime)))%223+32;
+						}//Else no change
+					}
+				}
+				m_fState+=time;
+				if (m_fState>=sequenceLength)
+					m_fState=0;
+				//tempParams.m_bFixedSpace=true;
+			}
+			
+			m_pDevice->GetFontManager()->RenderText(m_pFont,newmsg,tempParams);
+
+
+			//m_pDevice->GetFontManager()->RenderText(m_pFont,m_sMessage,m_Params);
 
 			BaseClass::Render(driver,frustum,flags);
 

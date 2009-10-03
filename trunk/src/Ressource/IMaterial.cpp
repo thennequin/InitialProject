@@ -77,6 +77,7 @@ namespace Initial
 			strs.PushBack(IString("Lit"));
 			strs.PushBack(IString("Unlit"));
 			strs.PushBack(IString("Omnidirectional"));
+			strs.PushBack(IString("Cel shading"));
 			AddProperty("Light mode",IPT_CHOICE,NULL,strs);
 
 			AddProperty("Mask clip",IPT_FLOAT);

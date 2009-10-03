@@ -99,7 +99,7 @@ void ObjectProperty::GenerateFromObject(Initial::IObject *object)
 
 void ObjectProperty::OnPropertyChange( wxPropertyGridEvent& event )
 {
-	printf("Changed %d %d %s\n",m_pObject,event.GetProperty(),event.GetProperty()->GetValueAsString().c_str());
+	ILogger::LogDebug("Changed %d %d %s\n",m_pObject,event.GetProperty(),event.GetProperty()->GetValueAsString().c_str());
 	if (m_pObject && event.GetProperty())
 	{
 		if (event.GetProperty()->IsKindOf(&wxEnumProperty::ms_classInfo))

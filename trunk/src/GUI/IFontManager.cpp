@@ -139,15 +139,22 @@ void IFontManager::RenderText(IFont *font, IString& text, IFontDrawParam param)
 						{		
 							float space;
 							if (param.m_bFixedSpace)
-								space = param.m_fFixedSpaceWidth;
+							{
+								//space = param.m_fFixedSpaceWidth;
+								space = (param.m_fFixedSpaceWidth - font->m_aCharMap[car].m_fWidth)/2.0;
+								driver->_Translate(space,0,0);
+								space = space + font->m_aCharMap[car].m_fWidth;
+							}
 							else
 								space = font->m_aCharMap[car].m_fWidth;// = RenderChar(text[i],16)
+
+							
 
 							//Render Shadow
 							if (param.m_bShadow)
 							{
 								driver->_PushMatrix();							
-									driver->_Translate(param.m_vShadowOffset.x,param.m_vShadowOffset.y,-0.004);
+									driver->_Translate(param.m_vShadowOffset.x,param.m_vShadowOffset.y,-0.01);
 									font->m_aCharMap[car].Render(driver,param.m_cShadowColor);
 								driver->_PopMatrix();
 							}
@@ -157,7 +164,7 @@ void IFontManager::RenderText(IFont *font, IString& text, IFontDrawParam param)
 							if (param.m_bOutline)
 							{
 								driver->_PushMatrix();							
-									driver->_Translate(0,0,-0.002);
+									driver->_Translate(0,0,-0.005);
 									font->m_aCharMap[car].Render(driver,param.m_cOutlineColor,true,param.m_fOutlineSize/100.0);
 								driver->_PopMatrix();
 							}

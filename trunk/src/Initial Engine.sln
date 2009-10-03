@@ -106,7 +106,6 @@ Global
 		{88124260-061A-4689-B093-440A5D652625}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{88124260-061A-4689-B093-440A5D652625}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{88124260-061A-4689-B093-440A5D652625}.Release|Win32.ActiveCfg = Release|Win32
-		{88124260-061A-4689-B093-440A5D652625}.Release|Win32.Build.0 = Release|Win32
 		{3CBD1AA3-F875-4004-BB31-9FCCCD45A943}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{3CBD1AA3-F875-4004-BB31-9FCCCD45A943}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{3CBD1AA3-F875-4004-BB31-9FCCCD45A943}.Debug|Mixed Platforms.Build.0 = Debug|Win32

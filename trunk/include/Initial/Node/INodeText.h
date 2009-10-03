@@ -33,6 +33,12 @@ namespace Initial
 		Initial::GUI::IFont* m_pFont;
 		Initial::GUI::IFontDrawParam m_Params;
 		Core::IString m_sMessage;
+
+		bool m_bCOD4;
+		float m_fcharTime;
+		int m_icharChange;
+		float m_fState;
+		long m_lLastTime;
 	};
 }
 
