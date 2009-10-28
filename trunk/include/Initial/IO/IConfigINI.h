@@ -11,6 +11,7 @@
 
 #include "Initial/Core/IString.h"
 #include "Initial/Core/IArray.h"
+#include <vector>
 
 namespace Initial
 {
@@ -64,7 +65,8 @@ namespace Initial
 			bool m_bNeedSave;
 			Core::IString		m_sFilename;
 
-			Core::IArray<ValueSlot*> Values;
+			//Core::IArray<ValueSlot*> Values;
+			std::vector<ValueSlot*> Values;
 		};
 	}
 }
