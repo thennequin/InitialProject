@@ -20,12 +20,13 @@ namespace Initial
 		{
 			m_bNeedSave=false;
 			m_sFilename=Filename;
-			Values.Clear();
+			//Values.Clear();
+			Values.clear();
 		}
 
 		IConfigINI::~IConfigINI()
 		{
-			for (UINT i=0;i<Values.Count();i++)
+			for (UINT i=0;i<Values.size();i++)
 			{
 				delete Values[i];
 			}
@@ -41,7 +42,7 @@ namespace Initial
 
 		void IConfigINI::Load()
 		{
-			Values.Clear();
+			Values.clear();
 
 			IFileStream file(m_sFilename,IFileStream::IOM_READ);
 			if (file.IsOk())
@@ -73,7 +74,7 @@ namespace Initial
 							slot->Name = Name;
 							slot->Value = "";
 							slot->IsCom=true;
-							Values.Add(slot);
+							Values.push_back(slot);
 							State=STATE_NONE;
 						}else
 							Name+=car;					
@@ -118,7 +119,7 @@ namespace Initial
 							slot->Name = Name;
 							slot->Value = Value;
 							slot->IsCom=false;
-							Values.Add(slot);
+							Values.push_back(slot);
 							State=STATE_NONE;
 						}else
 							Value+=car;
@@ -134,7 +135,7 @@ namespace Initial
 					slot->Name = Name;
 					slot->Value = Value;
 					slot->IsCom=false;
-					Values.Add(slot);
+					Values.push_back(slot);
 				}
 			}
 		}
@@ -144,7 +145,7 @@ namespace Initial
 			IFileStream file(m_sFilename,IFileStream::IOM_WRITE);
 			if (file.IsOk())
 			{
-				for (unsigned int i=0;i<Values.Count();i++)
+				for (unsigned int i=0;i<Values.size();i++)
 				{
 					if (Values[i]->IsCom)
 						file.Printf("#%s\n",Values[i]->Name.c_str());
@@ -162,7 +163,7 @@ namespace Initial
 
 		bool IConfigINI::ValueExist(IString ValueName)
 		{
-			for (unsigned int i=0;i<Values.Count();i++)
+			for (unsigned int i=0;i<Values.size();i++)
 			{
 				if (Values[i]->IsCom==false && Values[i]->Name == ValueName)
 				{
@@ -176,7 +177,7 @@ namespace Initial
 		{
 			if (ValueExist(ValueName))
 			{
-				for (unsigned int i=0;i<Values.Count();i++)
+				for (unsigned int i=0;i<Values.size();i++)
 					if (Values[i]->IsCom==false && Values[i]->Name == ValueName)
 						return Values[i]->Value;
 			}else if (WriteDefaultValue)
@@ -207,7 +208,7 @@ namespace Initial
 		{
 			if (ValueExist(ValueName))
 			{
-				for (unsigned int i=0;i<Values.Count();i++)
+				for (unsigned int i=0;i<Values.size();i++)
 				{
 					if (Values[i]->Name == ValueName)
 					{
@@ -224,7 +225,7 @@ namespace Initial
 					slot->Name = ValueName;
 					slot->Value = Value;
 					slot->IsCom=false;
-					Values.Add(slot);
+					Values.push_back(slot);
 				}
 			}
 		}
